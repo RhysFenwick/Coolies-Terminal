@@ -59,8 +59,7 @@ Scrollbar settings - don't work on Firefox :(
 }
 
 input {
-  background-color: #011a0d; /* Background colour */
-  background: repeating-linear-gradient(#011a0d 0px 10px, #011606 10px 11px); 
+  background-color: transparent; /* Background colour */
   border: none;
   color: #008000; /* Text color */
   caret-color: #008000; /* Cursor color */
