@@ -1,0 +1,27 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  background-color: black;
+  font-family: 'Courier New', Courier, monospace;
+  color: #FFBF00; /* Amber color */
+}
+
+#terminal {
+  padding: 20px;
+  height: 90%;
+  overflow-y: auto;
+}
+
+input {
+  width: 100%;
+  padding: 0 20px;
+  background-color: black;
+  border: none;
+  color: #FFBF00; /* Amber color */
+  caret-color: #FFBF00; /* Cursor color */
+  font-family: 'Courier New', Courier, monospace;
+}
+
+input:focus {
+  outline: none;
+}
