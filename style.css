@@ -6,7 +6,24 @@ body, html {
   color: #008000; /* Text color */
   display: flex;
   flex-direction: column;
+  background: repeating-linear-gradient(#011a0d 0px 10px, #011606 10px 11px); 
+  opacity: 1;
 }
+
+#terminal::-webkit-scrollbar {
+  width: 12px;               /* width of the entire scrollbar */
+}
+
+#terminal::-webkit-scrollbar-track {
+  background: orange;        /* color of the tracking area */
+}
+
+#terminal::-webkit-scrollbar-thumb {
+  background-color: #008000;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 3px solid #008000;  /* creates padding around scroll thumb */
+}
+
 
 #container {
   flex-grow: 1;
@@ -17,16 +34,28 @@ body, html {
 }
 
 #terminal {
-  overflow-y: auto;
-  flex-grow: 1;
+  height: 100%;
+  overflow: scroll;
+  flex-grow: 0;
+}
+
+#term-box {
+  margin-top: 5%;
+  padding: 10px;
+  width: 45%;
+  border: 4px solid #008000;
+  height: 60%;
 }
 
 input {
   background-color: #011a0d; /* Background colour */
+  background: repeating-linear-gradient(#011a0d 0px 10px, #011606 10px 11px); 
   border: none;
   color: #008000; /* Text color */
   caret-color: #008000; /* Cursor color */
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Kode Mono", monospace;
+  font-weight: 500;
+  font-size: medium;
   padding: 0;
   border: 0;
   margin: 0;
@@ -39,4 +68,14 @@ input:focus {
 
 p {
   white-space: pre-line;
+  font-family: "Kode Mono", monospace;
+  font-weight: 500;
+  font-size: medium;
+}
+
+h1 {
+  white-space: pre-line;
+  font-family: "Kode Mono", monospace;
+  font-weight: 500;
+  text-align: center;
 }

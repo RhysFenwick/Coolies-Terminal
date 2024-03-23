@@ -84,6 +84,6 @@ document.addEventListener("click", function() {
     }
 });
 
-appendToTerminal("Welcome to the CooliesBot Terminal.\r\nDeveloping murder mystery...\r\nAssigning murderer...\r\nPlease enter password to continue.")
+appendToTerminal("Welcome to the CooliesBot Terminal.\r\nDeveloping murder mystery. . .\r\nAssigning murderer. . .\r\nPlease enter password to continue.")
 // Initialize the terminal with the input line ready for user input
 createInputLine();
