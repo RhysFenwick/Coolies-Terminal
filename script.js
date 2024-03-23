@@ -46,6 +46,10 @@ function createInputLine() {
             }
             else {
                 appendToTerminal("Incorrect password.\r\nHint: it's incredibly secure, you'll never guess it.")
+                passArray = document.getElementById("info").firstElementChild.textContent.split(" ");
+                passNum = Number(passArray[passArray.length - 1]);
+                passArray[passArray.length - 1] = String(passNum + 1);
+                document.getElementById("info").firstElementChild.textContent = passArray.join(" ");
             }
             
             // Add a new input line at the end
@@ -87,3 +91,6 @@ document.addEventListener("click", function() {
 appendToTerminal("Welcome to the CooliesBot Terminal.\r\nDeveloping murder mystery. . .\r\nAssigning murderer. . .\r\nPlease enter password to continue.")
 // Initialize the terminal with the input line ready for user input
 createInputLine();
+
+// Put a 0 on the number of password attempts
+document.getElementById("info").firstElementChild.textContent += "0";

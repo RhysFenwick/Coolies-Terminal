@@ -10,6 +10,9 @@ body, html {
   opacity: 1;
 }
 
+/*
+Scrollbar settings - don't work on Firefox :(
+*/
 #terminal::-webkit-scrollbar {
   width: 6px;               /* width of the entire scrollbar */
 }
@@ -25,13 +28,6 @@ body, html {
 }
 
 
-#container {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
-}
 
 #terminal {
   height: 100%;
@@ -39,12 +35,27 @@ body, html {
   flex-grow: 0;
 }
 
-#term-box {
+.big-box {
+  height: 100%;
+  overflow: hidden;
+}
+
+.small-box {
   margin-top: 5%;
   padding: 10px;
-  width: 45%;
+  width: 40%;
   border: 4px solid #008000;
   height: 60%;
+}
+
+#term-box {
+  float: left;
+  margin-left: 5%;
+}
+
+#info-box {
+  float: right;
+  margin-right: 5%;
 }
 
 input {
