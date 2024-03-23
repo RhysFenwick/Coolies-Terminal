@@ -1,27 +1,42 @@
 body, html {
   height: 100%;
   margin: 0;
-  background-color: black;
+  background-color: #011a0d; /* Background colour */
   font-family: 'Courier New', Courier, monospace;
-  color: #FFBF00; /* Amber color */
+  color: #008000; /* Text color */
+  display: flex;
+  flex-direction: column;
+}
+
+#container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 #terminal {
-  padding: 20px;
-  height: 90%;
   overflow-y: auto;
+  flex-grow: 1;
 }
 
 input {
-  width: 100%;
-  padding: 0 20px;
-  background-color: black;
+  background-color: #011a0d; /* Background colour */
   border: none;
-  color: #FFBF00; /* Amber color */
-  caret-color: #FFBF00; /* Cursor color */
+  color: #008000; /* Text color */
+  caret-color: #008000; /* Cursor color */
   font-family: 'Courier New', Courier, monospace;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  width: calc(100% - 40px); /* Adjust based on padding */
 }
 
 input:focus {
   outline: none;
+}
+
+p {
+  white-space: pre-line;
 }
