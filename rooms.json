@@ -1,0 +1,28 @@
+{
+    "rooms": [
+        {
+            "id": 0,
+            "name": "entrance",
+            "doors": [["foyer",false]]
+        },
+        {
+            "id": 1,
+            "name": "foyer",
+            "doors": [["entrance",false],["kitchen",false],["study",true]]
+        },
+        {
+            "id": 2,
+            "name": "kitchen",
+            "doors": [["foyer",false]]
+        },
+        {
+            "id": 3,
+            "name": "study",
+            "doors": [["foyer",true]]
+        }
+    ],
+    "logins": [
+        ["admin","password", "Administrator Account",10],
+        ["cg24","mystery", "Coolies Gourlay",1]
+    ]
+}

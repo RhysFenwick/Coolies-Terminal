@@ -45,6 +45,7 @@ Scrollbar settings - don't work on Firefox :(
   padding: 10px;
   width: 40%;
   border: 4px solid #008000;
+  border-style: dotted;
   height: 60%;
 }
 
@@ -63,7 +64,8 @@ input {
   border: none;
   color: #008000; /* Text color */
   caret-color: #008000; /* Cursor color */
-  font-family: "Kode Mono", monospace;
+  white-space: pre-line;
+  font-family: Monochromatty;
   font-weight: 500;
   font-size: medium;
   padding: 0;
