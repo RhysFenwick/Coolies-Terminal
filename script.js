@@ -9,6 +9,7 @@ var inventory = [];
 // Start of privilege level 0, escalate through logins
 var current_user = null;
 var priv = 0;
+var energy = 100;
 
 // Helper functions
 
@@ -49,7 +50,7 @@ function refreshInfo() {
     location.appendChild(line);
     
     if (priv == 0) {
-        text = "CURRENT USER: Unknown\r\nCURRENT ROOM: Unknown\r\nDOORS: Unknown"
+        text = "ENERGY: "+ energy + "%\r\nCURRENT USER: Unknown\r\nCURRENT ROOM: Unknown\r\nDOORS: Unknown"
     }
     else {
         doors_str = ""
@@ -71,7 +72,7 @@ function refreshInfo() {
         
         inv_str = inventory.join(", ");
         
-        text = "CURRENT USER: " + current_user.name + "\r\nCURRENT ROOM: "+ current_room.name.toUpperCase() + "\r\nDOORS: " + doors_str + items_str + "\r\n\r\nUSER NOTES: " + current_user.notes + "\r\nINVENTORY: " + inv_str;
+        text = "ENERGY: "+ energy + "%\r\nCURRENT USER: " + current_user.name + "\r\nCURRENT ROOM: "+ current_room.name.toUpperCase() + "\r\nDOORS: " + doors_str + items_str + "\r\n\r\nUSER NOTES: " + current_user.notes + "\r\nINVENTORY: " + inv_str;
     }
 
     typeWriterEffect(text,line)
@@ -274,6 +275,7 @@ function take_item(item) {
       current_room.items.splice(index, 1);
       inventory.push(item);
       appendToTerminal("You have taken the "+ item + ".");
+      energy -= 2;
       refreshInfo();
     }
     else {
@@ -367,6 +369,7 @@ function unlock(input_array) {
         // Is this by reference?
         door.locked = false;
         appendToTerminal("Door unlocked.")
+        energy -= 2
       }
       else {
         appendToTerminal("Incorrect password.")
@@ -390,6 +393,7 @@ function move_rooms(input_array) {
         // Moves current room
         current_room = getRoom(queried_room);
         appendToTerminal("You've moved to the " + queried_room + ".")
+        energy -= (3 + inventory.length)
         refreshInfo()
       }
     }
