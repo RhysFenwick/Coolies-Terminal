@@ -64,12 +64,14 @@ function refreshInfo() {
         }
         doors_str = doors_str.substring(0, doors_str.length - 2);
         
-        notes_str = "";
+        items_str = "";
         if (current_room.inspected) {
-          notes_str += "\r\nROOM ITEMS: " + current_room.items.join(", ")
+          items_str += "\r\nROOM ITEMS: " + current_room.items.join(", ")
         }
         
-        text = "CURRENT USER: " + current_user.name + "\r\nCURRENT ROOM: "+ current_room.name.toUpperCase() + "\r\nDOORS: " + doors_str + notes_str + "\r\n\r\nUSER NOTES: " + current_user.notes
+        inv_str = inventory.join(", ");
+        
+        text = "CURRENT USER: " + current_user.name + "\r\nCURRENT ROOM: "+ current_room.name.toUpperCase() + "\r\nDOORS: " + doors_str + items_str + "\r\n\r\nUSER NOTES: " + current_user.notes + "\r\nINVENTORY: " + inv_str;
     }
 
     typeWriterEffect(text,line)
@@ -178,6 +180,7 @@ function gameStart(rooms_json) {
     doors = rooms_json.doors // An array of door JSONs.
     current_room = rooms[0]; // Start off in the entry
     descriptions = rooms_json.descriptions;
+    
 
     // Initialize the terminal with the input line ready for user input (and kick off the game)
     createInputLine();
@@ -230,13 +233,14 @@ function parseInput(raw_input) {
     }
     
     else if (action == "inspect") {
+      focus = input_array[1]
       // Inspect the room or an item
       if (current_user) {
-        if (false) {
-          inspect_item(input_array[1]);
+        if (descriptions.hasOwnProperty(focus)) {
+          inspect_item(focus);
         }
         else {
-        inspect_room(input_array[1]);
+        inspect_room(focus);
         }
       }
         else {
@@ -246,7 +250,7 @@ function parseInput(raw_input) {
     
     else if (action == "take") {
       if (current_user) {
-        take(input_array[1]);
+        take_item(input_array[1]);
         }
         else {
           appendToTerminal("You must be logged in to take items.");
@@ -254,7 +258,7 @@ function parseInput(raw_input) {
     }
 
     else if (action == "help") {
-        appendToTerminal("Type 'login [name] [password]' to login, 'enter [room-name]' to enter a room, 'unlock [room-name] [password] to unlock a locked door, or 'help' for more information.")
+        appendToTerminal("Type 'login [name] [password]' to login, 'enter [room-name]' to enter a room, 'unlock [room-name] [password] to unlock a locked door, or 'help' for more information. There are also 'inspect', 'take', and 'clear' commands.")
     }
 
     else {
@@ -269,6 +273,8 @@ function take_item(item) {
     if (index > -1) {
       current_room.items.splice(index, 1);
       inventory.push(item);
+      appendToTerminal("You have taken the "+ item + ".");
+      refreshInfo();
     }
     else {
       appendToTerminal("That item isn't in this room.")
@@ -294,10 +300,16 @@ function getRoom(room_name) {
 // Prints a description of an item (if it exists and you can see it) to the terminal 
 function inspect_item(item) {
   if (current_room.items.includes(item)) {
-    appendToTerminal(descriptions.item);
+    appendToTerminal
+    if (descriptions.hasOwnProperty(item)) {
+      appendToTerminal(descriptions[item]);
+    }
+    else {
+      appendToTerminal("That item is unremarkable.");
+    }
   }
   else if (inventory.includes(item)) {
-    appendToTerminal(descriptions.item + " It is in your inventory.");
+    appendToTerminal(descriptions[item] + " It is in your inventory.");
   }
   else {
     appendToTerminal("You can't see a " + item + " right now.");

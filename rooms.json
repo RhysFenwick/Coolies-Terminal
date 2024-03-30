@@ -11,14 +11,14 @@
             "id": 1,
             "name": "foyer",
             "description": "cold and dimly lit. The wind is whistling under the door.",
-            "items": ["old newspaper"],
+            "items": ["newspaper"],
             "inspected": false
         },
         {
             "id": 2,
             "name": "kitchen",
             "description": "warm and inviting. The air smells of freshly-baked bread.",
-            "items": ["knife","scribbled note"],
+            "items": ["knife","note"],
             "inspected": false
         },
         {
@@ -69,8 +69,8 @@
       }
     ],
     "descriptions": {
-      "old newspaper":"The yellowing paper is barely readable. The headline is about last year's election.",
+      "newspaper":"The yellowing paper is barely readable. The headline is about last year's election.",
       "knife":"Worn, but still sharp enough to hurt.",
-      "scribbled note":"It reads 'To do: change the admin login away from the default.'"
+      "note":"It reads 'To do: change the admin login away from the default.'"
     }
 }
