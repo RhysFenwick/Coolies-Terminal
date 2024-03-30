@@ -369,7 +369,6 @@ function unlock(input_array) {
         // Is this by reference?
         door.locked = false;
         appendToTerminal("Door unlocked.")
-        energy -= 2
       }
       else {
         appendToTerminal("Incorrect password.")
