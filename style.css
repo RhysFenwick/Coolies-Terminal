@@ -27,7 +27,32 @@ Scrollbar settings - don't work on Firefox :(
   border: 3px solid #008000;  /* creates padding around scroll thumb */
 }
 
+.big-box {
+  height: 100%;
+  overflow: hidden;
+}
 
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.small-box {
+  margin-top: 10px;
+  margin-left: 5%;
+  padding: 10px;
+  border: 4px solid #008000;
+  border-style: dotted;
+}
+
+#title {
+  text-align: center;
+}
 
 #terminal {
   height: 100%;
@@ -35,28 +60,44 @@ Scrollbar settings - don't work on Firefox :(
   flex-grow: 0;
 }
 
-.big-box {
-  height: 100%;
-  overflow: hidden;
-}
-
-.small-box {
-  margin-top: 5%;
-  padding: 10px;
-  width: 40%;
-  border: 4px solid #008000;
-  border-style: dotted;
-  height: 60%;
-}
-
 #term-box {
   float: left;
-  margin-left: 5%;
+  height: 90%;
+  width: 40%
 }
 
-#info-box {
-  float: right;
+#information-box {
+  float: left;
+  margin-left: 5%;
+  width: 85%;
+  height: 80%;
+  margin-bottom: 5%;
+  margin-top: 5%;
+}
+
+#map-box {
+  width: 120px;
+}
+
+#energy-box {
+  width: 150px;
+}
+
+#messages-box {
+  width: 220px;
   margin-right: 5%;
+}
+
+#inventory-box {
+  text-align: center;
+  width: 180px;
+  height: 90%;
+}
+
+#map-box, #energy-box, #messages-box {
+  text-align: center;
+  padding: 0%;
+  height: 150px;
 }
 
 input {
@@ -85,9 +126,15 @@ p {
   font-size: medium;
 }
 
-h1 {
+h1 h4 {
   white-space: pre-line;
   font-family: Monochromatty;
   font-weight: 500;
   text-align: center;
 }
+
+h4 {
+  line-height: 0px;
+  margin-bottom: 0;
+}
+

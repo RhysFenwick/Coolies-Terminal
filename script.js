@@ -1,4 +1,4 @@
-// Start off by declaring logins (array of arrays), rooms (array of JSONs), and current_room (JSON) to be filled later
+// Arrays/JSONs to be filled later
 var logins;
 var rooms;
 var doors;
@@ -6,7 +6,21 @@ var current_room;
 var descriptions;
 var inventory = [];
 
-// Start of privilege level 0, escalate through logins
+// Mapping
+
+// A dict of room coords and their symbols
+var map_ind = {
+  "entrance" : [24,"E"],
+  "foyer" : [26,"F"],
+  "kitchen" : [15, "K"],
+  "study" : [37, "S"]
+}
+// First char of each row is currently index 0/7/14/21/28 (0/11/22/33/44)
+var mapstring = "- - - - -\r\n".repeat(5);
+
+// User
+
+// Start with privilege level 0, escalate through logins if needed
 var current_user = null;
 var priv = 0;
 var energy = 100;
@@ -14,7 +28,7 @@ var energy = 100;
 // Helper functions
 
 // Clears text in either terminal or info
-function clearText(loc="info") {
+function clearText(loc) {
 
     const location = document.getElementById(loc);
     location.textContent = "";
@@ -38,24 +52,75 @@ function appendToTerminal(text, slowText=true) {
     }
 }
 
-// Append text to info page
-// TODO: Wipe and rewrite every time?
-// TODO: Spin out the actual writing function
-function refreshInfo() {
-    clearText();
-    const line = document.createElement("p");
-    
-    const location = document.getElementById("info");
+// A broader "refresh and write to box" function
+function newBoxText(box,txt) {
+  clearText(box);
+  
+  // The box title
+  const title = document.createElement("h4");
 
-    location.appendChild(line);
+  // The box content
+  const line = document.createElement("p");
+
+  // The relevant div
+  const location = document.getElementById(box);
+
+  // Add h4 title
+  location.appendChild(title);
+  title.append(box.toUpperCase());
+
+  location.appendChild(line);
+  typeWriterEffect(txt,line);
+}
+
+// A "refresh everything but the terminal" function
+function generalRefresh() {
+  refreshEnergy();
+  refreshInfo();
+  refreshMap();
+  refreshInventory();
+  refreshMessages();
+}
+
+// A function to refresh the inventory - should be called by generalRefresh() most of the time
+function refreshMessages() {
+  newBoxText("messages","None")
+}
+// A function to refresh the inventory - should be called by generalRefresh() most of the time
+function refreshInventory() {
+  var inventory_str = "";
+  if (inventory.length == 0) {
+    inventory_str = "None";
+  }
+  else {
+    inventory_str = inventory.join('\r\n');
+  }
+  newBoxText("inventory",inventory_str);
+}
+// A function to refresh the energy - should be called by generalRefresh() most of the time
+function refreshEnergy() {
+  energy_str = energy + "%\r\n\r\nCost per room entry:\r\n" + (3 + inventory.length) + "%";
+  newBoxText("energy",energy_str);
+}
+
+// A function to refresh the map - should be called by generalRefresh() most of the time
+function refreshMap() {
+  for (var room of Object.keys(map_ind)) {
+    mapstring = replaceChar(mapstring,map_ind[room][1],map_ind[room][0]);
+  }
+  newBoxText("map", mapstring);
+}
+
+// Append text to info page
+function refreshInfo() {
     
     if (priv == 0) {
-        text = "ENERGY: "+ energy + "%\r\nCURRENT USER: Unknown\r\nCURRENT ROOM: Unknown\r\nDOORS: Unknown"
+        text = "CURRENT USER: Unknown\r\nCURRENT ROOM: Unknown\r\nDOORS: Unknown"
     }
     else {
         doors_str = ""
         for (d in doors) {
-            door = doors[d];
+            var door = doors[d];
             if (current_room.name == door.room1) {
               doors_str += door.room2.toUpperCase() + ", "
             }
@@ -72,10 +137,10 @@ function refreshInfo() {
         
         inv_str = inventory.join(", ");
         
-        text = "ENERGY: "+ energy + "%\r\nCURRENT USER: " + current_user.name + "\r\nCURRENT ROOM: "+ current_room.name.toUpperCase() + "\r\nDOORS: " + doors_str + items_str + "\r\n\r\nUSER NOTES: " + current_user.notes + "\r\nINVENTORY: " + inv_str;
+        text = "CURRENT USER: " + current_user.name + "\r\nCURRENT ROOM: "+ current_room.name.toUpperCase() + "\r\nDOORS: " + doors_str + items_str + "\r\n\r\nUSER NOTES: " + current_user.notes;
     }
 
-    typeWriterEffect(text,line)
+    newBoxText("information",text);
 
 }
 
@@ -106,7 +171,7 @@ function createInputLine() {
             // Append the input text to the terminal
             appendToTerminal("> " + input, false, "terminal");
 
-            // TODO: Type anything in terminal that's needed here
+            // Type anything in terminal that's needed here
             parseInput(input);
             
             // Add a new input line at the end
@@ -142,6 +207,10 @@ document.addEventListener("click", function() {
     }
 });
 
+// Takes a string, a character, and an index and returns the same string with that index replaced by the char
+function replaceChar(str,char, ind) {
+  return str.substring(0, ind) + char + str.substring(ind + 1);
+}
 // End helper functions
 
 // The core game logic!
@@ -173,7 +242,6 @@ async function roomSetup() {
 function gameStart(rooms_json) {
 
     appendToTerminal("Welcome to the CooliesBot Terminal.\r\nDeveloping murder mystery. . .\r\nAssigning murderer. . .\r\nPlease login to continue.")
-    refreshInfo("CURRENT USER: Unknown\r\nCURRENT ROOM: Unknown")
 
     // By the time the regular gameplay loop has been reached, these will be filled.
     logins = rooms_json.logins // An array of the username/password/acct name arrays. TODO: Make JSONs to match?
@@ -182,10 +250,11 @@ function gameStart(rooms_json) {
     current_room = rooms[0]; // Start off in the entry
     descriptions = rooms_json.descriptions;
     
+    // Initialise the right hand side
+    generalRefresh();
 
     // Initialize the terminal with the input line ready for user input (and kick off the game)
     createInputLine();
-
 }
 
 // The core gameplay "move": takes in a string and does what it needs to with it
@@ -202,68 +271,69 @@ function parseInput(raw_input) {
     action = input_array[0];
 
 // TODO: Replace with switch statement
-    if (action == "login") {
-        // Pass to login function
-        login(input_array);
-    }
 
-    else if (action == "enter") {
-        // Trying to enter a room - pass to move_rooms
+    switch(action) {
+
+      case "login":
+        login(input_array);
+      break;
+      
+      case "move":
         if (current_user) {
-        move_rooms(input_array);
-        }
-        else {
-          appendToTerminal("You must be logged in to move.");
-        }
-    }
-    
-    else if (action == "unlock") {
-      // Trying to unlock door to a room
-      if (current_user) {
-        unlock(input_array);
+          move_rooms(input_array);
+          }
+          else {
+            appendToTerminal("You must be logged in to move.");
+          }
+      break;
+      
+      case "unlock":
+        if (current_user) {
+          unlock(input_array);
         }
         else {
           appendToTerminal("You must be logged in to unlock doors.");
         }
-    }
-    
-    else if (action == "clear") {
-      // Clear the terminal
-      clearText("terminal");
-      createInputLine();
-    }
-    
-    else if (action == "inspect") {
-      focus = input_array[1]
-      // Inspect the room or an item
-      if (current_user) {
-        if (descriptions.hasOwnProperty(focus)) {
-          inspect_item(focus);
+      break;
+
+      case "clear":
+        clearText("terminal");
+        createInputLine();
+      break;
+      
+      case "inspect":
+        focus = input_array[1]
+        // Inspect the room or an item
+        if (current_user) {
+          if (descriptions.hasOwnProperty(focus)) {
+            inspect_item(focus);
+          }
+          else {
+          inspect_room(focus);
+          }
         }
-        else {
-        inspect_room(focus);
-        }
-      }
         else {
           appendToTerminal("You must be logged in to inspect rooms and items.");
         }
-    }
-    
-    else if (action == "take") {
-      if (current_user) {
-        take_item(input_array[1]);
+      break;
+
+      case "take":
+        if (current_user) {
+          take_item(input_array[1]);
         }
         else {
           appendToTerminal("You must be logged in to take items.");
         }
-    }
+      break;
 
-    else if (action == "help") {
-        appendToTerminal("Type 'login [name] [password]' to login, 'enter [room-name]' to enter a room, 'unlock [room-name] [password] to unlock a locked door, or 'help' for more information. There are also 'inspect', 'take', and 'clear' commands.")
-    }
+      case "help":
+        // TODO: Spin out into function
+        appendToTerminal("Type 'login [name] [password]' to login, 'move [room-name]' to enter a room, 'unlock [room-name] [password] to unlock a locked door, or 'help' for more information. There are also 'inspect', 'take', and 'clear' commands.")
+      break;
 
-    else {
+      default:
         appendToTerminal("I'm sorry, I don't recognise that command. Type 'help' for assistance.")
+      break;
     }
 }
 
@@ -277,6 +347,8 @@ function take_item(item) {
       appendToTerminal("You have taken the "+ item + ".");
       energy -= 2;
       refreshInfo();
+      refreshInventory();
+      refreshEnergy();
     }
     else {
       appendToTerminal("That item isn't in this room.")
@@ -393,7 +465,9 @@ function move_rooms(input_array) {
         current_room = getRoom(queried_room);
         appendToTerminal("You've moved to the " + queried_room + ".")
         energy -= (3 + inventory.length)
-        refreshInfo()
+        refreshInfo();
+        refreshMap();
+        refreshEnergy();
       }
     }
 
@@ -422,6 +496,7 @@ function login(input_array) {
         
             appendToTerminal("Login successful! Welcome, " + l.name + ".");
             refreshInfo();
+            refreshMessages();
         }
     }
 
@@ -430,6 +505,7 @@ function login(input_array) {
         appendToTerminal("Credentials not recognised - please try again.");
     }
 }
+
 
 // Call the function to set up the rooms
 // This is the first thing called! Everything else flows from here
