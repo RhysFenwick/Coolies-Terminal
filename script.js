@@ -1,11 +1,15 @@
 // Start off by declaring logins (array of arrays), rooms (array of JSONs), and current_room (JSON) to be filled later
 var logins;
 var rooms;
+var doors;
 var current_room;
+var descriptions;
+var inventory = [];
 
 // Start of privilege level 0, escalate through logins
-var current_user;
+var current_user = null;
 var priv = 0;
+var energy = 100;
 
 // Helper functions
 
@@ -46,16 +50,29 @@ function refreshInfo() {
     location.appendChild(line);
     
     if (priv == 0) {
-        text = "CURRENT USER: Unknown\r\nCURRENT ROOM: Unknown\r\nDOORS: Unknown"
+        text = "ENERGY: "+ energy + "%\r\nCURRENT USER: Unknown\r\nCURRENT ROOM: Unknown\r\nDOORS: Unknown"
     }
     else {
-        doors = current_room.doors
         doors_str = ""
-        for (i in doors) {
-            doors_str += doors[i][0].toUpperCase() + ", "
+        for (d in doors) {
+            door = doors[d];
+            if (current_room.name == door.room1) {
+              doors_str += door.room2.toUpperCase() + ", "
+            }
+            else if (current_room.name == door.room2) {
+              doors_str += door.room1.toUpperCase() + ", "
+            }
         }
         doors_str = doors_str.substring(0, doors_str.length - 2);
-        text = "CURRENT USER: " + current_user + "\r\nCURRENT ROOM: "+ current_room.name.toUpperCase() + "\r\nDOORS: " + doors_str
+        
+        items_str = "";
+        if (current_room.inspected) {
+          items_str += "\r\nROOM ITEMS: " + current_room.items.join(", ")
+        }
+        
+        inv_str = inventory.join(", ");
+        
+        text = "ENERGY: "+ energy + "%\r\nCURRENT USER: " + current_user.name + "\r\nCURRENT ROOM: "+ current_room.name.toUpperCase() + "\r\nDOORS: " + doors_str + items_str + "\r\n\r\nUSER NOTES: " + current_user.notes + "\r\nINVENTORY: " + inv_str;
     }
 
     typeWriterEffect(text,line)
@@ -159,9 +176,12 @@ function gameStart(rooms_json) {
     refreshInfo("CURRENT USER: Unknown\r\nCURRENT ROOM: Unknown")
 
     // By the time the regular gameplay loop has been reached, these will be filled.
-    logins = rooms_json.logins // An array of the username/password/acct name arrays.
+    logins = rooms_json.logins // An array of the username/password/acct name arrays. TODO: Make JSONs to match?
     rooms = rooms_json.rooms // An array of the room JSONs.
+    doors = rooms_json.doors // An array of door JSONs.
     current_room = rooms[0]; // Start off in the entry
+    descriptions = rooms_json.descriptions;
+    
 
     // Initialize the terminal with the input line ready for user input (and kick off the game)
     createInputLine();
@@ -181,6 +201,7 @@ function parseInput(raw_input) {
     // The key instruction given - decides what happens next
     action = input_array[0];
 
+// TODO: Replace with switch statement
     if (action == "login") {
         // Pass to login function
         login(input_array);
@@ -188,11 +209,57 @@ function parseInput(raw_input) {
 
     else if (action == "enter") {
         // Trying to enter a room - pass to move_rooms
+        if (current_user) {
         move_rooms(input_array);
+        }
+        else {
+          appendToTerminal("You must be logged in to move.");
+        }
+    }
+    
+    else if (action == "unlock") {
+      // Trying to unlock door to a room
+      if (current_user) {
+        unlock(input_array);
+        }
+        else {
+          appendToTerminal("You must be logged in to unlock doors.");
+        }
+    }
+    
+    else if (action == "clear") {
+      // Clear the terminal
+      clearText("terminal");
+      createInputLine();
+    }
+    
+    else if (action == "inspect") {
+      focus = input_array[1]
+      // Inspect the room or an item
+      if (current_user) {
+        if (descriptions.hasOwnProperty(focus)) {
+          inspect_item(focus);
+        }
+        else {
+        inspect_room(focus);
+        }
+      }
+        else {
+          appendToTerminal("You must be logged in to inspect rooms and items.");
+        }
+    }
+    
+    else if (action == "take") {
+      if (current_user) {
+        take_item(input_array[1]);
+        }
+        else {
+          appendToTerminal("You must be logged in to take items.");
+        }
     }
 
     else if (action == "help") {
-        appendToTerminal("Type 'login [name] [password]' to login, 'enter [room-name]' to enter a room, or 'help' for more information.")
+        appendToTerminal("Type 'login [name] [password]' to login, 'enter [room-name]' to enter a room, 'unlock [room-name] [password] to unlock a locked door, or 'help' for more information. There are also 'inspect', 'take', and 'clear' commands.")
     }
 
     else {
@@ -200,29 +267,134 @@ function parseInput(raw_input) {
     }
 }
 
-// Handles moving attempts
-function move_rooms(input_array) {
-    valid_room = false;
-    queried_room = input_array[1];
-    var new_room;
-    for (i in current_room.doors) {
-        if (queried_room == current_room.doors[i][0]) {
-            valid_room = true;
-            new_room = queried_room;
-            // TODO: I can add a break here of some kind
+// Adds an item to personal inventory and removes it from the room
+function take_item(item) {
+  if (current_room.items.includes(item)) {
+    var index = current_room.items.indexOf(item);
+    if (index > -1) {
+      current_room.items.splice(index, 1);
+      inventory.push(item);
+      appendToTerminal("You have taken the "+ item + ".");
+      energy -= 2;
+      refreshInfo();
+    }
+    else {
+      appendToTerminal("That item isn't in this room.")
+    }
+  }
+  
+}
+
+
+// Returns a room JSON from the name, returns null if room not found
+function getRoom(room_name) {
+  var room = null
+  
+  for (r in rooms) {
+    var current_room = rooms[r]
+    if (current_room.name == room_name) {
+      room = current_room
+    }
+  }
+  return room;
+}
+
+// Prints a description of an item (if it exists and you can see it) to the terminal 
+function inspect_item(item) {
+  if (current_room.items.includes(item)) {
+    appendToTerminal
+    if (descriptions.hasOwnProperty(item)) {
+      appendToTerminal(descriptions[item]);
+    }
+    else {
+      appendToTerminal("That item is unremarkable.");
+    }
+  }
+  else if (inventory.includes(item)) {
+    appendToTerminal(descriptions[item] + " It is in your inventory.");
+  }
+  else {
+    appendToTerminal("You can't see a " + item + " right now.");
+  }
+}
+
+// Prints a description of the room to the terminal and makes info panel print list of room items.
+function inspect_room(room_name){
+  var room = getRoom(room_name);
+  if (room && room.name == current_room.name) {
+    appendToTerminal("The " + room.name + " is " + room.description);
+    room.inspected = true;
+    refreshInfo();
+  }
+  else {
+    appendToTerminal("You can only inspect the room you're currently in.")
+  }
+  
+}
+// Checks if a door is accessible: used for move/unlock. Returns door if one is found, null otherwise
+function check_for_door(queried_room) {
+  
+  var valid_room = null;
+  
+  for (d in doors) {
+      // Is there a better way to do this?
+        if (queried_room == doors[d].room1 || queried_room == doors[d].room2) {
+          if (current_room.name == doors[d].room1 || current_room.name == doors[d].room2) {
+            valid_room = doors[d];
+          }
         }
     }
+    return valid_room;
+}
+
+// Handles unlock attempts
+function unlock(input_array) {
+  queried_room = input_array[1];
+  password = input_array[2];
+  door = check_for_door(queried_room);
+  
+  if (door == null) {
+        appendToTerminal("There's no door that leads there from this room.")
+  }
+  
+  // If there is a door
+  else {
+    if (!door.locked) {
+      appendToTerminal("That door is already unlocked.")
+    }
     
-    if (valid_room) {
+    // There's a door and it's locked
+    else {
+      if (door.keys.includes(password)) {
+        // Is this by reference?
+        door.locked = false;
+        appendToTerminal("Door unlocked.")
+      }
+      else {
+        appendToTerminal("Incorrect password.")
+      }
+    }
+  }
+}
+
+// Handles moving attempts
+function move_rooms(input_array) {
+    queried_room = input_array[1];
+    door = check_for_door(queried_room);
+    
+    // Shouldn't trigger if no door (null)
+    if (door != null) {
+      // Checks if door is unlocked
+      if (door.locked) {
+        appendToTerminal("The door to " + queried_room + " is locked. Enter 'unlock [room-name] [password] to unlock.");
+      }
+      else {
         // Moves current room
-        // There's DEFINITELY gotta be a better way to do this.
-        for (r in rooms) {
-            if (rooms[r].name == new_room) {
-                current_room = rooms[r]
-            }
-        }
-        appendToTerminal("You've moved to " + queried_room)
+        current_room = getRoom(queried_room);
+        appendToTerminal("You've moved to the " + queried_room + ".")
+        energy -= (3 + inventory.length)
         refreshInfo()
+      }
     }
 
     else {
@@ -238,16 +410,17 @@ function login(input_array) {
     username = input_array[1];
     password = input_array[2];
 
-    for (let i = 0; i < logins.length; i++ ) {
-        if (logins[i][0] == username && logins[i][1] == password) {
+    for (i in logins) {
+      l = logins[i];
+        if (l.uid == username && l.password == password) {
             good_login = true;
             
-            current_user = logins[i][2];
+            current_user = l;
 
             // Should priv only move up, or is up/down fine?
-            priv = logins[i][3];
+            priv = l.priv;
         
-            appendToTerminal("Login successful! Welcome, " + current_user + ".");
+            appendToTerminal("Login successful! Welcome, " + l.name + ".");
             refreshInfo();
         }
     }

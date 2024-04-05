@@ -3,26 +3,74 @@
         {
             "id": 0,
             "name": "entrance",
-            "doors": [["foyer",false]]
+            "description": "dark and rainy.",
+            "items": [],
+            "inspected": false
         },
         {
             "id": 1,
             "name": "foyer",
-            "doors": [["entrance",false],["kitchen",false],["study",true]]
+            "description": "cold and dimly lit. The wind is whistling under the door.",
+            "items": ["newspaper"],
+            "inspected": false
         },
         {
             "id": 2,
             "name": "kitchen",
-            "doors": [["foyer",false]]
+            "description": "warm and inviting. The air smells of freshly-baked bread.",
+            "items": ["knife","note"],
+            "inspected": false
         },
         {
             "id": 3,
             "name": "study",
-            "doors": [["foyer",true]]
+            "description": "quiet and musty. leather-bound volumes in a language you don't recognise line the shelves.",
+            "items": ["paperweight","diary"],
+            "inspected": false
         }
     ],
     "logins": [
-        ["admin","password", "Administrator Account",10],
-        ["cg24","mystery", "Coolies Gourlay",1]
-    ]
+      {
+        "uid":"admin",
+        "password": "password",
+        "name": "Administrator",
+        "priv": 10,
+        "notes": "Study password is 314159"
+      },
+      {
+        "uid":"cg24",
+        "password": "mystery",
+        "name": "Coolies Gourlay",
+        "priv": 1,
+        "notes": "None"
+      }
+    ],
+    "doors": [
+      {
+        "room1": "entrance",
+        "room2": "foyer",
+        "locked": true,
+        "keys": ["mystery","password"],
+        "open": false
+      },
+      {
+        "room1": "foyer",
+        "room2": "kitchen",
+        "locked": false,
+        "keys": [],
+        "open": false
+      },
+      {
+        "room1": "foyer",
+        "room2": "study",
+        "locked": true,
+        "keys": ["314159"],
+        "open": false
+      }
+    ],
+    "descriptions": {
+      "newspaper":"The yellowing paper is barely readable. The headline is about last year's election.",
+      "knife":"Worn, but still sharp enough to hurt.",
+      "note":"It reads 'To do: change the admin login away from the default.'"
+    }
 }
