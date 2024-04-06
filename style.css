@@ -1,5 +1,5 @@
 body, html {
-  height: 100%;
+  pointer-events: none;
   margin: 0;
   background-color: black; /* Background colour */
   font-family: Monochromatty;
@@ -7,6 +7,11 @@ body, html {
   display: flex;
   flex-direction: column;
   opacity: 1;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
 }
 
 /*
@@ -58,6 +63,8 @@ Scrollbar settings - don't work on Firefox :(
   padding: 10px;
   border: 2px solid #008000;
   animation: boxShadow 1.6s infinite;
+  flex-grow: 0;
+  height: 100%
 }
 
 #title {
@@ -65,15 +72,17 @@ Scrollbar settings - don't work on Firefox :(
 }
 
 #terminal {
+  pointer-events: all;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   flex-grow: 0;
 }
 
 #term-box {
   float: left;
   height: 90%;
-  width: 40%
+  width: 40%;
+  overflow: hidden;
 }
 
 #information-box {
@@ -163,8 +172,11 @@ h4 {
 /* CRT effects */
 
 #crt-container {
+  pointer-events: none;
   width: 95%; /* Adjust width as needed */
-  height: 95%;
+  height: 90%;
+  max-height: 90%;
+  min-height: 90%;
   margin: 10px auto; /* Center the container */
   background-color: #000; /* Set background color to match body */
   padding: 20px;
@@ -172,6 +184,7 @@ h4 {
   box-shadow: 0 0 50px rgba(255, 255, 255, 0.1); /* Add a subtle glow effect */
   position: relative; /* Required for absolute positioning of pseudo-elements */
   background: repeating-linear-gradient(#023018 0px 10px, #011606 10px 11px); 
+  flex-grow: 0;
 }
 
 @keyframes flicker {
@@ -403,9 +416,11 @@ h4 {
 .crt {
   animation: textShadow 1.6s infinite;
   height: 90%;
+  pointer-events: none;
 }
 
 .edgefade {
+  pointer-events: none;
   width: 110%;
   height: 100%; 
   position:absolute;
@@ -417,6 +432,7 @@ h4 {
 @keyframes refresh{0%{bottom:100%}70%{bottom:100%}100%{bottom:0px}}
 
 .refresh {
+pointer-events: none;
 width: 130%;
 height: 100px;
 z-index: 8;

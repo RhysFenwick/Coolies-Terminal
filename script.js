@@ -152,6 +152,7 @@ function createInputLine() {
     inputLine.type = "text";
     inputLine.id = "inputLine";
     inputLine.autofocus = true;
+    inputLine.autocomplete = "off";
 
     const terminal = document.getElementById("terminal");
     terminal.appendChild(inputLine);
@@ -206,12 +207,27 @@ async function typeWriterEffect(str, div) {
     }
 }
 
-// Makes sure focus is always on the input line
-document.addEventListener("click", function() {
-    const inputLine = document.getElementById("inputLine");
-    if (inputLine) {
-        inputLine.focus();
-    }
+// Makes sure focus is always on the input line - removed for now
+
+document.addEventListener("click", function(event) {
+  // Assuming the scrollbar interactions are mainly on the body or specific containers
+  const excludedElements = ["terminal"];
+  let targetElement = event.target; // Starting with the event target itself
+  console.log(targetElement.id)
+  do {
+      if (excludedElements.includes(targetElement.id)) {
+          // If the target is one of the excluded elements or within them, do nothing
+          return;
+      }
+      // Move up the DOM tree to check parent elements
+      targetElement = targetElement.parentNode;
+  } while (targetElement != null);
+
+  // If the click is outside excluded elements, focus on inputLine
+  const inputLine = document.getElementById("inputLine");
+  if (inputLine) {
+      inputLine.focus();
+  }
 });
 
 // Takes a string, a character, and an index and returns the same string with that index replaced by the char

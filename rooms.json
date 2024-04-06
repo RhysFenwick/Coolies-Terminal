@@ -71,6 +71,8 @@
     "descriptions": {
       "newspaper":"The yellowing paper is barely readable. The headline is about last year's election.",
       "knife":"Worn, but still sharp enough to hurt.",
-      "note":"It reads 'To do: change the admin login away from the default.'"
+      "note":"It reads 'To do: change the admin login away from the default.'",
+      "paperweight": "A pyramid of smoked quartz the size of a fist.",
+      "diary": "It's written in a language you don't recognise - perhaps some sort of cipher."
     }
 }
