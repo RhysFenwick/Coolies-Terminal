@@ -366,9 +366,13 @@ function parseInput(raw_input) {
         }
       break;
 
+      case "drop":
+        drop_item(input_array[1]);
+      break;
+
       case "help":
         // TODO: Spin out into function
-        appendToTerminal("Type 'login [name] [password]' to login, 'move [room-name]' to enter a room, 'unlock [room-name] [password] to unlock a locked door, or 'help' for more information. There are also 'inspect', 'take', and 'clear' commands.")
+        appendToTerminal("Functions:\r\nlogin [name] [password] to login\r\nmove [room-name] to enter a room\r\nunlock [room-name] [password] to unlock a locked door\r\ninspect [object|room] to get more detail\r\ntake [object] to add an object to inventory\r\ndrop [object] to remove an object from your inventory\r\nclear to clear the terminal")
       break;
 
       default:
@@ -390,11 +394,27 @@ function take_item(item) {
       refreshInventory();
       refreshEnergy();
     }
-    else {
-      appendToTerminal("That item isn't in this room.")
-    }
+  }  
+  else {
+    appendToTerminal("That item isn't in this room.")
   }
-  
+}
+
+// Removes an item from personal inventory and adds it to the current room inventory
+function drop_item(item) {
+  if (inventory.includes(item)) {
+    current_room.items.push(item);
+    inventory.splice(inventory.indexOf(item),1);
+    energy -= 2;
+    appendToTerminal("You have dropped the "+ item + " in the " + current_room.name + ".");
+    refreshInfo();
+    refreshInventory();
+    refreshEnergy();
+  }
+
+  else {
+    appendToTerminal("That item isn't in your inventory.")
+  }
 }
 
 
