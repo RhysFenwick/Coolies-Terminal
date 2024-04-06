@@ -399,12 +399,23 @@ h4 {
   background-size: 100% 2px, 3px 100%;
   pointer-events: none;
 }
+
 .crt {
   animation: textShadow 1.6s infinite;
   height: 90%;
 }
 
+.edgefade {
+  width: 120%;
+  height: 120%; 
+  position:absolute;
+  left: -10%;
+  top: 0%;
+  z-index: 10;
+  background: radial-gradient(rgba(0,128,0,0.4),rgba(0,0,0,0.4));
+}
 @keyframes refresh{0%{bottom:100%}70%{bottom:100%}100%{bottom:0px}}
+
 .refresh {
 float: left;
 width: 200%;

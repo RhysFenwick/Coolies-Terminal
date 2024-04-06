@@ -162,6 +162,7 @@ function createInputLine() {
     // Add the event listener to the new input line
     // This is what triggers whenever a command is entered!
     inputLine.addEventListener("keypress", function(event) {
+      document.getElementById("single-click").play();
         if (event.key === "Enter") {
             event.preventDefault();
             const input = this.value;
@@ -191,13 +192,17 @@ async function typeWriterEffect(str, div) {
     for (let i = 0; i < str.length; i++) {
         if (str[i] == ".") {
             await delay(200) // Wait longer for periods
+            document.getElementById("single-click").play();
+        }
+        else if (str[i] == "\n") {
+          await delay(20);
+          document.getElementById("double-click").play();
         }
         else {
             await delay(20); // Wait for 20ms per other character
+            document.getElementById("single-click").play();
         }
-        
         div.append(str[i]);
-        document.getElementById('single-click').play();
     }
 }
 
