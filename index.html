@@ -14,45 +14,70 @@
 </head>
 
 <body>
-<div id="title">
-    <h1>COOLIESBOT TERMINAL v0.4</h1>
-</div>
-<div class="big-box row">
-
-    <div id="term-box" class="small-box">
-        <div id="terminal"></div>
-    </div>
-
-    <div id="map-col" class="col">
-
-        <div id="statics-row" class="row">
-
-            <div id="map-box" class="small-box">
-                <div id="map"></div>
-            </div>
-
-            <div id="energy-box" class="small-box">
-                <div id="energy"></div>
-            </div>
-
-            <div id="messages-box" class="small-box">
-                <div id="messages"></div>
-            </div>
-
-        </div>  
-
-        <div id="information-box" class="small-box">
-            <div id="information"></div>
+<div id="crt-container">
+    <div class="refresh"></div>
+    <div class="crt">
+        <div id="splash">
+            <p class="splashtext">
+      ___           ___           ___                                     ___           ___                         ___                 </br>
+     /  /\         /  /\         /  /\                      ___          /  /\         /  /\         _____         /  /\          ___   </br>
+    /  /:/        /  /::\       /  /::\                    /  /\        /  /:/_       /  /:/_       /  /::\       /  /::\        /  /\  </br>
+   /  /:/        /  /:/\:\     /  /:/\:\    ___     ___   /  /:/       /  /:/ /\     /  /:/ /\     /  /:/\:\     /  /:/\:\      /  /:/  </br>
+  /  /:/  ___   /  /:/  \:\   /  /:/  \:\  /__/\   /  /\ /__/::\      /  /:/ /:/_   /  /:/ /::\   /  /:/~/::\   /  /:/  \:\    /  /:/   </br>
+ /__/:/  /  /\ /__/:/ \__\:\ /__/:/ \__\:\ \  \:\ /  /:/ \__\/\:\__  /__/:/ /:/ /\ /__/:/ /:/\:\ /__/:/ /:/\:| /__/:/ \__\:\  /  /::\   </br>
+ \  \:\ /  /:/ \  \:\ /  /:/ \  \:\ /  /:/  \  \:\  /:/     \  \:\/\ \  \:\/:/ /:/ \  \:\/:/~/:/ \  \:\/:/~/:/ \  \:\ /  /:/ /__/:/\:\  </br>
+  \  \:\  /:/   \  \:\  /:/   \  \:\  /:/    \  \:\/:/       \__\::/  \  \::/ /:/   \  \::/ /:/   \  \::/ /:/   \  \:\  /:/  \__\/  \:\ </br>
+   \  \:\/:/     \  \:\/:/     \  \:\/:/      \  \::/        /__/:/    \  \:\/:/     \__\/ /:/     \  \:\/:/     \  \:\/:/        \  \:\</br>
+    \  \::/       \  \::/       \  \::/        \__\/         \__\/      \  \::/        /__/:/       \  \::/       \  \::/          \__\/</br>
+     \__\/         \__\/         \__\/                                   \__\/         \__\/         \__\/         \__\/                </br>
+        </p>
+        <h1 id="loading-bar">
+            Loading
+        </h1>
         </div>
-
-    </div>
-
-    <div id="player-col" class="col">
-        <div id="inventory-box" class="small-box">
-            <div id="inventory"></div>
+        <div id="title">
+            <h1>COOLIESBOT TERMINAL v0.4</h1>
+        </div>
+        <div class="big-box row">
+        
+            <div id="term-box" class="small-box">
+                <div id="terminal"></div>
+            </div>
+        
+            <div id="map-col" class="col">
+        
+                <div id="statics-row" class="row">
+        
+                    <div id="map-box" class="small-box">
+                        <div id="map"></div>
+                    </div>
+        
+                    <div id="energy-box" class="small-box">
+                        <div id="energy"></div>
+                    </div>
+        
+                    <div id="messages-box" class="small-box">
+                        <div id="messages"></div>
+                    </div>
+        
+                </div>  
+        
+                <div id="information-box" class="small-box">
+                    <div id="information"></div>
+                </div>
+        
+            </div>
+        
+            <div id="player-col" class="col">
+                <div id="inventory-box" class="small-box">
+                    <div id="inventory"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+
 <script type="text/javascript" src="rooms.json"></script>
 <script src="script.js"></script>
 </body>

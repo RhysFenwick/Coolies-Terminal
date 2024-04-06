@@ -108,6 +108,7 @@ function refreshMap() {
   for (var room of Object.keys(map_ind)) {
     mapstring = replaceChar(mapstring,map_ind[room][1],map_ind[room][0]);
   }
+  mapstring = replaceChar(mapstring, "@",map_ind[current_room.name][0])
   newBoxText("map", mapstring);
 }
 
@@ -228,6 +229,23 @@ async function roomSetup() {
     try {
         rooms_json = await get_rooms();
 
+        // Get loading bar
+        var loadbar = document.getElementById("loading-bar");
+        
+        // Wait four seconds then make flash screen loaded
+        await delay(1000);
+        loadbar.innerText = "Loading."
+        await delay(1000);
+        loadbar.innerText = "Loading.."
+        await delay(1000);
+        loadbar.innerText = "Loading..."
+        await delay(1000);
+        loadbar.innerText = "Loaded."
+
+        // Wait one second then close the splash screen
+        await delay(1000);
+        document.getElementById("splash").style.visibility = "hidden";
+        
         // Pass rooms_json out to the main gameplay loop!
         gameStart(rooms_json);
 
