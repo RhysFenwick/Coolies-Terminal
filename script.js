@@ -197,6 +197,7 @@ async function typeWriterEffect(str, div) {
         }
         
         div.append(str[i]);
+        document.getElementById('single-click').play();
     }
 }
 
@@ -230,7 +231,7 @@ async function roomSetup() {
         rooms_json = await get_rooms();
 
         // Get loading bar
-        var loadbar = document.getElementById("loading-bar");
+        var loadbar = document.getElementById("loading-bar");        
         
         // Wait four seconds then make flash screen loaded
         await delay(1000);
