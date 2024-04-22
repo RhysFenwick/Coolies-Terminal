@@ -8,15 +8,22 @@ var inventory = [];
 
 // Mapping
 
-// A dict of room coords and their symbols
-var map_ind = {
-  "entrance" : [24,"E"],
-  "foyer" : [26,"F"],
-  "kitchen" : [15, "K"],
-  "study" : [37, "S"]
-}
-// First char of each row is currently index 0/7/14/21/28 (0/11/22/33/44)
-var mapstring = "- - - - -\r\n".repeat(5);
+var map_rows = 5
+var map_cols = 5
+var row_len = map_cols * 8 + 3
+
+
+// The intermediate string of the big map (5 cells each 5 wide with a pipe either side)
+var map_wall = "--------".repeat(map_cols) + "-\r\n"
+
+// The string of blank rooms
+var map_sides = "|       ".repeat(map_cols) + "|\r\n"
+
+// The string of rooms with a roof
+var map_row = map_wall + map_sides.repeat(3)
+
+// The final string
+var mapstring = map_row.repeat(map_rows) + map_wall
 
 // User
 
@@ -65,7 +72,6 @@ function newBoxText(box,txt) {
   // The relevant div
   const location = document.getElementById(box);
 
-  // Add h4 title
   location.appendChild(title);
   title.append(box.toUpperCase());
 
@@ -86,6 +92,7 @@ function generalRefresh() {
 function refreshMessages() {
   newBoxText("messages","None")
 }
+
 // A function to refresh the inventory - should be called by generalRefresh() most of the time
 function refreshInventory() {
   var inventory_str = "";
@@ -97,6 +104,7 @@ function refreshInventory() {
   }
   newBoxText("inventory",inventory_str);
 }
+
 // A function to refresh the energy - should be called by generalRefresh() most of the time
 function refreshEnergy() {
   energy_str = energy + "%\r\n\r\nCost per room entry:\r\n" + (3 + inventory.length) + "%";
@@ -104,13 +112,38 @@ function refreshEnergy() {
 }
 
 // A function to refresh the map - should be called by generalRefresh() most of the time
+// TODO: Add map changes here as well
 function refreshMap() {
-  for (var room of Object.keys(map_ind)) {
-    mapstring = replaceChar(mapstring,map_ind[room][1],map_ind[room][0]);
+
+  for (r in rooms) {
+    var room = rooms[r]
+
+    var row = room.coords[0];
+    var col = room.coords[1];
+
+    // The starting index of where to put room name on the map
+    start_index = 2 * row_len + 4 * row_len * row + 8 * col + 2
+
+    // Add the room names
+    mapstring = mapstring.substring(0, start_index) + room.mapname + mapstring.substring(start_index + 5);
+
+    if (room.name == current_room.name) {
+      // If it's the current room, add dots!
+      mapstring = mapstring.substring(0, start_index - row_len) + "* * *" + mapstring.substring(start_index + 5 - row_len);
+      mapstring = mapstring.substring(0, start_index + row_len) + "* * *" + mapstring.substring(start_index + 5 + row_len);
+    }
+    else {
+      // If it's the current room, add dots!
+      mapstring = mapstring.substring(0, start_index - row_len) + "     " + mapstring.substring(start_index + 5 - row_len);
+      mapstring = mapstring.substring(0, start_index + row_len) + "     " + mapstring.substring(start_index + 5 + row_len);
+    }
   }
-  mapstring = replaceChar(mapstring, "@",map_ind[current_room.name][0])
-  newBoxText("map", mapstring);
+
+
+
+  typeLineEffect("map-box",mapstring);
 }
+
 
 // Append text to info page
 function refreshInfo() {
@@ -135,14 +168,11 @@ function refreshInfo() {
         if (current_room.inspected) {
           items_str += "\r\nROOM ITEMS: " + current_room.items.join(", ")
         }
-        
-        inv_str = inventory.join(", ");
-        
+                
         text = "CURRENT USER: " + current_user.name + "\r\nCURRENT ROOM: "+ current_room.name.toUpperCase() + "\r\nDOORS: " + doors_str + items_str + "\r\n\r\nUSER NOTES: " + current_user.notes;
     }
 
     newBoxText("information",text);
-
 }
 
 // Creates a new input line in the terminal
@@ -207,6 +237,38 @@ async function typeWriterEffect(str, div) {
     }
 }
 
+// Function to add lines one by one (used for map)
+
+async function typeLineEffect(box,str) {
+
+  // Array of lines
+  var lines = str.split("\r\n");
+
+  const div = document.getElementById(box);
+  clearText(box);
+
+  // The box title
+  const title = document.createElement("h4");
+
+  // The map itself
+  const mapgrid = document.createElement("p");
+
+  div.appendChild(title);
+  title.append("MAP");
+
+  div.appendChild(mapgrid);
+
+  for (let i = 0; i < lines.length; i++) {
+    await delay(66);
+    newstr = lines[i];
+    if (i != lines.length - 1) {
+      // on all but the last line
+      newstr += "\r\n";
+    }
+    mapgrid.append(newstr);
+  }
+}
+
 // Makes sure focus is always on the input line - removed for now
 
 document.addEventListener("click", function(event) {
@@ -232,8 +294,10 @@ document.addEventListener("click", function(event) {
 
 // Takes a string, a character, and an index and returns the same string with that index replaced by the char
 function replaceChar(str,char, ind) {
-  return str.substring(0, ind) + char + str.substring(ind + 1);
+  return str.substring(0, ind) + char + str.substring(ind + char.length);
 }
+
+
 // End helper functions
 
 // The core game logic!
@@ -564,6 +628,12 @@ function login(input_array) {
     if (!good_login) {
         appendToTerminal("Credentials not recognised - please try again.");
     }
+}
+
+// Returns a string with the big map
+function render_main_map() {
+
+
 }
 
 

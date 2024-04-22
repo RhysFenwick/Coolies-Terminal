@@ -58,7 +58,7 @@ Scrollbar settings - don't work on Firefox :(
 }
 
 .small-box {
-  margin-top: 10px;
+  margin-top: 5px;
   margin-left: 5%;
   padding: 10px;
   border: 2px solid #008000;
@@ -79,44 +79,55 @@ Scrollbar settings - don't work on Firefox :(
 }
 
 #term-box {
-  float: left;
-  height: 90%;
+  height: 95%;
   width: 40%;
   overflow: hidden;
 }
 
 #information-box {
-  float: left;
-  margin-left: 5%;
-  width: 85%;
-  height: 80%;
-  margin-bottom: 5%;
-  margin-top: 5%;
+  width: 90%;
+  height: 25%;
 }
 
 #map-box {
-  width: 120px;
+  white-space: pre;
+  width: 90%;
+  height: 70%; 
+  text-align: center;
+  padding-bottom: 0%;
+  margin-bottom: 0;
+  padding-top: 0%;
 }
 
 #energy-box {
-  width: 150px;
+  width: 50%;
+  height: 30%;
+  min-height: 20%;
 }
 
 #messages-box {
-  width: 220px;
-  margin-right: 5%;
+  width: 50%;
+  height: 30%;
+  min-height: 30%;
 }
 
 #inventory-box {
   text-align: center;
-  width: 180px;
+  width: 50%;
   height: 90%;
 }
 
-#map-box, #energy-box, #messages-box {
+#energy-box, #messages-box {
   text-align: center;
-  padding: 0%;
-  height: 150px;
+}
+
+#mid-col {
+  width: 40%;
+  height: 100%;
+}
+
+#right-col {
+  width: 40%;
 }
 
 input {
@@ -140,7 +151,7 @@ input:focus {
 }
 
 p {
-  white-space: pre-line;
+  white-space: pre;
   font-family: Monochromatty;
   font-weight: 750;
   font-size: medium;
@@ -415,7 +426,7 @@ h4 {
 
 .crt {
   animation: textShadow 1.6s infinite;
-  height: 90%;
+  height: 100%;
   pointer-events: none;
 }
 

@@ -5,28 +5,36 @@
             "name": "entrance",
             "description": "dark and rainy.",
             "items": [],
-            "inspected": false
+            "inspected": false,
+            "coords": [2,1],
+            "mapname": "ENTRY"
         },
         {
             "id": 1,
             "name": "foyer",
             "description": "cold and dimly lit. The wind is whistling under the door.",
             "items": ["newspaper"],
-            "inspected": false
+            "inspected": false,
+            "coords": [2,2],
+            "mapname": "FOYER"
         },
         {
             "id": 2,
             "name": "kitchen",
             "description": "warm and inviting. The air smells of freshly-baked bread.",
             "items": ["knife","note"],
-            "inspected": false
+            "inspected": false,
+            "coords": [1,2],
+            "mapname": "KTCHN"
         },
         {
             "id": 3,
             "name": "study",
             "description": "quiet and musty. leather-bound volumes in a language you don't recognise line the shelves.",
             "items": ["paperweight","diary"],
-            "inspected": false
+            "inspected": false,
+            "coords": [3,2],
+            "mapname": "STUDY"
         }
     ],
     "logins": [
