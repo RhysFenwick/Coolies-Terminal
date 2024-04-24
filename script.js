@@ -43,7 +43,6 @@ function clearText(loc) {
 
 // Takes a string and a Boolean of whether to make it slow or all at once, and either "terminal" or "info"
 // And prints it to one of the terminals
-// TODO: Have a separate one for info given separate needs/formatting?
 function appendToTerminal(text, slowText=true) {
     const line = document.createElement("p");
     
@@ -112,7 +111,6 @@ function refreshEnergy() {
 }
 
 // A function to refresh the map - should be called by generalRefresh() most of the time
-// TODO: Add map changes here as well
 function refreshMap() {
 
   for (r in rooms) {
@@ -275,7 +273,7 @@ document.addEventListener("click", function(event) {
   // Assuming the scrollbar interactions are mainly on the body or specific containers
   const excludedElements = ["terminal"];
   let targetElement = event.target; // Starting with the event target itself
-  console.log(targetElement.id)
+  console.log(targetElement)
   do {
       if (excludedElements.includes(targetElement.id)) {
           // If the target is one of the excluded elements or within them, do nothing
@@ -291,6 +289,8 @@ document.addEventListener("click", function(event) {
       inputLine.focus();
   }
 });
+
+// TODO - Add similar function to the above but for typing.
 
 // Takes a string, a character, and an index and returns the same string with that index replaced by the char
 function replaceChar(str,char, ind) {
@@ -373,8 +373,6 @@ function parseInput(raw_input) {
 
     // The key instruction given - decides what happens next
     action = input_array[0];
-
-// TODO: Replace with switch statement
 
     switch(action) {
 
