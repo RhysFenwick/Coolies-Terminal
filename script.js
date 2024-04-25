@@ -110,6 +110,16 @@ function refreshEnergy() {
   newBoxText("energy",energy_str);
 }
 
+// A function to recharge energy - currently not called from anywhere. Defaults to +100%.
+function recharge(amount=100) {
+  energy += amount
+  if (energy > 100) {
+    energy = 100
+  }
+  refreshEnergy()
+  appendToTerminal("Recharged.")
+}
+
 // A function to refresh the map - should be called by generalRefresh() most of the time
 function refreshMap() {
 
