@@ -122,22 +122,60 @@ function refreshMap() {
     // The starting index of where to put room name on the map
     start_index = 2 * row_len + 4 * row_len * row + 8 * col + 2
 
+    // TODO - Condense this?
+
     // Add the room names
-    mapstring = mapstring.substring(0, start_index) + room.mapname + mapstring.substring(start_index + 5);
+    mapstring = editString(mapstring,room.mapname,start_index);
 
     if (room.name == current_room.name) {
       // If it's the current room, add dots!
-      mapstring = mapstring.substring(0, start_index - row_len) + "* * *" + mapstring.substring(start_index + 5 - row_len);
-      mapstring = mapstring.substring(0, start_index + row_len) + "* * *" + mapstring.substring(start_index + 5 + row_len);
+      mapstring = editString(mapstring,"* * *",start_index - row_len);
+      mapstring = editString(mapstring,"* * *",start_index + row_len);
     }
     else {
-      // If it's the current room, add dots!
-      mapstring = mapstring.substring(0, start_index - row_len) + "     " + mapstring.substring(start_index + 5 - row_len);
-      mapstring = mapstring.substring(0, start_index + row_len) + "     " + mapstring.substring(start_index + 5 + row_len);
+      // If it's not, remove dots!
+      mapstring = editString(mapstring,"     ",start_index - row_len);
+      mapstring = editString(mapstring,"     ",start_index + row_len);
     }
   }
 
+  // Now add doors!
+  // 
+  for (d in doors) {
+    var door = doors[d];
+    
+    // Coords of "start" and "end" rooms (arbitrary)
+    var start_coords = getRoom(door.room1).coords;
+    var end_coords = getRoom(door.room2).coords;
 
+    // Coords of door relative to starting room (positive = down and to the right)
+    // One of these will be zero and the other will be +- 1
+    var x_diff = end_coords[1] - start_coords[1];
+    var y_diff = end_coords[0] - start_coords[0];
+
+    // The index of the centre of the room
+    middle_index = 2 * row_len + 4 * row_len * start_coords[0] + 8 * start_coords[1] + 4
+    
+    // Work out how far/which direction to shift the middle index
+    // If it's to the side, y_diff == 0
+    if (y_diff == 0) {
+      door_shift = x_diff * 4
+    }
+    else {
+      door_shift = y_diff * row_len * 2
+    }
+
+    door_index = middle_index + door_shift // Sign of x/y_diff will shift it the right direction
+
+    if (door.locked) {
+      door_char = "X";
+    }
+    else {
+      door_char = "O";
+    }
+
+    mapstring = editString(mapstring,door_char,door_index);
+  }
 
   typeLineEffect("map-box",mapstring);
 }
@@ -293,7 +331,8 @@ document.addEventListener("click", function(event) {
 // TODO - Add similar function to the above but for typing.
 
 // Takes a string, a character, and an index and returns the same string with that index replaced by the char
-function replaceChar(str,char, ind) {
+// Not just for chars!
+function editString(str,char, ind) {
   return str.substring(0, ind) + char + str.substring(ind + char.length);
 }
 
@@ -531,21 +570,20 @@ function check_for_door(queried_room) {
   var valid_room = null;
   
   for (d in doors) {
+    var door = doors[d];
       // Is there a better way to do this?
-        if (queried_room == doors[d].room1 || queried_room == doors[d].room2) {
-          if (current_room.name == doors[d].room1 || current_room.name == doors[d].room2) {
-            valid_room = doors[d];
-          }
-        }
+      if ((queried_room == door.room1 && current_room.name == door.room2) || (queried_room == door.room2 && current_room.name == door.room1)) {
+        valid_room = door;
+      }
     }
-    return valid_room;
+  return valid_room;
 }
 
 // Handles unlock attempts
 function unlock(input_array) {
   queried_room = input_array[1];
   password = input_array[2];
-  door = check_for_door(queried_room);
+  var door = check_for_door(queried_room);
   
   if (door == null) {
         appendToTerminal("There's no door that leads there from this room.")
@@ -574,7 +612,7 @@ function unlock(input_array) {
 // Handles moving attempts
 function move_rooms(input_array) {
     queried_room = input_array[1];
-    door = check_for_door(queried_room);
+    var door = check_for_door(queried_room);
     
     // Shouldn't trigger if no door (null)
     if (door != null) {
@@ -627,13 +665,6 @@ function login(input_array) {
         appendToTerminal("Credentials not recognised - please try again.");
     }
 }
-
-// Returns a string with the big map
-function render_main_map() {
-
-
-}
-
 
 // Call the function to set up the rooms
 // This is the first thing called! Everything else flows from here

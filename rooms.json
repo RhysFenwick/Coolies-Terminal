@@ -55,6 +55,7 @@
     ],
     "doors": [
       {
+        "name": "front",
         "room1": "entrance",
         "room2": "foyer",
         "locked": true,
@@ -62,6 +63,7 @@
         "open": false
       },
       {
+        "name":"kitchen",
         "room1": "foyer",
         "room2": "kitchen",
         "locked": false,
@@ -69,6 +71,7 @@
         "open": false
       },
       {
+        "name": "study",
         "room1": "foyer",
         "room2": "study",
         "locked": true,
