@@ -601,6 +601,7 @@ function unlock(input_array) {
         // Is this by reference?
         door.locked = false;
         appendToTerminal("Door unlocked.")
+        refreshMap();
       }
       else {
         appendToTerminal("Incorrect password.")
