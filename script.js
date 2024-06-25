@@ -4,14 +4,15 @@ var rooms;
 var doors;
 var current_room;
 var descriptions;
-var inventory = [];
+var inventory = ["A","B","C","D","E","F","G","H","I"];
 
 // Mapping
 
-var map_rows = 5
-var map_cols = 5
+var map_rows = 6
+var map_cols = 7
 var row_len = map_cols * 8 + 3
 
+// Full-size map
 
 // The intermediate string of the big map (5 cells each 5 wide with a pipe either side)
 var map_wall = "--------".repeat(map_cols) + "-\r\n"
@@ -24,6 +25,10 @@ var map_row = map_wall + map_sides.repeat(3)
 
 // The final string
 var mapstring = map_row.repeat(map_rows) + map_wall
+
+// Minimap
+var mini_row = "  ".repeat(map_cols) + " \r\n"
+var minimap = mini_row.repeat(map_rows)
 
 // User
 
@@ -106,7 +111,7 @@ function refreshInventory() {
 
 // A function to refresh the energy - should be called by generalRefresh() most of the time
 function refreshEnergy() {
-  energy_str = energy + "%\r\n\r\nCost per room entry:\r\n" + (3 + inventory.length) + "%";
+  energy_str = energy + "%\r\n\r\nCost per movement:\r\n" + (3 + inventory.length) + "%";
   newBoxText("energy",energy_str);
 }
 
@@ -126,11 +131,19 @@ function refreshMap() {
   for (r in rooms) {
     var room = rooms[r]
 
-    var row = room.coords[0];
-    var col = room.coords[1];
+    // If it's outside - skip!
+    if (room.name == "outside") {
+      continue;
+    }
+
+    var row = room.coords[1];
+    var col = room.coords[0];
 
     // The starting index of where to put room name on the map
     start_index = 2 * row_len + 4 * row_len * row + 8 * col + 2
+
+    // Now for the minimap!
+    var mini_room = row * (map_cols*2 + 3) + col*2 + 1
 
     // TODO - Condense this?
 
@@ -141,18 +154,28 @@ function refreshMap() {
       // If it's the current room, add dots!
       mapstring = editString(mapstring,"* * *",start_index - row_len);
       mapstring = editString(mapstring,"* * *",start_index + row_len);
+
+      // And minimap
+      minimap = editString(minimap,"X ",mini_room)
     }
     else {
       // If it's not, remove dots!
       mapstring = editString(mapstring,"     ",start_index - row_len);
       mapstring = editString(mapstring,"     ",start_index + row_len);
+
+      // And minimap
+      minimap = editString(minimap,"* ",mini_room)
     }
   }
 
   // Now add doors!
-  // 
   for (d in doors) {
     var door = doors[d];
+
+    // If it's outside - skip!
+    if (door.room1 == "outside" || door.room2 == "outside") {
+      continue;
+    }
     
     // Coords of "start" and "end" rooms (arbitrary)
     var start_coords = getRoom(door.room1).coords;
@@ -160,11 +183,11 @@ function refreshMap() {
 
     // Coords of door relative to starting room (positive = down and to the right)
     // One of these will be zero and the other will be +- 1
-    var x_diff = end_coords[1] - start_coords[1];
-    var y_diff = end_coords[0] - start_coords[0];
+    var x_diff = end_coords[0] - start_coords[0];
+    var y_diff = end_coords[1] - start_coords[1];
 
     // The index of the centre of the room
-    middle_index = 2 * row_len + 4 * row_len * start_coords[0] + 8 * start_coords[1] + 4
+    middle_index = 2 * row_len + 4 * row_len * start_coords[1] + 8 * start_coords[0] + 4
     
     // Work out how far/which direction to shift the middle index
     // If it's to the side, y_diff == 0
@@ -187,7 +210,9 @@ function refreshMap() {
     mapstring = editString(mapstring,door_char,door_index);
   }
 
+
   typeLineEffect("map-box",mapstring);
+  typeLineEffect("minimap-box",minimap);
 }
 
 
@@ -299,8 +324,11 @@ async function typeLineEffect(box,str) {
   // The map itself
   const mapgrid = document.createElement("p");
 
-  div.appendChild(title);
-  title.append("MAP");
+  if (box == "minimap-box") {
+    div.appendChild(title);
+    title.append("MINIMAP");
+  }
+  
 
   div.appendChild(mapgrid);
 
@@ -315,23 +343,63 @@ async function typeLineEffect(box,str) {
   }
 }
 
-// Makes sure focus is always on the input line - removed for now
+// Function to toggle visibility of the main screen and map screen
+function swapView(clickedView) {
+  var mapview = document.getElementById("map-screen");
+  var mainview = document.getElementById("main-screen");
+  var mapButton = document.getElementById("map-button");
+  var mainButton = document.getElementById("main-button");
+
+
+  // This would be neater as a switch case but not a big deal
+  if (clickedView == "map-button") {
+    mapview.style.display = "flex";
+    mapButton.style.border = "6px solid #008000";
+    mapButton.style.width = "44px";
+    mapButton.style.height = "44px";
+
+    mainview.style.display = "none";
+    mainButton.style.border = "3px solid #008000";
+    mainButton.style.width = "50px";
+    mainButton.style.height = "50px";
+  }
+  else if (clickedView == "main-button") {
+    mapview.style.display = "none";
+    mapButton.style.border = "3px solid #008000";
+    mapButton.style.width = "50px";
+    mapButton.style.height = "50px";
+
+    mainview.style.display = "flex"; 
+    mainButton.style.border = "6px solid #008000";
+    mainButton.style.width = "44px";
+    mainButton.style.height = "44px";
+
+    // Focus on the input line
+    const inputLine = document.getElementById("inputLine");
+    if (inputLine) {
+    inputLine.focus();
+    }    
+  }
+}
+
+// OnClick listener - if the user is pressing a button, activate, otherwise focus input line
 
 document.addEventListener("click", function(event) {
   // Assuming the scrollbar interactions are mainly on the body or specific containers
-  const excludedElements = ["terminal"];
+  const buttonElements = ["map-button","main-button"];
   let targetElement = event.target; // Starting with the event target itself
-  console.log(targetElement)
   do {
-      if (excludedElements.includes(targetElement.id)) {
-          // If the target is one of the excluded elements or within them, do nothing
+      if (buttonElements.includes(targetElement.id)) {
+          // If the target is one of the buttons, activate the effect then do nothing else
+          console.log(targetElement.id)
+          swapView(targetElement.id);
           return;
       }
       // Move up the DOM tree to check parent elements
       targetElement = targetElement.parentNode;
-  } while (targetElement != null);
+  } while (targetElement != null); // Makes the function recursive - ends when it's all the way up the tree
 
-  // If the click is outside excluded elements, focus on inputLine
+  // If the click isn't on a button, focus on the input line
   const inputLine = document.getElementById("inputLine");
   if (inputLine) {
       inputLine.focus();
@@ -354,7 +422,7 @@ function editString(str,char, ind) {
 
 // Load the rooms JSON
 async function get_rooms() {
-    const response = await fetch("./rooms.json");
+    const response = await fetch("./map.json");
     const data = await response.json();
     return data;
 }
@@ -400,7 +468,7 @@ function gameStart(rooms_json) {
     logins = rooms_json.logins // An array of the username/password/acct name arrays. TODO: Make JSONs to match?
     rooms = rooms_json.rooms // An array of the room JSONs.
     doors = rooms_json.doors // An array of door JSONs.
-    current_room = rooms[0]; // Start off in the entry
+    current_room = rooms[0]; // Start off in the first room
     descriptions = rooms_json.descriptions;
     
     // Initialise the right hand side

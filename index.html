@@ -46,48 +46,67 @@
         </h1>
         </div>
 
-        <div class="big-box row">
-        
-            <div id="term-box" class="small-box">
-                <div id="title">
-                    <h1>COOLIESBOT TERMINAL v0.4</h1>
+        <div class="big-box row">  
+            
+            <div id="menu">
+                <div id="main-button" class="small-box menu-button">
+                    <p>Main</p>
                 </div>
-                <div id="terminal"></div>
+    
+                <div id="map-button" class="small-box menu-button">
+                    <p>Map</p>
+                </div>
             </div>
 
-            <div id="mid-col" class="col">
-   
-                <div id="information-box" class="small-box">
-                    <div id="information"></div>
+            <!-- The map screen -->
+                <div class="big-box" id="map-screen">
+                    <div id="map-box" class="small-box">
+                        <div id="map"></div>
+                    </div>
                 </div>
+            <!-- End map screen -->
 
-                <div id="map-box" class="small-box">
-                    <div id="map"></div>
+            <div id="main-screen" class="big-box">
+                <div id="term-box" class="small-box">
+                    <div id="title">
+                        <h1>COOLIESBOT TERMINAL v0.4</h1>
+                    </div>
+                    <div id="terminal"></div>
                 </div>
-
+    
+                <div id="mid-col" class="col">
+       
+                    <div id="information-box" class="small-box">
+                        <div id="information"></div>
+                    </div>  
+                    
+                    <div id="messages-box" class="small-box">
+                        <div id="messages"></div>
+                    </div>
+                    
+                </div>
+    
+                <div id="right-col" class = "col">
+    
+                    <div id="energy-box" class="small-box">
+                        <div id="energy"></div>
+                    </div>
+    
+                    <div id="minimap-box" class="small-box">
+                        <div id="minimap"></div>
+                    </div>
+    
+                    <div id="inventory-box" class="small-box">
+                        <div id="inventory"></div>
+                    </div>
+                </div>
             </div>
-
-            <div id="right-col" class = "col">
-
-                <div id="energy-box" class="small-box">
-                    <div id="energy"></div>
-                </div>
-
-                <div id="messages-box" class="small-box">
-                    <div id="messages"></div>
-                </div>
-
-                <div id="inventory-box" class="small-box">
-                    <div id="inventory"></div>
-                </div>
-
-            </div>
-        </div>  
+        </div>
     </div>
 </div>
 
 
-<script type="text/javascript" src="rooms.json"></script>
+<script type="text/javascript" src="map.json"></script>
 <script src="script.js"></script>
 </body>
 </html>

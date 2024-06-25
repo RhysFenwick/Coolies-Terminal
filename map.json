@@ -1,0 +1,237 @@
+{
+    "rooms": [
+      {
+        "name": "outside",
+        "description": "blustery, with three doors.",
+        "items": [],
+        "inspected": false,
+        "coords": [-1,-1],
+        "mapname": "?????"
+      },
+      {
+        "name": "north1",
+        "description": "dark and rainy.",
+        "items": [],
+        "inspected": false,
+        "coords": [3,0],
+        "mapname": "NRTH1"
+      },
+      {
+        "name": "north2",
+        "description": "dark and rainy.",
+        "items": [],
+        "inspected": false,
+        "coords": [3,1],
+        "mapname": "NRTH2"
+      },
+      {
+        "name": "north3",
+        "description": "dark and rainy.",
+        "items": [],
+        "inspected": false,
+        "coords": [3,2],
+        "mapname": "NRTH3"
+      },
+      {
+        "name": "center",
+        "description": "cold and dimly lit. The wind is whistling under the door.",
+        "items": ["newspaper"],
+        "inspected": false,
+        "coords": [3,3],
+        "mapname": "HEART"
+      },
+      {
+        "name": "south1",
+        "description": "dark and rainy.",
+        "items": [],
+        "inspected": false,
+        "coords": [3,5],
+        "mapname": "SOUT1"
+      },
+      {
+        "name": "south2",
+        "description": "dark and rainy.",
+        "items": [],
+        "inspected": false,
+        "coords": [3,4],
+        "mapname": "SOUT2"
+      },
+      {
+        "name": "east1",
+        "description": "dark and rainy.",
+        "items": [],
+        "inspected": false,
+        "coords": [6,3],
+        "mapname": "EAST1"
+      },
+      {
+        "name": "east2",
+        "description": "dark and rainy.",
+        "items": [],
+        "inspected": false,
+        "coords": [5,3],
+        "mapname": "EAST2"
+      },
+      {
+        "name": "east3",
+        "description": "dark and rainy.",
+        "items": [],
+        "inspected": false,
+        "coords": [4,3],
+        "mapname": "EAST3"
+      },
+      {
+        "name": "west1",
+        "description": "dark and rainy.",
+        "items": [],
+        "inspected": false,
+        "coords": [0,3],
+        "mapname": "WEST1"
+      },
+      {
+        "name": "west2",
+        "description": "dark and rainy.",
+        "items": [],
+        "inspected": false,
+        "coords": [1,3],
+        "mapname": "WEST2"
+      },
+      {
+        "name": "west3",
+        "description": "dark and rainy.",
+        "items": [],
+        "inspected": false,
+        "coords": [2,3],
+        "mapname": "WEST3"
+      }
+    ],
+    
+
+    "logins": [
+      {
+        "uid":"admin",
+        "password": "password",
+        "name": "Administrator",
+        "priv": 10,
+        "notes": "Study password is 314159"
+      },
+      {
+        "uid":"cg24",
+        "password": "mystery",
+        "name": "Coolies Gourlay",
+        "priv": 1,
+        "notes": "None"
+      }
+    ],
+
+
+    "doors": [
+      {
+        "room1": "north1",
+        "room2": "north2",
+        "locked": true,
+        "keys": ["mystery","password"],
+        "open": false
+      },
+      {
+        "room1": "north2",
+        "room2": "north3",
+        "locked": false,
+        "keys": [],
+        "open": false
+      },
+      {
+        "room1": "north3",
+        "room2": "center",
+        "locked": false,
+        "keys": [],
+        "open": false
+      },
+      {
+        "room1": "south2",
+        "room2": "center",
+        "locked": false,
+        "keys": [],
+        "open": false
+      },
+      {
+        "room1": "south2",
+        "room2": "south1",
+        "locked": false,
+        "keys": [],
+        "open": false
+      },
+      {
+        "room1": "east1",
+        "room2": "east2",
+        "locked": false,
+        "keys": [],
+        "open": false
+      },
+      {
+        "room1": "east2",
+        "room2": "east3",
+        "locked": false,
+        "keys": [],
+        "open": false
+      },
+      {
+        "room1": "east3",
+        "room2": "center",
+        "locked": false,
+        "keys": [],
+        "open": false
+      },
+      {
+        "room1": "west3",
+        "room2": "center",
+        "locked": false,
+        "keys": [],
+        "open": false
+      },
+      {
+        "room1": "west3",
+        "room2": "west2",
+        "locked": false,
+        "keys": [],
+        "open": false
+      },
+      {
+        "room1": "west1",
+        "room2": "west2",
+        "locked": false,
+        "keys": [],
+        "open": false
+      },
+      {
+        "room1": "west3",
+        "room2": "outside",
+        "locked": false,
+        "keys": [],
+        "open": false
+      },
+      {
+        "room1": "east3",
+        "room2": "outside",
+        "locked": false,
+        "keys": [],
+        "open": false
+      },
+      {
+        "room1": "north3",
+        "room2": "outside",
+        "locked": false,
+        "keys": [],
+        "open": false
+      }
+    ],
+
+
+    "descriptions": {
+      "newspaper":"The yellowing paper is barely readable. The headline is about last year's election.",
+      "knife":"Worn, but still sharp enough to hurt.",
+      "note":"It reads 'To do: change the admin login away from the default.'",
+      "paperweight": "A pyramid of smoked quartz the size of a fist.",
+      "diary": "It's written in a language you don't recognise - perhaps some sort of cipher."
+    }
+}
