@@ -124,6 +124,24 @@
       }
     ],
 
+    "exits": [
+      {
+        "room_coords": [0,3],
+        "side": [-1,0],
+        "locked": false
+      },
+      {
+        "room_coords": [6,3],
+        "side": [1,0],
+        "locked": false
+      },
+      {
+        "room_coords": [3,0],
+        "side": [0,-1],
+        "locked": false
+      }
+    ],
+
 
     "doors": [
       {
@@ -204,21 +222,21 @@
         "open": false
       },
       {
-        "room1": "west3",
+        "room1": "west1",
         "room2": "outside",
         "locked": false,
         "keys": [],
         "open": false
       },
       {
-        "room1": "east3",
+        "room1": "east1",
         "room2": "outside",
         "locked": false,
         "keys": [],
         "open": false
       },
       {
-        "room1": "north3",
+        "room1": "north1",
         "room2": "outside",
         "locked": false,
         "keys": [],

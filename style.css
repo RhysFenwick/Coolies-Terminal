@@ -42,6 +42,10 @@ Scrollbar settings - don't work on Firefox :(
   text-align: center;
 }
 
+#splashtext {
+  font-size: medium;
+}
+
 .big-box {
   height: 100%;
   overflow: hidden;

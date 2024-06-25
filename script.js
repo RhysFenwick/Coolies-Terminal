@@ -2,6 +2,7 @@
 var logins;
 var rooms;
 var doors;
+var exits;
 var current_room;
 var descriptions;
 var inventory = ["A","B","C","D","E","F","G","H","I"];
@@ -201,6 +202,42 @@ function refreshMap() {
     door_index = middle_index + door_shift // Sign of x/y_diff will shift it the right direction
 
     if (door.locked) {
+      door_char = "X";
+    }
+    else {
+      door_char = "O";
+    }
+
+    mapstring = editString(mapstring,door_char,door_index);
+  }
+
+  // TODO: Spin out some of the code above that's reused (e.g. middle_index)
+
+  for (e in exits) {
+    var exit = exits[e];
+
+    // Map coordinates of room with the exit
+    var room_x = exit.room_coords[0];
+    var room_y = exit.room_coords[1];
+
+    // Direction of exit
+    var exit_side = exit.side;
+
+    // The index of the centre of the room
+    middle_index = 2 * row_len + 4 * row_len * room_y + 8 * room_x + 4
+
+    // Work out how far/which direction to shift the middle index
+    // If it's to the side, y-shift of the exit side == 0
+    if (exit_side[1] == 0) {
+      door_shift = exit_side[0] * 4
+    }
+    else {
+      door_shift = exit_side[1] * row_len * 2
+    }
+
+    door_index = middle_index + door_shift // Sign of x/y-shift will shift it the right direction
+
+    if (exit.locked) {
       door_char = "X";
     }
     else {
@@ -468,6 +505,7 @@ function gameStart(rooms_json) {
     logins = rooms_json.logins // An array of the username/password/acct name arrays. TODO: Make JSONs to match?
     rooms = rooms_json.rooms // An array of the room JSONs.
     doors = rooms_json.doors // An array of door JSONs.
+    exits = rooms_json.exits // An array of exit JSONs.
     current_room = rooms[0]; // Start off in the first room
     descriptions = rooms_json.descriptions;
     
