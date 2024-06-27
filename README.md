@@ -2,6 +2,8 @@
 A website designed to look/interact like a Fallout-style terminal interface, with inspiration from Alien.
 
 ## Fixes needed
+- Sound!!
+- Make sure animations are consistent
 - Multi-word items for inspect/take
 - Sanitising input based on input_array length
 - Neatening login barrier logic

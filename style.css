@@ -71,6 +71,21 @@ Scrollbar settings - don't work on Firefox :(
   height: 100%
 }
 
+.help-option {
+  border: 3px solid #008000;
+  height: 90px;
+  width: 90px;
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: all;
+}
+
+#help-instructions-box {
+  width: 50%;
+}
+
 #title {
   text-align: center;
 }
@@ -167,10 +182,15 @@ Scrollbar settings - don't work on Firefox :(
   width: 44px;
 }
 
-#map-screen {
+#map-screen, #help-screen {
   display: none;
   width: 100%;
   height: 100%;
+}
+
+#help-menu {
+  display: grid;
+  grid-template-columns: auto auto;
 }
 
 #main-screen {
@@ -178,6 +198,11 @@ Scrollbar settings - don't work on Firefox :(
   margin: 0;
   padding: 0;
   width: 100%;
+}
+
+#help-commands-box {
+  line-height: 200%;
+  height: auto;
 }
 
 input {

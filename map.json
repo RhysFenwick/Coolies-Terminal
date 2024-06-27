@@ -251,5 +251,15 @@
       "note":"It reads 'To do: change the admin login away from the default.'",
       "paperweight": "A pyramid of smoked quartz the size of a fist.",
       "diary": "It's written in a language you don't recognise - perhaps some sort of cipher."
+    },
+
+    "help_tips": {
+      "clean":"Clears the terminal of all previous interactions.",
+      "drop":"Syntax: drop [object]. Moves an object from your inventory to the inventory of the current room.",
+      "inspect":"Syntax: inspect [room|object]. Can be used to get more information about your current room, or a description of an object in your inventory or in the current room.",
+      "login":"Syntax: login [username] [password]. Different logins have different permissions, and potentially accesss to different information.",
+      "move":"Syntax: move [room]. Use to move to an adjacent room with an unlocked door. Requires energy; the more items in your inventory, the more energy it takes.",
+      "take":"Syntax: take [object]. Moves an object from the current room to your inventory.",
+      "unlock":"Syntax: unlock [room] [password]. Unlocks a locked door accessible from your current room."
     }
 }

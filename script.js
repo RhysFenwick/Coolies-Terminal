@@ -5,6 +5,7 @@ var doors;
 var exits;
 var current_room;
 var descriptions;
+var help_tips;
 var inventory = ["A","B","C","D","E","F","G","H","I"];
 
 // Mapping
@@ -380,42 +381,63 @@ async function typeLineEffect(box,str) {
   }
 }
 
-// Function to toggle visibility of the main screen and map screen
-function swapView(clickedView) {
-  var mapview = document.getElementById("map-screen");
-  var mainview = document.getElementById("main-screen");
-  var mapButton = document.getElementById("map-button");
-  var mainButton = document.getElementById("main-button");
+// Function to highlight help button on click and display the relevant text
+function helpOption(clickedHelp) {
 
+  display_help(clickedHelp);
 
-  // This would be neater as a switch case but not a big deal
-  if (clickedView == "map-button") {
-    mapview.style.display = "flex";
-    mapButton.style.border = "6px solid #008000";
-    mapButton.style.width = "44px";
-    mapButton.style.height = "44px";
+  // TODO: Can I pull buttons directly from html?
+  var help_buttons = document.getElementById("help-menu").children;
+  console.log(help_buttons)
 
-    mainview.style.display = "none";
-    mainButton.style.border = "3px solid #008000";
-    mainButton.style.width = "50px";
-    mainButton.style.height = "50px";
+  for (b in help_buttons) {
+    var button = help_buttons[b];
+
+    if (clickedHelp == button.id) {
+      button.style.border = "6px solid #008000";
+      button.style.width = "84px";
+      button.style.height = "84px";
+    }
+
+    else {
+      button.style.border = "3px solid #008000";
+      button.style.width = "90px";
+      button.style.height = "90px";
+    }
   }
-  else if (clickedView == "main-button") {
-    mapview.style.display = "none";
-    mapButton.style.border = "3px solid #008000";
-    mapButton.style.width = "50px";
-    mapButton.style.height = "50px";
+}
 
-    mainview.style.display = "flex"; 
-    mainButton.style.border = "6px solid #008000";
-    mainButton.style.width = "44px";
-    mainButton.style.height = "44px";
+// Function to swap screens
+function swapView(clickedView) {
 
-    // Focus on the input line
-    const inputLine = document.getElementById("inputLine");
-    if (inputLine) {
-    inputLine.focus();
-    }    
+  var menu_buttons = ["map","main","help"]
+  for (b in menu_buttons) {
+    var button_name = menu_buttons[b] + "-button";
+    var screen_name = menu_buttons[b] + "-screen";
+    var button = document.getElementById(button_name);
+    var screen = document.getElementById(screen_name);
+
+    if (clickedView == button_name) {
+      button.style.border = "6px solid #008000";
+      button.style.width = "44px";
+      button.style.height = "44px";
+      screen.style.display = "flex";
+    }
+
+    else {
+      button.style.border = "3px solid #008000";
+      button.style.width = "50px";
+      button.style.height = "50px";
+      screen.style.display = "none";
+    }
+
+    if (button_name == "main-button") {
+      // Focus on the input line
+      const inputLine = document.getElementById("inputLine");
+      if (inputLine) {
+      inputLine.focus();
+      } 
+    }
   }
 }
 
@@ -423,14 +445,19 @@ function swapView(clickedView) {
 
 document.addEventListener("click", function(event) {
   // Assuming the scrollbar interactions are mainly on the body or specific containers
-  const buttonElements = ["map-button","main-button"];
+  const buttonElements = ["map-button","main-button","help-button"];
+
   let targetElement = event.target; // Starting with the event target itself
+  console.log(targetElement);
   do {
       if (buttonElements.includes(targetElement.id)) {
           // If the target is one of the buttons, activate the effect then do nothing else
-          console.log(targetElement.id)
           swapView(targetElement.id);
           return;
+      }
+      if (targetElement.className == "help-option") {
+        helpOption(targetElement.id);
+        return;
       }
       // Move up the DOM tree to check parent elements
       targetElement = targetElement.parentNode;
@@ -507,7 +534,8 @@ function gameStart(rooms_json) {
     doors = rooms_json.doors // An array of door JSONs.
     exits = rooms_json.exits // An array of exit JSONs.
     current_room = rooms[0]; // Start off in the first room
-    descriptions = rooms_json.descriptions;
+    descriptions = rooms_json.descriptions; // A JSON of room/description pairs
+    help_tips = rooms_json.help_tips; // A JSON of command/tooltip pairs
     
     // Initialise the right hand side
     generalRefresh();
@@ -593,7 +621,7 @@ function parseInput(raw_input) {
       break;
 
       default:
-        appendToTerminal("I'm sorry, I don't recognise that command. Type 'help' for assistance.")
+        appendToTerminal("I'm sorry, I don't recognise that command. Type 'help' or visit the help menu for assistance.")
       break;
     }
 }
@@ -781,6 +809,38 @@ function login(input_array) {
     if (!good_login) {
         appendToTerminal("Credentials not recognised - please try again.");
     }
+}
+
+// Prints a description of an item (if it exists and you can see it) to the terminal 
+function display_help(help_option_long) {
+  var help_option = help_option_long.substring(5,);
+  console.log(help_option)
+  if (help_tips.hasOwnProperty(help_option)) {
+    newHelpText("help-instructions-box",help_option,help_tips[help_option]);
+  }
+  else {
+    newHelpText("help-instructions-box","Instruction not found","That one's unclear. Good luck, I guess?");
+  }
+}
+
+// A broader "refresh and write to help box" function
+function newHelpText(box,topic,txt) {
+  clearText(box);
+  
+  // The box title
+  const title = document.createElement("h4");
+
+  // The box content
+  const line = document.createElement("p");
+
+  // The relevant div
+  const location = document.getElementById(box);
+
+  location.appendChild(title);
+  title.append(topic.toUpperCase());
+
+  location.appendChild(line);
+  typeWriterEffect(txt,line);
 }
 
 // Call the function to set up the rooms
