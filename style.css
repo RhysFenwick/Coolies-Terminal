@@ -79,11 +79,17 @@ Scrollbar settings - don't work on Firefox :(
   display: flex;
   justify-content: center;
   align-items: center;
-  pointer-events: all;
+  animation: boxShadow 1.6s infinite;
 }
 
 #help-instructions-box {
   width: 50%;
+}
+
+#press-info {
+  padding-right: 12px;
+  flex-grow: 0;
+  text-align: center;
 }
 
 #title {

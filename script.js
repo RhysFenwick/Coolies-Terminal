@@ -6,10 +6,17 @@ var exits;
 var current_room;
 var descriptions;
 var help_tips;
+var help_names = [] // To be filled from help_tips
+var helpcount; // Will be number of help tips
+var tipnum = 0;
+var current_tip;
 var inventory = ["A","B","C","D","E","F","G","H","I"];
 
-// Mapping
+// Tabs
+tabviews = ["main-button", "map-button", "help-button"]
+current_tab = 0 // Starts on the main screen
 
+// Mapping
 var map_rows = 6
 var map_cols = 7
 var row_len = map_cols * 8 + 3
@@ -302,23 +309,24 @@ function createInputLine() {
     // Add the event listener to the new input line
     // This is what triggers whenever a command is entered!
     inputLine.addEventListener("keypress", function(event) {
+      
       document.getElementById("single-click").play();
-        if (event.key === "Enter") {
-            event.preventDefault();
-            const input = this.value;
-            
-            // Remove the input line from the DOM before appending the text
-            this.remove();
-            
-            // Append the input text to the terminal
-            appendToTerminal("> " + input, false, "terminal");
+      if (event.key === "Enter") {
+          event.preventDefault();
+          const input = this.value;
+          
+          // Remove the input line from the DOM before appending the text
+          this.remove();
+          
+          // Append the input text to the terminal
+          appendToTerminal("> " + input, false, "terminal");
 
-            // Type anything in terminal that's needed here
-            parseInput(input);
-            
-            // Add a new input line at the end
-            createInputLine();
-        }
+          // Type anything in terminal that's needed here
+          parseInput(input);
+          
+          // Add a new input line at the end
+          createInputLine();
+      }
     });
 }
 
@@ -381,25 +389,26 @@ async function typeLineEffect(box,str) {
   }
 }
 
-// Function to highlight help button on click and display the relevant text
-function helpOption(clickedHelp) {
+// Function to highlight current_tip help button and display the relevant text
+function helpOption() {
 
-  display_help(clickedHelp);
+  display_help(); // Displays current_tip text in the help display box
 
   // TODO: Can I pull buttons directly from html?
   var help_buttons = document.getElementById("help-menu").children;
-  console.log(help_buttons)
+  console.log(current_tip)
 
   for (b in help_buttons) {
     var button = help_buttons[b];
 
-    if (clickedHelp == button.id) {
+    if ("help-" + current_tip === button.id) {
+      console.log(button.id);
       button.style.border = "6px solid #008000";
       button.style.width = "84px";
       button.style.height = "84px";
     }
 
-    else {
+    else if (button.className === "help-option") {
       button.style.border = "3px solid #008000";
       button.style.width = "90px";
       button.style.height = "90px";
@@ -443,34 +452,55 @@ function swapView(clickedView) {
 
 // OnClick listener - if the user is pressing a button, activate, otherwise focus input line
 
-document.addEventListener("click", function(event) {
-  // Assuming the scrollbar interactions are mainly on the body or specific containers
-  const buttonElements = ["map-button","main-button","help-button"];
+document.addEventListener("click", function() {
 
-  let targetElement = event.target; // Starting with the event target itself
-  console.log(targetElement);
-  do {
-      if (buttonElements.includes(targetElement.id)) {
-          // If the target is one of the buttons, activate the effect then do nothing else
-          swapView(targetElement.id);
-          return;
-      }
-      if (targetElement.className == "help-option") {
-        helpOption(targetElement.id);
-        return;
-      }
-      // Move up the DOM tree to check parent elements
-      targetElement = targetElement.parentNode;
-  } while (targetElement != null); // Makes the function recursive - ends when it's all the way up the tree
-
-  // If the click isn't on a button, focus on the input line
+  // Focus on the input line
   const inputLine = document.getElementById("inputLine");
   if (inputLine) {
       inputLine.focus();
   }
 });
 
-// TODO - Add similar function to the above but for typing.
+// Similar function to the above but for typing.
+
+document.addEventListener("keydown", function(event) { // keypress doesn't pick up arrows
+  // Logic to swap screen on a key press
+  if (event.key === "-") {
+    event.preventDefault();
+    current_tab = (current_tab + 1)%3 // Cycles through all three
+    swapView(tabviews[current_tab])
+    if (current_tab === 2) { // The number for the help tab
+        helpOption(); // By default sets it to the first option (help-clean)
+    }
+  }
+
+  // Logic to swap current_tip on key press
+  if (["ArrowDown","ArrowUp","ArrowRight","ArrowLeft"].includes(event.key) && current_tab === 2) {
+    console.log(event.key);
+    switch (event.key) {
+      case "ArrowUp":
+        tipnum = (tipnum - 2 + helpcount)%helpcount;
+        break;
+      
+      case "ArrowDown":
+        tipnum = (tipnum + 2)%helpcount;
+        break;
+      
+      case "ArrowLeft":
+        tipnum = (tipnum - 1 + helpcount)%helpcount;
+        break;
+
+      case "ArrowRight":
+        tipnum = (tipnum +1)%helpcount;
+        break;
+
+      default:
+        break;
+    }
+    current_tip = help_names[tipnum];
+    helpOption();
+  }
+})
 
 // Takes a string, a character, and an index and returns the same string with that index replaced by the char
 // Not just for chars!
@@ -536,6 +566,24 @@ function gameStart(rooms_json) {
     current_room = rooms[0]; // Start off in the first room
     descriptions = rooms_json.descriptions; // A JSON of room/description pairs
     help_tips = rooms_json.help_tips; // A JSON of command/tooltip pairs
+    for (t of Object.keys(help_tips)) {
+      help_names.push(t);
+    }
+
+    // Add help buttons
+    help_list = document.getElementById("help-menu");
+    for (h in help_names) {
+      h_item = help_names[h];
+      h_button = document.createElement("div");
+      h_button.id = "help-" + h_item;
+      h_button.className = "help-option";
+      h_button.append(h_item[0].toUpperCase() + h_item.slice(1));
+      help_list.append(h_button);
+    }
+
+    // Fill out other help-related variables
+    helpcount = help_names.length;
+    current_tip = help_names[tipnum];
     
     // Initialise the right hand side
     generalRefresh();
@@ -812,11 +860,9 @@ function login(input_array) {
 }
 
 // Prints a description of an item (if it exists and you can see it) to the terminal 
-function display_help(help_option_long) {
-  var help_option = help_option_long.substring(5,);
-  console.log(help_option)
-  if (help_tips.hasOwnProperty(help_option)) {
-    newHelpText("help-instructions-box",help_option,help_tips[help_option]);
+function display_help() {
+  if (help_tips.hasOwnProperty(current_tip)) {
+    newHelpText("help-instructions-box",current_tip,help_tips[current_tip]);
   }
   else {
     newHelpText("help-instructions-box","Instruction not found","That one's unclear. Good luck, I guess?");
