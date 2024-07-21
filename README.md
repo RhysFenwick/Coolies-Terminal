@@ -2,13 +2,16 @@
 A website designed to look/interact like a Fallout-style terminal interface, with inspiration from Alien.
 
 ## Fixes needed
-- Sound!!
+- Sound:
+    - Add sound for dash cycle
+    - Cut off help typing sound if not on help screen
+    - Make cooler sounds in general
 - Make sure animations are consistent
 - Multi-word items for inspect/take
-- Sanitising input based on input_array length
 - Neatening login barrier logic
 - Limit unnecessary text refreshing
 - Make a Consume() function and associated command?
+- Add out-of-energy alerts/actions
 
 ## To know
 - Room coords are column then row (x,y) 0-indexed, starting from the top left.
