@@ -124,7 +124,7 @@ function refreshEnergy() {
   newBoxText("energy",energy_str);
 }
 
-// A function to recharge energy - currently not called from anywhere. Defaults to +100%.
+// A function to recharge energy. Defaults to +100%.
 function recharge(amount=100) {
   energy += amount
   if (energy > 100) {
@@ -392,7 +392,7 @@ async function typeLineEffect(box,str) {
 // Function to highlight current_tip help button and display the relevant text
 function helpOption() {
 
-  display_help(); // Displays current_tip text in the help display box
+  displayHelp(); // Displays current_tip text in the help display box
 
   // TODO: Can I pull buttons directly from html?
   var help_buttons = document.getElementById("help-menu").children;
@@ -470,7 +470,7 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
     current_tab = (current_tab + 1)%3 // Cycles through all three
     swapView(tabviews[current_tab])
     if (current_tab === 2) { // The number for the help tab
-        helpOption(); // By default sets it to the first option (help-clean)
+        helpOption(); // By default sets it to the first option (help-clear)
     }
   }
 
@@ -613,7 +613,7 @@ function parseInput(raw_input) {
       
       case "move":
         if (current_user) {
-          move_rooms(input_array);
+          moveRooms(input_array);
           }
           else {
             appendToTerminal("You must be logged in to move.");
@@ -663,13 +663,12 @@ function parseInput(raw_input) {
         drop_item(input_array[1]);
       break;
 
-      case "help":
-        // TODO: Spin out into function
-        appendToTerminal("Functions:\r\nlogin [name] [password] to login\r\nmove [room-name] to enter a room\r\nunlock [room-name] [password] to unlock a locked door\r\ninspect [object|room] to get more detail\r\ntake [object] to add an object to inventory\r\ndrop [object] to remove an object from your inventory\r\nclear to clear the terminal")
+      case "recharge":
+        recharge();
       break;
 
       default:
-        appendToTerminal("I'm sorry, I don't recognise that command. Type 'help' or visit the help menu for assistance.")
+        appendToTerminal("I'm sorry, I don't recognise that command. Try again or visit the help menu for assistance.")
       break;
     }
 }
@@ -709,7 +708,6 @@ function drop_item(item) {
     appendToTerminal("That item isn't in your inventory.")
   }
 }
-
 
 // Returns a room JSON from the name, returns null if room not found
 function getRoom(room_name) {
@@ -757,7 +755,7 @@ function inspect_room(room_name){
   
 }
 // Checks if a door is accessible: used for move/unlock. Returns door if one is found, null otherwise
-function check_for_door(queried_room) {
+function checkForDoor(queried_room) {
   
   var valid_room = null;
   
@@ -775,7 +773,7 @@ function check_for_door(queried_room) {
 function unlock(input_array) {
   queried_room = input_array[1];
   password = input_array[2];
-  var door = check_for_door(queried_room);
+  var door = checkForDoor(queried_room);
   
   if (door == null) {
         appendToTerminal("There's no door that leads there from this room.")
@@ -803,9 +801,9 @@ function unlock(input_array) {
 }
 
 // Handles moving attempts
-function move_rooms(input_array) {
+function moveRooms(input_array) {
     queried_room = input_array[1];
-    var door = check_for_door(queried_room);
+    var door = checkForDoor(queried_room);
     
     // Shouldn't trigger if no door (null)
     if (door != null) {
@@ -821,6 +819,7 @@ function move_rooms(input_array) {
         refreshInfo();
         refreshMap();
         refreshEnergy();
+        checkEvents();
       }
     }
 
@@ -859,8 +858,13 @@ function login(input_array) {
     }
 }
 
+// Generic "check if there's any event given current state" function - currently empty.
+function checkEvents() {
+
+}
+
 // Prints a description of an item (if it exists and you can see it) to the terminal 
-function display_help() {
+function displayHelp() {
   if (help_tips.hasOwnProperty(current_tip)) {
     newHelpText("help-instructions-box",current_tip,help_tips[current_tip]);
   }

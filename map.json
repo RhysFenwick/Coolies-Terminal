@@ -38,7 +38,7 @@
         "items": ["newspaper"],
         "inspected": false,
         "coords": [3,3],
-        "mapname": "HEART"
+        "mapname": "CENTR"
       },
       {
         "name": "south1",
@@ -254,12 +254,12 @@
     },
 
     "help_tips": {
-      "clean":"Clears the terminal of all previous interactions.",
-      "consume":"Syntax: consume [object]. Uses up a consumable object and removes it from your inventory...theoretically.",
+      "clear":"Clears the terminal of all previous interactions.",
       "drop":"Syntax: drop [object]. Moves an object from your inventory to the inventory of the current room.",
       "inspect":"Syntax: inspect [room|object]. Can be used to get more information about your current room, or a description of an object in your inventory or in the current room.",
       "login":"Syntax: login [username] [password]. Different logins have different permissions, and potentially accesss to different information.",
       "move":"Syntax: move [room]. Use to move to an adjacent room with an unlocked door. Requires energy; the more items in your inventory, the more energy it takes.",
+      "recharge":"Recharges power to 100%.",
       "take":"Syntax: take [object]. Moves an object from the current room to your inventory.",
       "unlock":"Syntax: unlock [room] [password]. Unlocks a locked door accessible from your current room."
     }
