@@ -59,7 +59,7 @@
       {
         "name": "east1",
         "description": "dark and rainy.",
-        "items": [],
+        "items": ["note"],
         "inspected": false,
         "coords": [6,3],
         "mapname": "EAST1"
@@ -245,13 +245,14 @@
     ],
 
 
-    "descriptions": {
-      "newspaper":"The yellowing paper is barely readable. The headline is about last year's election.",
-      "knife":"Worn, but still sharp enough to hurt.",
-      "note":"It reads 'To do: change the admin login away from the default.'",
-      "paperweight": "A pyramid of smoked quartz the size of a fist.",
-      "diary": "It's written in a language you don't recognise - perhaps some sort of cipher."
-    },
+    "items": [
+      {"name":"newspaper", "description":"The yellowing paper is barely readable. The headline is about last year's election."},
+      {"name":"knife", "description":"Worn, but still sharp enough to hurt."},
+      {"name":"note", "description":"It reads 'To do: change the admin login away from the default.'"},
+      {"name":"paperweight", "description":"A pyramid of smoked quartz the size of a fist."},
+      {"name":"diary", "description":"It's written in a language you don't recognise - perhaps some sort of cipher."}
+    ],
+
 
     "help_tips": {
       "clear":"Clears the terminal of all previous interactions.",

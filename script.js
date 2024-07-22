@@ -4,7 +4,8 @@ var rooms;
 var doors;
 var exits;
 var current_room;
-var descriptions;
+var items;
+var item_names = [];
 var help_tips;
 var help_names = [] // To be filled from help_tips
 var helpcount; // Will be number of help tips
@@ -65,7 +66,7 @@ function appendToTerminal(text, slowText=true) {
     location.appendChild(line);
 
     if (slowText) {
-        typeWriterEffect(text,line)
+      typeWriterEffect(text,line)  
     }
     else {
         line.textContent += text
@@ -121,10 +122,17 @@ function refreshInventory() {
 // A function to refresh the energy - should be called by generalRefresh() most of the time
 function refreshEnergy() {
   energy_str = energy + "%\r\n\r\nCost per movement:\r\n" + (3 + inventory.length) + "%";
-  newBoxText("energy",energy_str);
+  if (energy < (3 + inventory.length) * 2) {
+    energy_str = "**LOW** " + energy + "% **LOW**" + "\r\n\r\nCost per movement:\r\n" + (3 + inventory.length) + "%";
+    newBoxText("energy",energy_str);
+    appendToTerminal("Warning: Energy low. Discard items or recharge.")
+  }
+  else {
+    newBoxText("energy",energy_str);
+  }
 }
 
-// A function to recharge energy. Defaults to +100%.
+// A function to recharge energy. Defaults to  making it 100%.
 function recharge(amount=100) {
   energy += amount
   if (energy > 100) {
@@ -336,19 +344,25 @@ function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function typeWriterEffect(str, div) {
+async function typeWriterEffect(str, div,helpScreen=false) {
     for (let i = 0; i < str.length; i++) {
         if (str[i] == ".") {
             await delay(200) // Wait longer for periods
-            document.getElementById("single-click").play();
+            if (!(helpScreen && current_tab != 2))  {
+              document.getElementById("single-click").play();
+            } 
         }
         else if (str[i] == "\n") {
           await delay(20);
-          document.getElementById("double-click").play();
+          if (!(helpScreen && current_tab != 2))  {
+            document.getElementById("double-click").play();
+          }
         }
         else {
             await delay(20); // Wait for 20ms per other character
-            document.getElementById("single-click").play();
+            if (!(helpScreen && current_tab != 2))  {
+              document.getElementById("single-click").play();
+            }  
         }
         div.append(str[i]);
     }
@@ -396,13 +410,11 @@ function helpOption() {
 
   // TODO: Can I pull buttons directly from html?
   var help_buttons = document.getElementById("help-menu").children;
-  console.log(current_tip)
 
   for (b in help_buttons) {
     var button = help_buttons[b];
 
     if ("help-" + current_tip === button.id) {
-      console.log(button.id);
       button.style.border = "6px solid #008000";
       button.style.width = "84px";
       button.style.height = "84px";
@@ -476,7 +488,6 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
 
   // Logic to swap current_tip on key press
   if (["ArrowDown","ArrowUp","ArrowRight","ArrowLeft"].includes(event.key) && current_tab === 2) {
-    console.log(event.key);
     switch (event.key) {
       case "ArrowUp":
         tipnum = (tipnum - 2 + helpcount)%helpcount;
@@ -564,10 +575,15 @@ function gameStart(rooms_json) {
     doors = rooms_json.doors // An array of door JSONs.
     exits = rooms_json.exits // An array of exit JSONs.
     current_room = rooms[0]; // Start off in the first room
-    descriptions = rooms_json.descriptions; // A JSON of room/description pairs
+    items = rooms_json.items // An array of item JSONs.
     help_tips = rooms_json.help_tips; // A JSON of command/tooltip pairs
+
     for (t of Object.keys(help_tips)) {
       help_names.push(t);
+    }
+
+    for (i in items) {
+      item_names.push(items[i].name);
     }
 
     // Add help buttons
@@ -638,7 +654,8 @@ function parseInput(raw_input) {
         focus = input_array[1]
         // Inspect the room or an item
         if (current_user) {
-          if (descriptions.hasOwnProperty(focus)) {
+
+          if (item_names.includes(focus)) {
             inspect_item(focus);
           }
           else {
@@ -677,7 +694,7 @@ function parseInput(raw_input) {
 function take_item(item) {
   if (current_room.items.includes(item)) {
     var index = current_room.items.indexOf(item);
-    if (index > -1) {
+    if (index > -1 && energy > 1) {
       current_room.items.splice(index, 1);
       inventory.push(item);
       appendToTerminal("You have taken the "+ item + ".");
@@ -685,6 +702,9 @@ function take_item(item) {
       refreshInfo();
       refreshInventory();
       refreshEnergy();
+    }
+    else if (energy < 2) {
+      appendToTerminal("You have insufficient energy to take this item.");
     }
   }  
   else {
@@ -697,7 +717,6 @@ function drop_item(item) {
   if (inventory.includes(item)) {
     current_room.items.push(item);
     inventory.splice(inventory.indexOf(item),1);
-    energy -= 2;
     appendToTerminal("You have dropped the "+ item + " in the " + current_room.name + ".");
     refreshInfo();
     refreshInventory();
@@ -726,15 +745,24 @@ function getRoom(room_name) {
 function inspect_item(item) {
   if (current_room.items.includes(item)) {
     appendToTerminal
-    if (descriptions.hasOwnProperty(item)) {
-      appendToTerminal(descriptions[item]);
+    if (item_names.includes(item)) {
+      for (i in items) {
+        if (items[i].name == item) {
+          appendToTerminal(items[i].description);
+        }
+      }
+      
     }
     else {
       appendToTerminal("That item is unremarkable.");
     }
   }
   else if (inventory.includes(item)) {
-    appendToTerminal(descriptions[item] + " It is in your inventory.");
+    for (i in items) {
+      if (items[i].name == item) {
+        appendToTerminal(items[i].description + " It is in your inventory.");
+      }
+    }
   }
   else {
     appendToTerminal("You can't see a " + item + " right now.");
@@ -812,14 +840,21 @@ function moveRooms(input_array) {
         appendToTerminal("The door to " + queried_room + " is locked. Enter 'unlock [room-name] [password] to unlock.");
       }
       else {
-        // Moves current room
-        current_room = getRoom(queried_room);
-        appendToTerminal("You've moved to the " + queried_room + ".")
-        energy -= (3 + inventory.length)
-        refreshInfo();
-        refreshMap();
-        refreshEnergy();
-        checkEvents();
+        // Checks energy
+        if (energy > 2 + inventory.length) {
+          // Moves current room
+          current_room = getRoom(queried_room);
+          appendToTerminal("You've moved to the " + queried_room + ".")
+          energy -= (3 + inventory.length)
+          refreshInfo();
+          refreshMap();
+          refreshEnergy();
+          checkEvents();
+        }
+        else {
+          // Not enough energy!
+          appendToTerminal("Insufficient energy to move. Consider discarding items or recharging.")
+        }
       }
     }
 
@@ -890,7 +925,7 @@ function newHelpText(box,topic,txt) {
   title.append(topic.toUpperCase());
 
   location.appendChild(line);
-  typeWriterEffect(txt,line);
+  typeWriterEffect(txt,line,true);
 }
 
 // Call the function to set up the rooms
