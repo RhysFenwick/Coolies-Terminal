@@ -277,6 +277,6 @@
     },
     "strings":{
       "title": "A.N.G.E.L. Station Control Terminal v0.5",
-      "start_message": "Welcome to the CooliesBot Terminal.\r\nDeveloping murder mystery...\r\nAssigning murderer...\r\nPlease log in to continue."
+      "start_message": "Welcome to the A.N.G.E.L. Station Control Terminal.\r\nWARNING: Misuse of this terminal may result in disciplinary action, injury, or death.\r\nPlease log in using your A.N.G.E.L. Station credentials to continue."
     }
 }
