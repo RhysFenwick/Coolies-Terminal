@@ -149,6 +149,7 @@
         "room2": "north2",
         "locked": true,
         "keys": ["mystery","password"],
+        "uids":[],
         "open": false
       },
       {
@@ -156,6 +157,7 @@
         "room2": "north3",
         "locked": false,
         "keys": [],
+        "uids":[],
         "open": false
       },
       {
@@ -163,6 +165,7 @@
         "room2": "center",
         "locked": false,
         "keys": [],
+        "uids":[],
         "open": false
       },
       {
@@ -170,6 +173,7 @@
         "room2": "center",
         "locked": false,
         "keys": [],
+        "uids":[],
         "open": false
       },
       {
@@ -177,6 +181,7 @@
         "room2": "south1",
         "locked": false,
         "keys": [],
+        "uids":[],
         "open": false
       },
       {
@@ -184,6 +189,7 @@
         "room2": "east2",
         "locked": false,
         "keys": [],
+        "uids":[],
         "open": false
       },
       {
@@ -191,6 +197,7 @@
         "room2": "east3",
         "locked": false,
         "keys": [],
+        "uids":[],
         "open": false
       },
       {
@@ -198,6 +205,7 @@
         "room2": "center",
         "locked": false,
         "keys": [],
+        "uids":[],
         "open": false
       },
       {
@@ -205,6 +213,7 @@
         "room2": "center",
         "locked": false,
         "keys": [],
+        "uids":[],
         "open": false
       },
       {
@@ -212,6 +221,7 @@
         "room2": "west2",
         "locked": false,
         "keys": [],
+        "uids":[],
         "open": false
       },
       {
@@ -219,6 +229,7 @@
         "room2": "west2",
         "locked": false,
         "keys": [],
+        "uids":[],
         "open": false
       },
       {
@@ -226,6 +237,7 @@
         "room2": "outside",
         "locked": false,
         "keys": [],
+        "uids":[],
         "open": false
       },
       {
@@ -233,13 +245,16 @@
         "room2": "outside",
         "locked": false,
         "keys": [],
+        "uids":[],
         "open": false
       },
       {
         "room1": "north1",
         "room2": "outside",
         "locked": false,
-        "keys": [],
+        "room1_keys": [],
+        "room2_keys": [],
+        "uids":[],
         "open": false
       }
     ],
@@ -251,15 +266,15 @@
       {"name":"note", "description":"It reads 'To do: change the admin login away from the default.'","weight":1},
       {"name":"paperweight", "description":"A pyramid of smoked quartz the size of a fist.","weight":1},
       {"name":"diary", "description":"It's written in a language you don't recognise - perhaps some sort of cipher.","weight":1},
-      {"name":"A", "description":"Filler item for testing.","weight":1},
-      {"name":"B", "description":"Filler item for testing.","weight":1},
-      {"name":"C", "description":"Filler item for testing.","weight":1},
-      {"name":"D", "description":"Filler item for testing.","weight":1},
-      {"name":"E", "description":"Filler item for testing.","weight":1},
-      {"name":"F", "description":"Filler item for testing.","weight":1},
-      {"name":"G", "description":"Filler item for testing.","weight":1},
-      {"name":"H", "description":"Filler item for testing.","weight":1},
-      {"name":"I", "description":"Filler item for testing.","weight":1}
+      {"name":"a", "description":"Filler item for testing.","weight":1},
+      {"name":"b", "description":"Filler item for testing.","weight":1},
+      {"name":"c", "description":"Filler item for testing.","weight":1},
+      {"name":"d", "description":"Filler item for testing.","weight":1},
+      {"name":"e", "description":"Filler item for testing.","weight":1},
+      {"name":"f", "description":"Filler item for testing.","weight":1},
+      {"name":"g", "description":"Filler item for testing.","weight":1},
+      {"name":"h", "description":"Filler item for testing.","weight":1},
+      {"name":"i", "description":"Filler item for testing.","weight":1}
     ],
     
     "starting_inventory":["A","B","C","D","E","F","G","H","I"],

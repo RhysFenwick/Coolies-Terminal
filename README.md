@@ -15,3 +15,16 @@ A website designed to look/interact like a Fallout-style terminal interface, wit
 - Room coords are column then row (x,y) 0-indexed, starting from the top left.
 - External doors (exits) are treated differently in the JSON - listed by room coord, then direction of exit from that room (x,y with positive = down/right).
 
+## New changes
+- Schmerminal tab + functionality in rooms (PIN login screen + "search" for files)
+- Interact function
+- Unlock doors with items (destructible)
+- Lock functionality (autolock afterwards)
+- Unidirectional doors
+- Recharge room gating + timing
+- Minigaaaaaame (with timer)
+- Out -> in requires login
+- Add generic commands like "drop all" and "inspect room"
+- Scroll bar + title remaining visible
+- Door discharge
+- Object/room combo

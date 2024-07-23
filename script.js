@@ -676,6 +676,7 @@ function parseInput(raw_input) {
       
       case "inspect":
         focus = input_array[1]
+        console.log(focus);
         // Inspect the room or an item
         if (current_user) {
 
@@ -772,7 +773,7 @@ function getRoom(room_name) {
 // Prints a description of an item (if it exists and you can see it) to the terminal 
 function inspect_item(item) {
   if (current_room.items.includes(item)) {
-    appendToTerminal
+
     if (item_names.includes(item)) {
       focus_item = getItemFromName(item);
       appendToTerminal(focus_item.description);
