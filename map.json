@@ -246,11 +246,11 @@
 
 
     "items": [
-      {"name":"newspaper", "description":"The yellowing paper is barely readable. The headline is about last year's election."},
-      {"name":"knife", "description":"Worn, but still sharp enough to hurt."},
-      {"name":"note", "description":"It reads 'To do: change the admin login away from the default.'"},
-      {"name":"paperweight", "description":"A pyramid of smoked quartz the size of a fist."},
-      {"name":"diary", "description":"It's written in a language you don't recognise - perhaps some sort of cipher."}
+      {"name":"newspaper", "description":"The yellowing paper is barely readable. The headline is about last year's election.","weight":1},
+      {"name":"knife", "description":"Worn, but still sharp enough to hurt.","weight":1},
+      {"name":"note", "description":"It reads 'To do: change the admin login away from the default.'","weight":1},
+      {"name":"paperweight", "description":"A pyramid of smoked quartz the size of a fist.","weight":1},
+      {"name":"diary", "description":"It's written in a language you don't recognise - perhaps some sort of cipher.","weight":1}
     ],
 
 
@@ -265,7 +265,7 @@
       "unlock":"Syntax: unlock [room] [password]. Unlocks a locked door accessible from your current room."
     },
     "strings":{
-      "title": "COOLIESBOT TERMINAL v0.5",
+      "title": "A.N.G.E.L. Station Control Terminal v0.5",
       "start_message": "Welcome to the CooliesBot Terminal.\r\nDeveloping murder mystery...\r\nAssigning murderer...\r\nPlease log in to continue."
     }
 }

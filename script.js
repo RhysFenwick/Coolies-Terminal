@@ -936,7 +936,3 @@ function newHelpText(box,topic,txt) {
 // Call the function to set up the rooms
 // This is the first thing called! Everything else flows from here
 roomSetup();
-
-
-
-
