@@ -11,9 +11,10 @@ var help_names = [] // To be filled from help_tips
 var helpcount; // Will be number of help tips
 var tipnum = 0;
 var current_tip;
-var inventory = ["A","B","C","D","E","F","G","H","I"]; // Full to test. TODO: Pull out starting inventory!
+var inventory = []; // Item names only
 var title;
 var start_string;
+var weight = 3; // Movement cost when nothing in inventory
 
 
 // Tabs
@@ -124,8 +125,8 @@ function refreshInventory() {
 
 // A function to refresh the energy - should be called by generalRefresh() most of the time
 function refreshEnergy() {
-  energy_str = energy + "%\r\n\r\nCost per movement:\r\n" + (3 + inventory.length) + "%";
-  if (energy < (3 + inventory.length) * 2) {
+  energy_str = energy + "%\r\n\r\nCost per movement:\r\n" + (weight) + "%";
+  if (energy < (weight) * 3 || energy < 15) {
     energy_str = "**LOW** " + energy + "% **LOW**" + "\r\n\r\nCost per movement:\r\n" + (3 + inventory.length) + "%";
     newBoxText("energy",energy_str);
     appendToTerminal("Warning: Energy low. Discard items or recharge.")
@@ -522,6 +523,14 @@ function editString(str,char, ind) {
   return str.substring(0, ind) + char + str.substring(ind + char.length);
 }
 
+// Takes a one-word string (name) and returns JSON object of that item - will return nothing if item not found.
+function getItemFromName(name) {
+  for (i in items) {
+    if (items[i].name == name) {
+      return items[i]
+    }
+  }
+}
 
 // End helper functions
 
@@ -578,7 +587,8 @@ function gameStart(rooms_json) {
     doors = rooms_json.doors // An array of door JSONs.
     exits = rooms_json.exits // An array of exit JSONs.
     current_room = rooms[0]; // Start off in the first room
-    items = rooms_json.items // An array of item JSONs.
+    items = rooms_json.items; // An array of item JSONs.
+    inventory = rooms_json.starting_inventory; // An array of item names you start with
     help_tips = rooms_json.help_tips; // A JSON of command/tooltip pairs
     title = rooms_json.strings.title;
     start_string = rooms_json.strings.start_message;
@@ -590,6 +600,11 @@ function gameStart(rooms_json) {
 
     for (i in items) {
       item_names.push(items[i].name);
+    }
+    
+    for (i in inventory) {
+      focus_item = getItemFromName(inventory[i]);
+      weight += focus_item.weight;
     }
     
     // Update the title 
@@ -708,6 +723,8 @@ function take_item(item) {
       current_room.items.splice(index, 1);
       inventory.push(item);
       appendToTerminal("You have taken the "+ item + ".");
+      focus_item = getItemFromName(item);
+      weight += focus_item.weight;
       energy -= 2;
       refreshInfo();
       refreshInventory();
@@ -728,6 +745,8 @@ function drop_item(item) {
     current_room.items.push(item);
     inventory.splice(inventory.indexOf(item),1);
     appendToTerminal("You have dropped the "+ item + " in the " + current_room.name + ".");
+    focus_item = getItemFromName(item);
+    weight -= focus_item.weight;
     refreshInfo();
     refreshInventory();
     refreshEnergy();
@@ -756,23 +775,16 @@ function inspect_item(item) {
   if (current_room.items.includes(item)) {
     appendToTerminal
     if (item_names.includes(item)) {
-      for (i in items) {
-        if (items[i].name == item) {
-          appendToTerminal(items[i].description);
-        }
-      }
-      
+      focus_item = getItemFromName(item);
+      appendToTerminal(focus_item.description);
     }
     else {
       appendToTerminal("That item is unremarkable.");
     }
   }
   else if (inventory.includes(item)) {
-    for (i in items) {
-      if (items[i].name == item) {
-        appendToTerminal(items[i].description + " It is in your inventory.");
-      }
-    }
+    focus_item = getItemFromName(item);
+    appendToTerminal(focus_item.description + " It is in your inventory.");
   }
   else {
     appendToTerminal("You can't see a " + item + " right now.");
