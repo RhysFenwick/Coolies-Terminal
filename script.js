@@ -583,6 +583,7 @@ function gameStart(rooms_json) {
     title = rooms_json.strings.title;
     start_string = rooms_json.strings.start_message;
 
+    // Fill out the remaining arrays 
     for (t of Object.keys(help_tips)) {
       help_names.push(t);
     }
@@ -590,6 +591,10 @@ function gameStart(rooms_json) {
     for (i in items) {
       item_names.push(items[i].name);
     }
+    
+    // Update the title 
+    var titleElement = document.querySelector("#title h1");
+    titleElement.textContent = title;
 
     // Add help buttons
     help_list = document.getElementById("help-menu");
@@ -909,7 +914,7 @@ function displayHelp() {
     newHelpText("help-instructions-box",current_tip,help_tips[current_tip]);
   }
   else {
-    newHelpText("help-instructions-box","Instruction not found","That one's unclear. Good luck, I guess?");
+    newHelpText("help-instructions-box","Instruction not found","That instruction has no explanation. Please contact your A.N.G.E.L. Station Administrator for further information on this instruction.");
   }
 }
 
