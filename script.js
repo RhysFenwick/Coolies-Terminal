@@ -579,8 +579,6 @@ async function roomSetup() {
 // The core gameplay loop - takes in rooms_json and does a bunch of if/then on input
 function gameStart(rooms_json) {
 
-    appendToTerminal(start_string)
-
     // By the time the regular gameplay loop has been reached, these will be filled.
     logins = rooms_json.logins // An array of the username/password/acct name arrays. TODO: Make JSONs to match?
     rooms = rooms_json.rooms // An array of the room JSONs.
@@ -592,6 +590,7 @@ function gameStart(rooms_json) {
     help_tips = rooms_json.help_tips; // A JSON of command/tooltip pairs
     title = rooms_json.strings.title;
     start_string = rooms_json.strings.start_message;
+    appendToTerminal(start_string);
 
     // Fill out the remaining arrays 
     for (t of Object.keys(help_tips)) {
