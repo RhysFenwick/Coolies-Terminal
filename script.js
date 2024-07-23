@@ -12,13 +12,13 @@ var helpcount; // Will be number of help tips
 var tipnum = 0;
 var current_tip;
 var inventory = []; // Item names only
-var title;
+var terminal_title;
 var start_string;
 var weight = 3; // Movement cost when nothing in inventory
 
 
 // Tabs
-tabviews = ["main-button", "map-button", "help-button"]
+tabviews = ["main-button", "map-button", "help-button","site-button"]
 current_tab = 0 // Starts on the main screen
 
 // Mapping
@@ -118,7 +118,7 @@ function refreshInventory() {
     inventory_str = "None";
   }
   else {
-    inventory_str = inventory.join('\r\n');
+    inventory_str = inventory.join('\n');
   }
   newBoxText("inventory",inventory_str);
 }
@@ -435,7 +435,7 @@ function helpOption() {
 // Function to swap screens
 function swapView(clickedView) {
 
-  var menu_buttons = ["map","main","help"]
+  var menu_buttons = ["map","main","help","site"]
   for (b in menu_buttons) {
     var button_name = menu_buttons[b] + "-button";
     var screen_name = menu_buttons[b] + "-screen";
@@ -483,7 +483,7 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
   // Logic to swap screen on a key press
   if (event.key === "-") {
     event.preventDefault();
-    current_tab = (current_tab + 1)%3 // Cycles through all three
+    current_tab = (current_tab + 1)%4 // Cycles through all three
     swapView(tabviews[current_tab])
     if (current_tab === 2) { // The number for the help tab
         helpOption(); // By default sets it to the first option (help-clear)
@@ -532,6 +532,7 @@ function getItemFromName(name) {
   }
 }
 
+
 // End helper functions
 
 // The core game logic!
@@ -552,14 +553,14 @@ async function roomSetup() {
         // Get loading bar
         var loadbar = document.getElementById("loading-bar");        
         
-        // Wait four seconds then make flash screen loaded
-        await delay(1000);
+        // Wait six seconds then make flash screen loaded
+        await delay(1500);
         loadbar.innerText = "Loading."
-        await delay(1000);
+        await delay(1500);
         loadbar.innerText = "Loading.."
-        await delay(1000);
+        await delay(1500);
         loadbar.innerText = "Loading..."
-        await delay(1000);
+        await delay(1500);
         loadbar.innerText = "Loaded."
 
         // Wait one second then close the splash screen
@@ -588,7 +589,7 @@ function gameStart(rooms_json) {
     items = rooms_json.items; // An array of item JSONs.
     inventory = rooms_json.starting_inventory; // An array of item names you start with
     help_tips = rooms_json.help_tips; // A JSON of command/tooltip pairs
-    title = rooms_json.strings.title;
+    terminal_title = rooms_json.strings.title;
     start_string = rooms_json.strings.start_message;
     appendToTerminal(start_string);
 
@@ -608,7 +609,7 @@ function gameStart(rooms_json) {
     
     // Update the title 
     var titleElement = document.querySelector("#title h1");
-    titleElement.textContent = title;
+    titleElement.textContent = terminal_title;
 
     // Add help buttons
     help_list = document.getElementById("help-menu");
@@ -837,7 +838,7 @@ function unlock(input_array) {
     
     // There's a door and it's locked
     else {
-      if (door.keys.includes(password)) {
+      if (getRoom(queried_room).passwords.includes(password)) {
         // Is this by reference?
         door.locked = false;
         appendToTerminal("Door unlocked.")

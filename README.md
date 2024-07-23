@@ -20,11 +20,9 @@ A website designed to look/interact like a Fallout-style terminal interface, wit
 - Interact function
 - Unlock doors with items (destructible)
 - Lock functionality (autolock afterwards)
-- Unidirectional doors
 - Recharge room gating + timing
 - Minigaaaaaame (with timer)
-- Out -> in requires login
 - Add generic commands like "drop all" and "inspect room"
-- Scroll bar + title remaining visible
+- Scroll bar remaining visible
 - Door discharge
 - Object/room combo

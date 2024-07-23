@@ -6,7 +6,8 @@
         "items": [],
         "inspected": false,
         "coords": [-1,-1],
-        "mapname": "?????"
+        "mapname": "?????",
+        "passwords":["sesame"]
       },
       {
         "name": "north1",
@@ -14,7 +15,8 @@
         "items": [],
         "inspected": false,
         "coords": [3,0],
-        "mapname": "NRTH1"
+        "mapname": "NRTH1",
+        "passwords":["sesame"]
       },
       {
         "name": "north2",
@@ -22,7 +24,8 @@
         "items": [],
         "inspected": false,
         "coords": [3,1],
-        "mapname": "NRTH2"
+        "mapname": "NRTH2",
+        "passwords":["sesame2"]
       },
       {
         "name": "north3",
@@ -30,7 +33,8 @@
         "items": [],
         "inspected": false,
         "coords": [3,2],
-        "mapname": "NRTH3"
+        "mapname": "NRTH3",
+        "passwords":["sesame"]
       },
       {
         "name": "center",
@@ -38,7 +42,8 @@
         "items": ["newspaper"],
         "inspected": false,
         "coords": [3,3],
-        "mapname": "CENTR"
+        "mapname": "CENTR",
+        "passwords":["sesame"]
       },
       {
         "name": "south1",
@@ -46,7 +51,8 @@
         "items": [],
         "inspected": false,
         "coords": [3,5],
-        "mapname": "SOUT1"
+        "mapname": "SOUT1",
+        "passwords":["sesame"]
       },
       {
         "name": "south2",
@@ -54,7 +60,8 @@
         "items": [],
         "inspected": false,
         "coords": [3,4],
-        "mapname": "SOUT2"
+        "mapname": "SOUT2",
+        "passwords":["sesame"]
       },
       {
         "name": "east1",
@@ -62,7 +69,8 @@
         "items": ["note"],
         "inspected": false,
         "coords": [6,3],
-        "mapname": "EAST1"
+        "mapname": "EAST1",
+        "passwords":["sesame"]
       },
       {
         "name": "east2",
@@ -70,7 +78,8 @@
         "items": [],
         "inspected": false,
         "coords": [5,3],
-        "mapname": "EAST2"
+        "mapname": "EAST2",
+        "passwords":["sesame"]
       },
       {
         "name": "east3",
@@ -78,7 +87,8 @@
         "items": [],
         "inspected": false,
         "coords": [4,3],
-        "mapname": "EAST3"
+        "mapname": "EAST3",
+        "passwords":["sesame"]
       },
       {
         "name": "west1",
@@ -86,7 +96,8 @@
         "items": [],
         "inspected": false,
         "coords": [0,3],
-        "mapname": "WEST1"
+        "mapname": "WEST1",
+        "passwords":["sesame"]
       },
       {
         "name": "west2",
@@ -94,7 +105,8 @@
         "items": [],
         "inspected": false,
         "coords": [1,3],
-        "mapname": "WEST2"
+        "mapname": "WEST2",
+        "passwords":["sesame"]
       },
       {
         "name": "west3",
@@ -102,7 +114,8 @@
         "items": [],
         "inspected": false,
         "coords": [2,3],
-        "mapname": "WEST3"
+        "mapname": "WEST3",
+        "passwords":["sesame"]
       }
     ],
     
@@ -128,17 +141,17 @@
       {
         "room_coords": [0,3],
         "side": [-1,0],
-        "locked": false
+        "locked": true
       },
       {
         "room_coords": [6,3],
         "side": [1,0],
-        "locked": false
+        "locked": true
       },
       {
         "room_coords": [3,0],
         "side": [0,-1],
-        "locked": false
+        "locked": true
       }
     ],
 
@@ -155,7 +168,7 @@
       {
         "room1": "north2",
         "room2": "north3",
-        "locked": false,
+        "locked": true,
         "keys": [],
         "uids":[],
         "open": false
@@ -163,7 +176,7 @@
       {
         "room1": "north3",
         "room2": "center",
-        "locked": false,
+        "locked": true,
         "keys": [],
         "uids":[],
         "open": false
@@ -171,7 +184,7 @@
       {
         "room1": "south2",
         "room2": "center",
-        "locked": false,
+        "locked": true,
         "keys": [],
         "uids":[],
         "open": false
@@ -179,7 +192,7 @@
       {
         "room1": "south2",
         "room2": "south1",
-        "locked": false,
+        "locked": true,
         "keys": [],
         "uids":[],
         "open": false
@@ -187,7 +200,7 @@
       {
         "room1": "east1",
         "room2": "east2",
-        "locked": false,
+        "locked": true,
         "keys": [],
         "uids":[],
         "open": false
@@ -195,7 +208,7 @@
       {
         "room1": "east2",
         "room2": "east3",
-        "locked": false,
+        "locked": true,
         "keys": [],
         "uids":[],
         "open": false
@@ -203,7 +216,7 @@
       {
         "room1": "east3",
         "room2": "center",
-        "locked": false,
+        "locked": true,
         "keys": [],
         "uids":[],
         "open": false
@@ -211,7 +224,7 @@
       {
         "room1": "west3",
         "room2": "center",
-        "locked": false,
+        "locked": true,
         "keys": [],
         "uids":[],
         "open": false
@@ -219,7 +232,7 @@
       {
         "room1": "west3",
         "room2": "west2",
-        "locked": false,
+        "locked": true,
         "keys": [],
         "uids":[],
         "open": false
@@ -227,7 +240,7 @@
       {
         "room1": "west1",
         "room2": "west2",
-        "locked": false,
+        "locked": true,
         "keys": [],
         "uids":[],
         "open": false
@@ -235,7 +248,7 @@
       {
         "room1": "west1",
         "room2": "outside",
-        "locked": false,
+        "locked": true,
         "keys": [],
         "uids":[],
         "open": false
@@ -243,7 +256,7 @@
       {
         "room1": "east1",
         "room2": "outside",
-        "locked": false,
+        "locked": true,
         "keys": [],
         "uids":[],
         "open": false
@@ -251,7 +264,7 @@
       {
         "room1": "north1",
         "room2": "outside",
-        "locked": false,
+        "locked": true,
         "room1_keys": [],
         "room2_keys": [],
         "uids":[],
@@ -277,7 +290,7 @@
       {"name":"i", "description":"Filler item for testing.","weight":1}
     ],
     
-    "starting_inventory":["A","B","C","D","E","F","G","H","I"],
+    "starting_inventory":["a","b","c","d","e","f","g","h","i"],
 
 
     "help_tips": {
@@ -292,6 +305,6 @@
     },
     "strings":{
       "title": "A.N.G.E.L. Station Control Terminal v0.5",
-      "start_message": "Welcome to the A.N.G.E.L. Station Control Terminal.\r\nWARNING: Misuse of this terminal may result in disciplinary action, injury, or death.\r\nPlease log in using your A.N.G.E.L. Station credentials to continue."
+      "start_message": "Welcome to the A.N.G.E.L. Station Control Terminal.\nWARNING: Misuse of this terminal may result in disciplinary action, injury, or death.\nPlease log in using your A.N.G.E.L. Station credentials to continue."
     }
 }
