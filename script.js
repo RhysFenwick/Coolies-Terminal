@@ -11,6 +11,8 @@ var help_names = [] // To be filled from help_tips
 var helpcount; // Will be number of help tips
 var tipnum = 0;
 var current_tip;
+var keynum = 0;
+var padsize = 4;
 var inventory = []; // Item names only
 var terminal_title;
 var start_string;
@@ -392,7 +394,6 @@ async function typeLineEffect(box,str) {
     div.appendChild(title);
     title.append("MINIMAP");
   }
-  
 
   div.appendChild(mapgrid);
 
@@ -406,6 +407,28 @@ async function typeLineEffect(box,str) {
     mapgrid.append(newstr);
   }
 }
+
+// Function to move keypad highlight
+function highlightKeypad() {
+  var keypad = document.getElementById("site-login").children;
+
+  for (b in keypad) {
+    var button = keypad[b];
+
+    if ("keypad-" + keynum.toString() === button.id) {
+      button.style.border = "6px solid #008000";
+      button.style.width = "34px";
+      button.style.height = "34px";
+    }
+
+    else if (button.className === "keypad-button") {
+      button.style.border = "3px solid #008000";
+      button.style.width = "40px";
+      button.style.height = "40px";
+    }
+  }
+}
+
 
 // Function to highlight current_tip help button and display the relevant text
 function helpOption() {
@@ -515,7 +538,52 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
     current_tip = help_names[tipnum];
     helpOption();
   }
+
+  // Keypad logic
+  else if (current_tab === 3) {
+  
+    // Movement
+    if (["ArrowDown","ArrowUp","ArrowRight","ArrowLeft"].includes(event.key)) {
+      var padcount = padsize**2
+      switch (event.key) {
+        case "ArrowUp":
+          keynum = (keynum - padsize + padcount)%padcount;
+          break;
+        
+        case "ArrowDown":
+          keynum = (keynum + padsize)%padcount;
+          break;
+        
+        case "ArrowLeft":
+          keynum = (keynum - 1 + padcount)%padcount;
+          break;
+  
+        case "ArrowRight":
+          keynum = (keynum +1)%padcount;
+          break;
+  
+        default:
+          break;
+      }
+      highlightKeypad();
+    }
+    else if (event.code == "Space") { // Would otherwise do event.key but this is more readable
+      toggleKeypad()
+    }
+  }
 })
+
+// Toggles selected key on/off and compares to current code
+function toggleKeypad() {
+  var focus_key = document.getElementById("keypad-" + keynum.toString());
+  if (focus_key.style.backgroundColor == "rgb(0, 128, 0)") { // This is what it becomes behind the scenes - equivalent to #008000
+    focus_key.style.backgroundColor = "";
+  }
+  else {
+    console.log(focus_key.style.backgroundColor)
+    focus_key.style.backgroundColor = "rgb(0, 128, 0)";
+  }
+}
 
 // Takes a string, a character, and an index and returns the same string with that index replaced by the char
 // Not just for chars!
@@ -531,7 +599,6 @@ function getItemFromName(name) {
     }
   }
 }
-
 
 // End helper functions
 
@@ -625,6 +692,16 @@ function gameStart(rooms_json) {
     // Fill out other help-related variables
     helpcount = help_names.length;
     current_tip = help_names[tipnum];
+
+    // Prep empty site login screen
+    site_login = document.getElementById("site-login");
+    for (b=0; b<padsize**2; b++) { // b = grid size squared
+      keypad_button = document.createElement("div");
+      keypad_button.id = "keypad-" + b.toString();
+      keypad_button.className = "keypad-button";
+      site_login.append(keypad_button);
+    }
+    highlightKeypad(); // Initialises first key being selected
     
     // Initialise the right hand side
     generalRefresh();
