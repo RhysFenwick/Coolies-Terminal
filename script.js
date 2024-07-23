@@ -11,7 +11,10 @@ var help_names = [] // To be filled from help_tips
 var helpcount; // Will be number of help tips
 var tipnum = 0;
 var current_tip;
-var inventory = ["A","B","C","D","E","F","G","H","I"];
+var inventory = ["A","B","C","D","E","F","G","H","I"]; // Full to test. TODO: Pull out starting inventory!
+var title;
+var start_string;
+
 
 // Tabs
 tabviews = ["main-button", "map-button", "help-button"]
@@ -567,7 +570,7 @@ async function roomSetup() {
 // The core gameplay loop - takes in rooms_json and does a bunch of if/then on input
 function gameStart(rooms_json) {
 
-    appendToTerminal("Welcome to the CooliesBot Terminal.\r\nDeveloping murder mystery. . .\r\nAssigning murderer. . .\r\nPlease login to continue.")
+    appendToTerminal(start_string)
 
     // By the time the regular gameplay loop has been reached, these will be filled.
     logins = rooms_json.logins // An array of the username/password/acct name arrays. TODO: Make JSONs to match?
@@ -577,6 +580,8 @@ function gameStart(rooms_json) {
     current_room = rooms[0]; // Start off in the first room
     items = rooms_json.items // An array of item JSONs.
     help_tips = rooms_json.help_tips; // A JSON of command/tooltip pairs
+    title = rooms_json.strings.title;
+    start_string = rooms_json.strings.start_message;
 
     for (t of Object.keys(help_tips)) {
       help_names.push(t);
