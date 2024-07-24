@@ -13,11 +13,19 @@ var tipnum = 0;
 var current_tip;
 var keynum = 0;
 var padsize = 4;
+var keypad = new Array(padsize**2).fill(0)
 var inventory = []; // Item names only
 var terminal_title;
 var start_string;
 var weight = 3; // Movement cost when nothing in inventory
 
+// Hard-coding this for now to test, will change later
+var combo = [
+          1,1,1,1,
+          0,0,1,0,
+          0,1,0,0,
+          1,0,0,0
+        ];
 
 // Tabs
 tabviews = ["main-button", "map-button", "help-button","site-button"]
@@ -55,11 +63,11 @@ var energy = 100;
 
 // Helper functions
 
-// Clears text in either terminal or info
-function clearText(loc) {
+// Edits text by ID
+function editText(loc,txt="") {
 
     const location = document.getElementById(loc);
-    location.textContent = "";
+    location.textContent = txt;
 }
 
 // Takes a string and a Boolean of whether to make it slow or all at once, and either "terminal" or "info"
@@ -81,7 +89,7 @@ function appendToTerminal(text, slowText=true) {
 
 // A broader "refresh and write to box" function
 function newBoxText(box,txt) {
-  clearText(box);
+  editText(box,"");
   
   // The box title
   const title = document.createElement("h4");
@@ -382,7 +390,7 @@ async function typeLineEffect(box,str) {
   var lines = str.split("\r\n");
 
   const div = document.getElementById(box);
-  clearText(box);
+  editText(box,"");
 
   // The box title
   const title = document.createElement("h4");
@@ -410,10 +418,10 @@ async function typeLineEffect(box,str) {
 
 // Function to move keypad highlight
 function highlightKeypad() {
-  var keypad = document.getElementById("site-login").children;
+  var keypad_buttons = document.getElementById("site-login").children;
 
-  for (b in keypad) {
-    var button = keypad[b];
+  for (b in keypad_buttons) {
+    var button = keypad_buttons[b];
 
     if ("keypad-" + keynum.toString() === button.id) {
       button.style.border = "6px solid #008000";
@@ -580,9 +588,11 @@ function toggleKeypad() {
     focus_key.style.backgroundColor = "";
   }
   else {
-    console.log(focus_key.style.backgroundColor)
     focus_key.style.backgroundColor = "rgb(0, 128, 0)";
   }
+   
+  keypad[keynum] = (keypad[keynum] + 1)%2 // Toggles the corresponding digit in the keypad between 1 and 0
+  checkKeypad()
 }
 
 // Takes a string, a character, and an index and returns the same string with that index replaced by the char
@@ -607,7 +617,7 @@ function getItemFromName(name) {
 
 // Load the rooms JSON
 async function get_rooms() {
-    const response = await fetch("./map.json");
+    const response = await fetch("./content.json");
     const data = await response.json();
     return data;
 }
@@ -748,7 +758,7 @@ function parseInput(raw_input) {
       break;
 
       case "clear":
-        clearText("terminal");
+        editText("terminal","");
         createInputLine();
       break;
       
@@ -1010,7 +1020,7 @@ function displayHelp() {
 
 // A broader "refresh and write to help box" function
 function newHelpText(box,topic,txt) {
-  clearText(box);
+  editText(box,"");
   
   // The box title
   const title = document.createElement("h4");
@@ -1026,6 +1036,13 @@ function newHelpText(box,topic,txt) {
 
   location.appendChild(line);
   typeWriterEffect(txt,line,true);
+}
+
+// Checks to see if the keypad matches the combination
+function checkKeypad() {
+  if (keypad.toString() == combo.toString()) {
+    editText("site-login-title-text","Unlocked")
+  }
 }
 
 // Call the function to set up the rooms

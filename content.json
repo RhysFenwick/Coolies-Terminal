@@ -272,6 +272,20 @@
       }
     ],
 
+    "sites": [
+      {
+        "room":"north1",
+        "name":"Botany",
+        "locked":true,
+        "combo": [
+          1,1,1,1,
+          0,0,1,0,
+          0,1,0,0,
+          1,0,0,0
+        ]
+      }
+    ],
+
 
     "items": [
       {"name":"newspaper", "description":"The yellowing paper is barely readable. The headline is about last year's election.","weight":1},
@@ -304,7 +318,7 @@
       "unlock":"Syntax: unlock [room] [password]. Unlocks a locked door accessible from your current room."
     },
     "strings":{
-      "title": "A.N.G.E.L. Station Control Terminal v0.5",
+      "title": "A.N.G.E.L. Station M-NET Control Terminal",
       "start_message": "Welcome to the A.N.G.E.L. Station Control Terminal.\nWARNING: Misuse of this terminal may result in disciplinary action, injury, or death.\nPlease log in using your A.N.G.E.L. Station credentials to continue."
     }
 }
