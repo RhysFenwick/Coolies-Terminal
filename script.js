@@ -575,7 +575,7 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
       }
       highlightKeypad();
     }
-    else if (event.code == "Space") { // Would otherwise do event.key but this is more readable
+    else if (event.code == "Space" || event.code == "Enter") { // Would otherwise do event.key but this is more readable
       toggleKeypad()
     }
   }
@@ -794,7 +794,12 @@ function parseInput(raw_input) {
       break;
 
       case "recharge":
-        recharge();
+        if (parseInt(input_array[1])) {
+          recharge(parseInt(input_array[1]));
+        }
+        else {
+          recharge();
+        }
       break;
 
       default:
