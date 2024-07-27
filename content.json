@@ -15,7 +15,7 @@
         "items": [],
         "inspected": false,
         "coords": [3,0],
-        "mapname": "NRTH1",
+        "mapname": "BOTNY",
         "passwords":["sesame"]
       },
       {
@@ -24,7 +24,7 @@
         "items": [],
         "inspected": false,
         "coords": [3,1],
-        "mapname": "NRTH2",
+        "mapname": "ENGNR",
         "passwords":["sesame2"]
       },
       {
@@ -276,6 +276,9 @@
       {
         "room":"north1",
         "name":"Botany",
+        "file_name":"Algae_fluorescence_microscopy_snapshots.omex",
+        "file_content":"It is an image file with hundreds of microscope images of plant cells.",
+        "broken":false,
         "locked":true,
         "combo": [
           1,1,1,1,
@@ -283,7 +286,22 @@
           0,1,0,0,
           1,0,0,0
         ]
+      },
+      {
+        "room":"north2",
+        "name":"Engineering",
+        "file_name":"Obvious_Clue.txt",
+        "file_content":"Note to self: it would be SO easy to murder someone on this station lol",
+        "broken":false,
+        "locked":true,
+        "combo": [
+          0,1,0,0,
+          0,1,1,0,
+          0,1,0,0,
+          1,1,1,1
+        ]
       }
+
     ],
 
 
@@ -306,7 +324,6 @@
     
     "starting_inventory":["a","b","c","d","e","f","g","h","i"],
 
-
     "help_tips": {
       "clear":"Clears the terminal of all previous interactions.",
       "drop":"Syntax: drop [object]. Moves an object from your inventory to the inventory of the current room.",
@@ -317,8 +334,9 @@
       "take":"Syntax: take [object]. Moves an object from the current room to your inventory.",
       "unlock":"Syntax: unlock [room] [password]. Unlocks a locked door accessible from your current room."
     },
+
     "strings":{
       "title": "A.N.G.E.L. Station M-NET Control Terminal",
-      "start_message": "Welcome to the A.N.G.E.L. Station Control Terminal.\nWARNING: Misuse of this terminal may result in disciplinary action, injury, or death.\nPlease log in using your A.N.G.E.L. Station credentials to continue."
+      "start_message": "Welcome to the A.N.G.E.L. Station Control Terminal.\nWARNING: Misuse of this terminal may result in disciplinary action, injury, or death.\nPlease log in using your M-NET credentials to continue."
     }
 }

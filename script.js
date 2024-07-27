@@ -18,6 +18,7 @@ var inventory = []; // Item names only
 var terminal_title;
 var start_string;
 var weight = 3; // Movement cost when nothing in inventory
+var sites;
 
 // Hard-coding this for now to test, will change later
 var combo = [
@@ -28,8 +29,8 @@ var combo = [
         ];
 
 // Tabs
-tabviews = ["main-button", "map-button", "help-button","site-button"]
-current_tab = 0 // Starts on the main screen
+var tabviews = ["main-button", "map-button", "help-button","site-button"]
+var current_tab = 0 // Starts on the main screen
 
 // Mapping
 var map_rows = 6
@@ -114,6 +115,7 @@ function generalRefresh() {
   refreshMap();
   refreshInventory();
   refreshMessages();
+  refreshSite();
 }
 
 // A function to refresh the inventory - should be called by generalRefresh() most of the time
@@ -595,6 +597,14 @@ function toggleKeypad() {
   checkKeypad()
 }
 
+// Resets all keys on the keypad to blank
+function wipeKeypad() {
+  var focus_key = document.getElementById("keypad-" + keynum.toString());
+  focus_key.style.backgroundColor = "";
+   
+  keypad[keynum] = 0
+}
+
 // Takes a string, a character, and an index and returns the same string with that index replaced by the char
 // Not just for chars!
 function editString(str,char, ind) {
@@ -666,6 +676,8 @@ function gameStart(rooms_json) {
     items = rooms_json.items; // An array of item JSONs.
     inventory = rooms_json.starting_inventory; // An array of item names you start with
     help_tips = rooms_json.help_tips; // A JSON of command/tooltip pairs
+    sites = rooms_json.sites // An array of the site computer JSONs.
+
     terminal_title = rooms_json.strings.title;
     start_string = rooms_json.strings.start_message;
     appendToTerminal(start_string);
@@ -764,7 +776,6 @@ function parseInput(raw_input) {
       
       case "inspect":
         focus = input_array[1]
-        console.log(focus);
         // Inspect the room or an item
         if (current_user) {
 
@@ -965,6 +976,7 @@ function moveRooms(input_array) {
           refreshMap();
           refreshEnergy();
           checkEvents();
+          refreshSite();
         }
         else {
           // Not enough energy!
@@ -1044,9 +1056,55 @@ function newHelpText(box,topic,txt) {
 }
 
 // Checks to see if the keypad matches the combination
-function checkKeypad() {
+async function checkKeypad() {
   if (keypad.toString() == combo.toString()) {
-    editText("site-login-title-text","Unlocked")
+    editText("site-login-title-text","Unlocked");
+    for (var site of sites) { // Keep it unlocked
+      if (site.room == current_room.name) {
+        site.locked = false;
+      }
+    }
+    await delay(500);
+    toggleUnlockScreen(true)
+  }
+}
+
+// Swaps the login/content screens for the site page
+function toggleUnlockScreen(content=true) {
+  if (content) {
+    document.getElementById("site-login-screen").style.display = "none";
+    document.getElementById("site-content-screen").style.display = "block";
+  }
+  else {
+    document.getElementById("site-content-screen").style.display = "none";
+    document.getElementById("site-login-screen").style.display = "block";
+  }
+}
+
+// Checks if there's a site computer in the room and updates the site screen accordingly
+function refreshSite() {
+  wipeKeypad();
+  for (var site of sites) {
+    if (site.room == current_room.name) {
+      // Reset content
+      editText("site-content-left",site.file_name);
+      editText("site-content-right",site.file_content);
+
+      if (site.locked) { // Reset login screen
+        toggleUnlockScreen(false)
+        editText("site-login-title-text","Please log in to the " + site.name + " site computer.");
+        document.getElementById("site-login").style.display = "grid";
+        combo = site.combo;
+        return;
+      }
+      else { // If that room's site computer is already unlocked
+        toggleUnlockScreen(true);
+        return
+      } 
+    }
+    toggleUnlockScreen(false)
+    editText("site-login-title-text","This room does not have a site computer.");
+    document.getElementById("site-login").style.display = "none";
   }
 }
 
