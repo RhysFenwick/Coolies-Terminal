@@ -267,6 +267,17 @@ Scrollbar settings - don't work on Firefox :(
   display: none;
 }
 
+#site-content-left {
+  float: left;
+  width: 90%;
+}
+
+#site-content-right {
+  float: left;
+  width: 90%;
+  height: 200%;
+}
+
 input {
   background-color: transparent; /* Background colour */
   border: none;

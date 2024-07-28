@@ -71,12 +71,12 @@ function editText(loc,txt="") {
     location.textContent = txt;
 }
 
-// Takes a string and a Boolean of whether to make it slow or all at once, and either "terminal" or "info"
-// And prints it to one of the terminals
-function appendToTerminal(text, slowText=true) {
+// Takes a string and a Boolean of whether to make it slow or all at once
+// And prints it to the terminal
+function appendToTerminal(text, slowText=true,loc="terminal") {
     const line = document.createElement("p");
     
-    const location = document.getElementById("terminal");
+    const location = document.getElementById(loc);
 
     location.appendChild(line);
 
@@ -317,14 +317,14 @@ function refreshInfo() {
 
 // Creates a new input line in the terminal
 // This probably doesn't need touching
-function createInputLine() {
+function createInputLine(loc="terminal") {
     const inputLine = document.createElement("input");
     inputLine.type = "text";
     inputLine.id = "inputLine";
     inputLine.autofocus = true;
     inputLine.autocomplete = "off";
 
-    const terminal = document.getElementById("terminal");
+    const terminal = document.getElementById(loc);
     terminal.appendChild(inputLine);
     
     // Focus the new input line
@@ -343,13 +343,15 @@ function createInputLine() {
           this.remove();
           
           // Append the input text to the terminal
-          appendToTerminal("> " + input, false, "terminal");
+          appendToTerminal("> " + input, false, loc);
 
-          // Type anything in terminal that's needed here
-          parseInput(input);
+          if (current_tab == 0) {
+            // Type anything in terminal that's needed here
+            parseInput(input);
+          }
           
           // Add a new input line at the end
-          createInputLine();
+          createInputLine(loc);
       }
     });
 }
@@ -1074,6 +1076,7 @@ function toggleUnlockScreen(content=true) {
   if (content) {
     document.getElementById("site-login-screen").style.display = "none";
     document.getElementById("site-content-screen").style.display = "block";
+    createInputLine("site-content-left");
   }
   else {
     document.getElementById("site-content-screen").style.display = "none";
@@ -1087,8 +1090,8 @@ function refreshSite() {
   for (var site of sites) {
     if (site.room == current_room.name) {
       // Reset content
-      editText("site-content-left",site.file_name);
-      editText("site-content-right",site.file_content);
+      editText("content-name",site.file_name);
+      editText("content-desc",site.file_content);
 
       if (site.locked) { // Reset login screen
         toggleUnlockScreen(false)
