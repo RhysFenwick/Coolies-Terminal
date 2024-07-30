@@ -19,6 +19,7 @@ var terminal_title;
 var start_string;
 var weight = 3; // Movement cost when nothing in inventory
 var sites;
+var current_site = null; // String equal to current site room
 
 // Hard-coding this for now to test, will change later
 var combo = [
@@ -342,8 +343,16 @@ function createInputLine(loc="terminal") {
           // Remove the input line from the DOM before appending the text
           this.remove();
           
-          // Append the input text to the terminal
-          appendToTerminal("> " + input, false, loc);
+          if (loc == "terminal") {
+            // Append the input text to the terminal
+            appendToTerminal("> " + input, false, loc);
+          }
+          
+          else if (loc == "site-content-left") {
+            editText(loc,"FILENAME QUERY: "+input)
+            displaySearch(input);
+          }
+          
 
           if (current_tab == 0) {
             // Type anything in terminal that's needed here
@@ -522,6 +531,9 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
     swapView(tabviews[current_tab])
     if (current_tab === 2) { // The number for the help tab
         helpOption(); // By default sets it to the first option (help-clear)
+    }
+    else if (current_tab === 3 && current_site) { // Shouldn't trigger on null
+      createInputLine("site-content-left");
     }
   }
 
@@ -1058,14 +1070,10 @@ function newHelpText(box,topic,txt) {
 }
 
 // Checks to see if the keypad matches the combination
+// TODO: Update this to take advantage of current_site
 async function checkKeypad() {
   if (keypad.toString() == combo.toString()) {
     editText("site-login-title-text","Unlocked");
-    for (var site of sites) { // Keep it unlocked
-      if (site.room == current_room.name) {
-        site.locked = false;
-      }
-    }
     await delay(500);
     toggleUnlockScreen(true)
   }
@@ -1076,7 +1084,10 @@ function toggleUnlockScreen(content=true) {
   if (content) {
     document.getElementById("site-login-screen").style.display = "none";
     document.getElementById("site-content-screen").style.display = "block";
-    createInputLine("site-content-left");
+    if (current_site.locked) {
+      createInputLine("site-content-left");
+      current_site.locked = false; // TODO: This isn't great - mixing up site/current_site...unless it's by reference?
+    }
   }
   else {
     document.getElementById("site-content-screen").style.display = "none";
@@ -1089,9 +1100,10 @@ function refreshSite() {
   wipeKeypad();
   for (var site of sites) {
     if (site.room == current_room.name) {
+      current_site = site;
       // Reset content
-      editText("content-name",site.file_name);
-      editText("content-desc",site.file_content);
+      editText("content-name","N/A");
+      editText("content-desc","No filenames searched yet");
 
       if (site.locked) { // Reset login screen
         toggleUnlockScreen(false)
@@ -1105,10 +1117,24 @@ function refreshSite() {
         return
       } 
     }
+    current_site = null // Means "There is currently no site"
     toggleUnlockScreen(false)
     editText("site-login-title-text","This room does not have a site computer.");
     document.getElementById("site-login").style.display = "none";
   }
+}
+
+// A function to display "search" results as needed
+function displaySearch(input_string) {
+  var match_string = current_site.file_name;
+  var output_string = "0 MATCHES FOUND FOR " + input_string + " ON THIS DEVICE.";
+  var output_desc = ""
+  if (match_string == input_string) {
+    output_string = "1 MATCH FOUND FOR " + input_string + " ON THIS DEVICE.";
+    output_desc = current_site.file_content;
+  }
+  editText("content-name", output_string);
+  editText("content-desc", output_desc);
 }
 
 // Call the function to set up the rooms
