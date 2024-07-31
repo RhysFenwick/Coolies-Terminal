@@ -21,6 +21,15 @@ var weight = 3; // Movement cost when nothing in inventory
 var sites;
 var current_site = null; // String equal to current site room
 
+// Decryption text
+var d_size = 1200; // May well need to ramp this up to cover screen
+var d_text = "0" * d_size;
+var d_array = Array.from({length: d_size},(_,i) =>i); // creates 0-indexed array of nums to d_size
+var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+for (c in d_text) { // Cycles over each character
+  d_text[c] = chars.charAt(Math.floor(Math.random() * chars.length)) // Initialises it with a random char
+}
+
 // Hard-coding this for now to test, will change later
 var combo = [
           1,1,1,1,
@@ -64,6 +73,11 @@ var priv = 0;
 var energy = 100;
 
 // Helper functions
+
+// Gets random integer from 0 to n-1
+function getRandomInt(n) {
+  return Math.floor(Math.random() * n);
+}
 
 // Edits text by ID
 function editText(loc,txt="") {
@@ -826,6 +840,10 @@ function parseInput(raw_input) {
           recharge();
         }
       break;
+      
+      case "decrypt":
+        decrypt();
+      break;
 
       default:
         appendToTerminal("I'm sorry, I don't recognise that command. Try again or visit the help menu for assistance.")
@@ -1138,8 +1156,20 @@ function displaySearch(input_string) {
 }
 
 // Launches a decryption screen + timer
-function decrypt() {
-  
+async function decrypt() {
+  d_screen = document.getElementById("decrypt-screen");
+  d_screen.style.display = "block";
+  editText("decrypt-screen",d_text);
+  for (t in 1200) {// 10 minutes in 500ms intervals - will be slightly longer as this is just the delays
+    for (c of d_array) { // Cycles over each character to begin with
+      d_text[c] = chars[(c*c*t)%62] // Should pseudo-random pick a char - TODO: Benchmark this against getRandomInt()
+    }
+    var random_char = getRandomInt(d_array.length);
+    d_string[random_char] = " ";
+    d_array.splice(random_char,1); // Should remove that character
+    // TODO - Harmonise length of d_array and number of loops
+    delay(400) // Taking a guess that the calculation will take 0.1s per loop? TODO - Check this 
+  }
 }
 
 // Call the function to set up the rooms
