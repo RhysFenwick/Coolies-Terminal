@@ -23,7 +23,7 @@ var current_site = null; // String equal to current site room
 
 // Decryption text
 var d_size = 1200; // May well need to ramp this up to cover screen
-var d_text = "0" * d_size;
+var d_text = "0".repeat(d_size);
 var d_array = Array.from({length: d_size},(_,i) =>i); // creates 0-indexed array of nums to d_size
 var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 for (c in d_text) { // Cycles over each character
@@ -1168,6 +1168,7 @@ async function decrypt() {
     d_string[random_char] = " ";
     d_array.splice(random_char,1); // Should remove that character
     // TODO - Harmonise length of d_array and number of loops
+    editText("decrypt-screen",d_text);
     delay(400) // Taking a guess that the calculation will take 0.1s per loop? TODO - Check this 
   }
 }
