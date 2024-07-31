@@ -1137,6 +1137,11 @@ function displaySearch(input_string) {
   editText("content-desc", output_desc);
 }
 
+// Launches a decryption screen + timer
+function decrypt() {
+  
+}
+
 // Call the function to set up the rooms
 // This is the first thing called! Everything else flows from here
 roomSetup();
