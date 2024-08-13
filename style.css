@@ -614,6 +614,11 @@ animation-play-state: running;
 } 
 
 #decrypt-screen {
+  width: 100%;
+  height: 100%;
+}
+
+#decrypt-text {
   text-align: center;
   font-size: 1.6em;
   line-height: 1.05em;
@@ -627,4 +632,18 @@ animation-play-state: running;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+}
+
+#decrypt-timer-box {
+  position: absolute;
+  left: 30%;
+  right: 30%;
+  top: 10%;
+  bottom: 80%;
+  border: 2px solid #008000;
+  animation: boxShadow 1.6s infinite;
+  display: none;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
 }

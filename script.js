@@ -1162,7 +1162,7 @@ async function decrypt() {
   d_screen = document.getElementById("decrypt-screen");
   d_screen.style.display = "block";
   document.getElementById("interactive-screen").style.display = "none"; // Hides everything else
-  editText("decrypt-screen",d_text_array.join(""));
+  editText("decrypt-text",d_text_array.join(""));
   delay(50); // Brief pause to give screen time to update
   for (t=0;t<d_size;t++) {// 10 minutes in 500ms intervals - will be slightly longer as this is just the delays
     for (c of d_array) { // Cycles over each character to begin with
@@ -1172,9 +1172,16 @@ async function decrypt() {
     d_text_array[d_array[random_char]] = final_text.charAt(d_array[random_char]); // Gets the corresponding remaining character index
     d_array.splice(random_char,1); // Should remove that character
     // TODO - Harmonise length of d_array and number of loops
-    editText("decrypt-screen",d_text_array.join(""));
+    editText("decrypt-text",d_text_array.join(""));
     await delay(10) // Taking a guess that the calculation will take 0.1s per loop? TODO - Check this 
   }
+
+  // Once it's all done...
+  document.getElementById("decrypt-timer-box").style.display = "flex"; // Shows finished box
+
+  await delay(3000) // Some time to admire the handiwork
+  d_screen.style.display = "none"; // Hides the decryption screen
+  document.getElementById("interactive-screen").style.display = "flex"; // Shows everything else again
 }
 
 // Call the function to set up the rooms
