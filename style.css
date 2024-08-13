@@ -612,3 +612,19 @@ animation-direction: normal;
 animation-fill-mode: none;
 animation-play-state: running;
 } 
+
+#decrypt-screen {
+  text-align: center;
+  font-size: 1.6em;
+  line-height: 1.05em;
+  width: 90ch;
+  max-height: 24em;
+  padding-top: 1em;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow:hidden;
+  white-space-collapse: break-spaces;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}

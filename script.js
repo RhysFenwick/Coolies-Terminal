@@ -22,13 +22,15 @@ var sites;
 var current_site = null; // String equal to current site room
 
 // Decryption text
-var d_size = 1200; // May well need to ramp this up to cover screen
-var d_text = "0".repeat(d_size);
+var d_size = 1800; // May well need to ramp this up to cover screen
+var d_text_array = Array.from('0'.repeat(d_size))
 var d_array = Array.from({length: d_size},(_,i) =>i); // creates 0-indexed array of nums to d_size
 var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-for (c in d_text) { // Cycles over each character
-  d_text[c] = chars.charAt(Math.floor(Math.random() * chars.length)) // Initialises it with a random char
-}
+var final_text = "           1                                                                5                         64                                                            28                           88                                                          60                             80                                                        00                           4   001                                                     00   3                        49   008                 400000000000000006               900   48                         003  6005            10081              74004          1000  700                       79  8007 70005          10061               6005        20003  800  65                     90  3000  30000093        4000000000000000097     79000004  0004  00                       809  40002  72000006                          20000057  10009  400                         9009  50006      90001                     80007     40004  6008                            8009   9000       6001                7008       8008   4000                                0000    1003       902            700       7003    8000                                0   60003               0          87              70008   81                             1007   5006                                      4009    005                                0004     301                                7827    5000                                    00005                                          200001                                       200002                                    100004                                             760087                               80087                                                                                                                                            96                                  697                                                      30000665                26600003                              "
+console.log(final_text.length)
+d_text_array.forEach(function(c, charind, arr) { // Randomises the characters in d_text_array
+  arr[charind] = chars.charAt(Math.floor(Math.random() * chars.length));
+}); 
 
 // Hard-coding this for now to test, will change later
 var combo = [
@@ -1159,17 +1161,19 @@ function displaySearch(input_string) {
 async function decrypt() {
   d_screen = document.getElementById("decrypt-screen");
   d_screen.style.display = "block";
-  editText("decrypt-screen",d_text);
-  for (t in 1200) {// 10 minutes in 500ms intervals - will be slightly longer as this is just the delays
+  document.getElementById("interactive-screen").style.display = "none"; // Hides everything else
+  editText("decrypt-screen",d_text_array.join(""));
+  delay(50); // Brief pause to give screen time to update
+  for (t=0;t<d_size;t++) {// 10 minutes in 500ms intervals - will be slightly longer as this is just the delays
     for (c of d_array) { // Cycles over each character to begin with
-      d_text[c] = chars[(c*c*t)%62] // Should pseudo-random pick a char - TODO: Benchmark this against getRandomInt()
+      d_text_array[c] = chars.charAt(getRandomInt(62)) // Currently just changing all of them as a test
     }
     var random_char = getRandomInt(d_array.length);
-    d_string[random_char] = " ";
+    d_text_array[d_array[random_char]] = final_text.charAt(d_array[random_char]); // Gets the corresponding remaining character index
     d_array.splice(random_char,1); // Should remove that character
     // TODO - Harmonise length of d_array and number of loops
-    editText("decrypt-screen",d_text);
-    delay(400) // Taking a guess that the calculation will take 0.1s per loop? TODO - Check this 
+    editText("decrypt-screen",d_text_array.join(""));
+    await delay(10) // Taking a guess that the calculation will take 0.1s per loop? TODO - Check this 
   }
 }
 
