@@ -19,10 +19,10 @@ A website designed to look/interact like a Fallout-style terminal interface, wit
 - Schmerminal tab + functionality in rooms (PIN login screen + "search" for files)
 - Interact function
 - Unlock doors with items (destructible)
-- Lock functionality (autolock afterwards)
+- Lock functionality (autolock afterwards) {DONE, no autolock currently}
 - Recharge room gating + timing
-- Minigaaaaaame (with timer)
-- Add generic commands like "drop all" and "inspect room"
+- Minigaaaaaame (with timer) {DONE-ish}
+- Add generic commands like "drop all" and "inspect room" {DONE}
 - Scroll bar remaining visible
 - Door discharge
 - Object/room combo

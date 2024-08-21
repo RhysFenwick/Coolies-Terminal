@@ -682,7 +682,7 @@ async function roomSetup() {
 
         // Wait one second then close the splash screen
         await delay(1000);
-        document.getElementById("splash").style.visibility = "hidden";
+        document.getElementById("splash").style.display = "none";
         
         // Pass rooms_json out to the main gameplay loop!
         gameStart(rooms_json);
@@ -809,7 +809,11 @@ function parseInput(raw_input) {
         // Inspect the room or an item
         if (current_user) {
 
-          if (item_names.includes(focus)) {
+          if (focus == "room") {
+            inspect_room(focus);
+          }
+
+          else if (item_names.includes(focus)) {
             inspect_item(focus);
           }
           else {
@@ -890,6 +894,19 @@ function drop_item(item) {
     refreshEnergy();
   }
 
+  else if (item == "all") { // i.e. the command "drop all"
+    for (var item of inventory) {
+      current_room.items.push(item);
+      inventory.splice(inventory.indexOf(item),1);
+      focus_item = getItemFromName(item);
+      weight -= focus_item.weight;
+    }
+    appendToTerminal("You have dropped all items.");
+    refreshInfo();
+    refreshInventory();
+    refreshEnergy();
+  }
+
   else {
     appendToTerminal("That item isn't in your inventory.")
   }
@@ -932,7 +949,7 @@ function inspect_item(item) {
 // Prints a description of the room to the terminal and makes info panel print list of room items.
 function inspect_room(room_name){
   var room = getRoom(room_name);
-  if (room && room.name == current_room.name) {
+  if ((room && room.name == current_room.name) || room_name == "room") {
     appendToTerminal("The " + room.name + " is " + room.description);
     room.inspected = true;
     refreshInfo();
@@ -1166,7 +1183,10 @@ async function decrypt() {
   delay(50); // Brief pause to give screen time to update
   for (t=0;t<d_size;t++) {// 10 minutes in 500ms intervals - will be slightly longer as this is just the delays
     for (c of d_array) { // Cycles over each character to begin with
-      d_text_array[c] = chars.charAt(getRandomInt(62)) // Currently just changing all of them as a test
+      if (getRandomInt(20) < 1) { // 5% chance of any character changing each cycle
+        d_text_array[c] = chars.charAt(getRandomInt(62))
+      } 
+      
     }
     var random_char = getRandomInt(d_array.length);
     d_text_array[d_array[random_char]] = final_text.charAt(d_array[random_char]); // Gets the corresponding remaining character index
