@@ -774,6 +774,7 @@ function parseInput(raw_input) {
 
     // The key instruction given - decides what happens next
     action = input_array[0];
+    console.log(action);
 
     switch(action) {
 
