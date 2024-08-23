@@ -766,7 +766,7 @@ function gameStart(rooms_json) {
 // Doesn't need to return anything but will probably need to appendToTerminal and adjust room and current_room
 function parseInput(raw_input) {
 
-    // Make sure it's lower case for easier comparison
+    // Make sure it's lower case for easier comparison - NOTE: Only works on strings, not chars
     input = raw_input.toLowerCase();
 
     // Breaks up the input into key words
@@ -850,10 +850,10 @@ function parseInput(raw_input) {
       
       case "decrypt":
         decrypt_toggle = true; // Priming 
-        appendToTerminal("WARNING: Decrypting this file will require the full use of A.N.G.E.L. computing resources for approximately 600 seconds. All non-essential station functions will be inaccessible in this time.\nType Y to confirm or N to cancel.")
+        appendToTerminal("WARNING: Decrypting this file will require the full use of A.N.G.E.L. computing resources for approximately 600 seconds. All non-essential station functions will be inaccessible in this time.\nType Yes to confirm or No to cancel.")
       break;
 
-      case "y": // Should only be typed after "decrypt"
+      case "yes": // Should only be typed after "decrypt"
         if (decrypt_toggle) {
           decrypt_toggle = false;
           decrypt();
@@ -863,7 +863,7 @@ function parseInput(raw_input) {
         }
       break;
 
-      case "n": // Should only be typed after decrypt (to cancel)
+      case "no": // Should only be typed after decrypt (to cancel)
         decrypt_toggle = false;
         appendToTerminal("Decryption aborted.");
       break;
