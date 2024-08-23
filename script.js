@@ -848,23 +848,23 @@ function parseInput(raw_input) {
       break;
       
       case "decrypt":
-        appendToTerminal("WARNING: Decrypting this file will require the full use of A.N.G.E.L. computing resources for approximately 600 seconds. All non-essential station functions will be inaccessible in this time.\nType Y to confirm or N to cancel.")
         decrypt_toggle = true; // Priming 
+        appendToTerminal("WARNING: Decrypting this file will require the full use of A.N.G.E.L. computing resources for approximately 600 seconds. All non-essential station functions will be inaccessible in this time.\nType Y to confirm or N to cancel.")
       break;
 
-      case "Y": // Should only be typed after "decrypt"
+      case "y": // Should only be typed after "decrypt"
         if (decrypt_toggle) {
           decrypt_toggle = false;
           decrypt();
         }
         else {
-          appendToTerminal("I'm sorry, I don't recognise that command. Try again or visit the help menu for assistance.")
+          appendToTerminal("I'm sorry, I don't recognise that command. Try again or visit the help menu for assistance.");
         }
       break;
 
-      case "N": // Should only be typed after decrypt (to cancel)
+      case "n": // Should only be typed after decrypt (to cancel)
         decrypt_toggle = false;
-        appendToTerminal("Decryption aborted.")
+        appendToTerminal("Decryption aborted.");
       break;
 
       default:
