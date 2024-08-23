@@ -27,7 +27,7 @@ var d_text_array = Array.from('0'.repeat(d_size))
 var d_array = Array.from({length: d_size},(_,i) =>i); // creates 0-indexed array of nums to d_size
 var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 var final_text = "           1                                                                5                         64                                                            28                           88                                                          60                             80                                                        00                           4   001                                                     00   3                        49   008                 400000000000000006               900   48                         003  6005            10081              74004          1000  700                       79  8007 70005          10061               6005        20003  800  65                     90  3000  30000093        4000000000000000097     79000004  0004  00                       809  40002  72000006                          20000057  10009  400                         9009  50006      90001                     80007     40004  6008                            8009   9000       6001                7008       8008   4000                                0000    1003       902            700       7003    8000                                0   60003               0          87              70008   81                             1007   5006                                      4009    005                                0004     301                                7827    5000                                    00005                                          200001                                       200002                                    100004                                             760087                               80087                                                                                                                                            96                                  697                                                      30000665                26600003                              "
-console.log(final_text.length)
+var decrypt_toggle = false; // Becomes true if the previous input was "decrypt"
 d_text_array.forEach(function(c, charind, arr) { // Randomises the characters in d_text_array
   arr[charind] = chars.charAt(Math.floor(Math.random() * chars.length));
 }); 
@@ -848,7 +848,23 @@ function parseInput(raw_input) {
       break;
       
       case "decrypt":
-        decrypt();
+        appendToTerminal("WARNING: Decrypting this file will require the full use of A.N.G.E.L. computing resources for approximately 600 seconds. All non-essential station functions will be inaccessible in this time.\nType Y to confirm or N to cancel.")
+        decrypt_toggle = true; // Priming 
+      break;
+
+      case "Y": // Should only be typed after "decrypt"
+        if (decrypt_toggle) {
+          decrypt_toggle = false;
+          decrypt();
+        }
+        else {
+          appendToTerminal("I'm sorry, I don't recognise that command. Try again or visit the help menu for assistance.")
+        }
+      break;
+
+      case "N": // Should only be typed after decrypt (to cancel)
+        decrypt_toggle = false;
+        appendToTerminal("Decryption aborted.")
       break;
 
       default:
