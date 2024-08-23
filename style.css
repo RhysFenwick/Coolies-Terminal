@@ -19,6 +19,7 @@ Scrollbar settings - don't work on Firefox :(
 */
 #terminal::-webkit-scrollbar {
   width: 6px;               /* width of the entire scrollbar */
+  z-index: 1000;            /* Trying to keep it up the front */
 }
 
 #terminal::-webkit-scrollbar-track {
