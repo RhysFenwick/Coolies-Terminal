@@ -2,7 +2,7 @@ body, html {
   pointer-events: none;
   margin: 0;
   background-color: black; /* Background colour */
-  font-family: Monochromatty;
+  font-family: Monochromatty, monospace;
   color: #008000; /* Text color */
   display: flex;
   flex-direction: column;
@@ -20,6 +20,7 @@ Scrollbar settings - don't work on Firefox :(
 #terminal::-webkit-scrollbar {
   width: 6px;               /* width of the entire scrollbar */
   z-index: 1000;            /* Trying to keep it up the front */
+  pointer-events: all;
 }
 
 #terminal::-webkit-scrollbar-track {
@@ -29,7 +30,7 @@ Scrollbar settings - don't work on Firefox :(
 #terminal::-webkit-scrollbar-thumb {
   background-color: #008000;    /* color of the scroll thumb */
   border-radius: 20px;       /* roundness of the scroll thumb */
-  border: 3px solid #008000;  /* creates padding around scroll thumb */
+  border: 0px solid #008000;  /* creates padding around scroll thumb */
 }
 
 #splash {
@@ -123,9 +124,12 @@ Scrollbar settings - don't work on Firefox :(
 #terminal {
   height: 80%;
   width: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
   flex-grow: 0;
   overflow-wrap: normal;
+  z-index: 1000;
+  scrollbar-gutter: stable;
+  
 }
 
 #term-box {

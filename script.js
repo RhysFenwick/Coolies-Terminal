@@ -20,6 +20,7 @@ var start_string;
 var weight = 3; // Movement cost when nothing in inventory
 var sites;
 var current_site = null; // String equal to current site room
+var files;
 
 // Decryption text
 var d_size = 1800; // May well need to ramp this up to cover screen
@@ -707,6 +708,7 @@ function gameStart(rooms_json) {
     inventory = rooms_json.starting_inventory; // An array of item names you start with
     help_tips = rooms_json.help_tips; // A JSON of command/tooltip pairs
     sites = rooms_json.sites // An array of the site computer JSONs.
+    files = rooms_json.files // An array of the file JSONs.
 
     terminal_title = rooms_json.strings.title;
     start_string = rooms_json.strings.start_message;
@@ -1210,7 +1212,7 @@ async function decrypt() {
     d_array.splice(random_char,1); // Should remove that character
     // TODO - Harmonise length of d_array and number of loops
     editText("decrypt-text",d_text_array.join(""));
-    await delay(10) // Taking a guess that the calculation will take 0.1s per loop? TODO - Check this 
+    await delay(100) // Taking a guess that the calculation will take 0.1s per loop? TODO - Check this 
   }
 
   // Once it's all done...
