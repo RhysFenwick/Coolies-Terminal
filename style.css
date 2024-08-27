@@ -33,12 +33,12 @@ Scrollbar settings - don't work on Firefox :(
   border: 0px solid #008000;  /* creates padding around scroll thumb */
 }
 
-#splash {
+.cover-screen {
   height: 90%;
   width: 90%;
   background-color: black;
   opacity: 1;
-  display: block;
+  display: none;
   position: fixed;
   margin-left: 1%;
   background: repeating-linear-gradient(#023018 0px 10px, #011606 10px 11px); 
@@ -128,8 +128,15 @@ Scrollbar settings - don't work on Firefox :(
   flex-grow: 0;
   overflow-wrap: normal;
   z-index: 1000;
-  scrollbar-gutter: stable;
-  
+  scrollbar-gutter: stable; 
+}
+
+#term-input {
+  height: 2vh;
+  border: 2px solid #008000;
+  animation: boxShadow 1.6s infinite;
+  padding: 5px;
+  margin-left: 5px;
 }
 
 #term-box {
@@ -270,17 +277,32 @@ Scrollbar settings - don't work on Firefox :(
 
 #site-content-screen {
   display: none;
+  width: 95%;
 }
 
 #site-content-left {
   float: left;
-  width: 90%;
+  width: 20%;
+  min-height: 50vh;
 }
 
 #site-content-right {
-  float: left;
-  width: 90%;
+  float: right;
+  width: 40%;
   height: 200%;
+}
+
+#site-modality-1 {
+  margin: 0;
+  padding: 0;
+}
+
+#site-modality-2 {
+  display: none;
+}
+
+#site-modality-3 {
+  display: none;
 }
 
 input {

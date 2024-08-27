@@ -20,7 +20,8 @@ var start_string;
 var weight = 3; // Movement cost when nothing in inventory
 var sites;
 var current_site = null; // String equal to current site room
-var files;
+var eng_files;
+var med_files;
 
 // Decryption text
 var d_size = 1800; // May well need to ramp this up to cover screen
@@ -97,6 +98,7 @@ function appendToTerminal(text, slowText=true,loc="terminal") {
     const location = document.getElementById(loc);
 
     location.appendChild(line);
+    line.scrollIntoView(); // Should keep current text at the bottom
 
     if (slowText) {
       typeWriterEffect(text,line)  
@@ -134,6 +136,7 @@ function generalRefresh() {
   refreshInventory();
   refreshMessages();
   refreshSite();
+  checkEvents();
 }
 
 // A function to refresh the inventory - should be called by generalRefresh() most of the time
@@ -183,7 +186,7 @@ function refreshMap() {
     var room = rooms[r]
 
     // If it's outside - skip!
-    if (room.name == "outside") {
+    if (room.id == "outside") {
       continue;
     }
 
@@ -201,7 +204,7 @@ function refreshMap() {
     // Add the room names
     mapstring = editString(mapstring,room.mapname,start_index);
 
-    if (room.name == current_room.name) {
+    if (room.id == current_room.id) {
       // If it's the current room, add dots!
       mapstring = editString(mapstring,"* * *",start_index - row_len);
       mapstring = editString(mapstring,"* * *",start_index + row_len);
@@ -229,8 +232,8 @@ function refreshMap() {
     }
     
     // Coords of "start" and "end" rooms (arbitrary)
-    var start_coords = getRoom(door.room1).coords;
-    var end_coords = getRoom(door.room2).coords;
+    var start_coords = getRoomFromID(door.room1).coords;
+    var end_coords = getRoomFromID(door.room2).coords;
 
     // Coords of door relative to starting room (positive = down and to the right)
     // One of these will be zero and the other will be +- 1
@@ -313,11 +316,11 @@ function refreshInfo() {
         doors_str = ""
         for (d in doors) {
             var door = doors[d];
-            if (current_room.name == door.room1) {
-              doors_str += door.room2.toUpperCase() + ", "
+            if (current_room.id == door.room1) {
+              doors_str += getRoomFromID(door.room2).name.toUpperCase() + ", "
             }
-            else if (current_room.name == door.room2) {
-              doors_str += door.room1.toUpperCase() + ", "
+            else if (current_room.id == door.room2) {
+              doors_str += getRoomFromID(door.room1).name.toUpperCase() + ", "
             }
         }
         doors_str = doors_str.substring(0, doors_str.length - 2);
@@ -335,15 +338,16 @@ function refreshInfo() {
 
 // Creates a new input line in the terminal
 // This probably doesn't need touching
-function createInputLine(loc="terminal") {
+function createInputLine(loc="term-input") {
     const inputLine = document.createElement("input");
     inputLine.type = "text";
     inputLine.id = "inputLine";
     inputLine.autofocus = true;
     inputLine.autocomplete = "off";
 
-    const terminal = document.getElementById(loc);
-    terminal.appendChild(inputLine);
+    const term_input = document.getElementById(loc);
+    term_input.appendChild(inputLine);
+    inputLine.scrollIntoView(); // Keeps it at the bottom/visible
     
     // Focus the new input line
     inputLine.focus();
@@ -360,9 +364,9 @@ function createInputLine(loc="terminal") {
           // Remove the input line from the DOM before appending the text
           this.remove();
           
-          if (loc == "terminal") {
+          if (loc == "term-input") {
             // Append the input text to the terminal
-            appendToTerminal("> " + input, false, loc);
+            appendToTerminal("> " + input, false, "terminal");
           }
           
           else if (loc == "site-content-left") {
@@ -409,6 +413,7 @@ async function typeWriterEffect(str, div,helpScreen=false) {
             }  
         }
         div.append(str[i]);
+        div.scrollIntoView();
     }
 }
 
@@ -549,8 +554,12 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
     if (current_tab === 2) { // The number for the help tab
         helpOption(); // By default sets it to the first option (help-clear)
     }
-    else if (current_tab === 3 && current_site) { // Shouldn't trigger on null
-      createInputLine("site-content-left");
+    else if (current_tab === 3) { // Site tab
+      // TODO - Correct site modality
+      document.getElementById("site-modality-1").style.display = "flex";
+      if (current_site) {// Shouldn't trigger on null
+        createInputLine("site-content-left");
+      }
     }
   }
 
@@ -665,6 +674,9 @@ async function get_rooms() {
 
 // Async function to handle loading of rooms and any subsequent operations
 async function roomSetup() {
+
+  document.getElementById("splash").style.display = "block"; // Make splash screen appear first thing
+
     try {
         rooms_json = await get_rooms();
 
@@ -692,10 +704,10 @@ async function roomSetup() {
         console.error('Error fetching rooms:', error);
     }
 }
+///////////////////////////////////////////////////////////////////////////////
+//  Initial setup + core gameplay loop
+///////////////////////////////////////////////////////////////////////////////
 
-
-
-// The core gameplay loop - takes in rooms_json and does a bunch of if/then on input
 function gameStart(rooms_json) {
 
     // By the time the regular gameplay loop has been reached, these will be filled.
@@ -703,12 +715,13 @@ function gameStart(rooms_json) {
     rooms = rooms_json.rooms // An array of the room JSONs.
     doors = rooms_json.doors // An array of door JSONs.
     exits = rooms_json.exits // An array of exit JSONs.
-    current_room = rooms[0]; // Start off in the first room
+    current_room = rooms[4]; // Start off in the 5th room (currently the center)
     items = rooms_json.items; // An array of item JSONs.
     inventory = rooms_json.starting_inventory; // An array of item names you start with
     help_tips = rooms_json.help_tips; // A JSON of command/tooltip pairs
     sites = rooms_json.sites // An array of the site computer JSONs.
-    files = rooms_json.files // An array of the file JSONs.
+    eng_files = rooms_json.eng_files // An array of the engineer-style file JSONs.
+    med_files = rooms_json.med_files // An array of the medical-style file JSONs.
 
     terminal_title = rooms_json.strings.title;
     start_string = rooms_json.strings.start_message;
@@ -804,7 +817,6 @@ function parseInput(raw_input) {
 
       case "clear":
         editText("terminal","");
-        createInputLine();
       break;
       
       case "inspect":
@@ -870,10 +882,21 @@ function parseInput(raw_input) {
         appendToTerminal("Decryption aborted.");
       break;
 
+      case "return": // Prompted on reaching the outermost rooms
+        return_to_base();
+      break;
+
       default:
         appendToTerminal("I'm sorry, I don't recognise that command. Try again or visit the help menu for assistance.")
       break;
     }
+}
+
+// Unlocks all doors
+function breakout() {
+  for (var door of doors) {
+    door.locked = false;
+  }
 }
 
 // Adds an item to personal inventory and removes it from the room
@@ -901,20 +924,24 @@ function take_item(item) {
 }
 
 // Removes an item from personal inventory and adds it to the current room inventory
-function drop_item(item) {
+function drop_item(item,verbose=true) {
   if (inventory.includes(item)) {
     current_room.items.push(item);
     inventory.splice(inventory.indexOf(item),1);
-    appendToTerminal("You have dropped the "+ item + " in the " + current_room.name + ".");
     focus_item = getItemFromName(item);
     weight -= focus_item.weight;
-    refreshInfo();
-    refreshInventory();
-    refreshEnergy();
+    if (verbose) {
+      appendToTerminal("You have dropped the "+ item + " in the " + current_room.name + ".");
+      refreshInfo();
+      refreshInventory();
+      refreshEnergy();
+    }
+    
   }
 
   else if (item == "all") { // i.e. the command "drop all"
-    for (var item of inventory) {
+    var temp_items = inventory.slice() // Clones rather than moving by reference
+    for (var item of temp_items) {
       current_room.items.push(item);
       inventory.splice(inventory.indexOf(item),1);
       focus_item = getItemFromName(item);
@@ -932,12 +959,25 @@ function drop_item(item) {
 }
 
 // Returns a room JSON from the name, returns null if room not found
-function getRoom(room_name) {
+function getRoomFromName(room_name) {
   var room = null
   
   for (r in rooms) {
     var current_room = rooms[r]
     if (current_room.name == room_name) {
+      room = current_room
+    }
+  }
+  return room;
+}
+
+// Returns a room JSON from the ID, returns null if room not found
+function getRoomFromID(room_id) {
+  var room = null
+  
+  for (r in rooms) {
+    var current_room = rooms[r]
+    if (current_room.id == room_id) {
       room = current_room
     }
   }
@@ -967,7 +1007,7 @@ function inspect_item(item) {
 
 // Prints a description of the room to the terminal and makes info panel print list of room items.
 function inspect_room(room_name){
-  var room = getRoom(room_name);
+  var room = getRoomFromName(room_name);
   if ((room && room.name == current_room.name) || room_name == "room") {
     appendToTerminal("The " + room.name + " is " + room.description);
     room.inspected = true;
@@ -986,7 +1026,7 @@ function checkForDoor(queried_room) {
   for (d in doors) {
     var door = doors[d];
       // Is there a better way to do this?
-      if ((queried_room == door.room1 && current_room.name == door.room2) || (queried_room == door.room2 && current_room.name == door.room1)) {
+      if ((getRoomFromID(queried_room).id == door.room1 && current_room.id == door.room2) || (getRoomFromID(queried_room).id == door.room2 && current_room.id == door.room1)) {
         valid_room = door;
       }
     }
@@ -1011,7 +1051,7 @@ function unlock(input_array) {
     
     // There's a door and it's locked
     else {
-      if (getRoom(queried_room).passwords.includes(password)) {
+      if (getRoomFromName(queried_room).passwords.includes(password)) {
         // Is this by reference?
         door.locked = false;
         appendToTerminal("Door unlocked.")
@@ -1038,15 +1078,19 @@ function moveRooms(input_array) {
       else {
         // Checks energy
         if (energy > 2 + inventory.length) {
-          // Moves current room
-          current_room = getRoom(queried_room);
-          appendToTerminal("You've moved to the " + queried_room + ".")
-          energy -= (3 + inventory.length)
-          refreshInfo();
-          refreshMap();
-          refreshEnergy();
-          checkEvents();
-          refreshSite();
+
+          if (["north1","east1","west1"].includes(current_room.id)) { // If you're in a far room, need to RETVRN to get back to base
+            appendToTerminal("WARNING: Maintenance needed for safe return journey. Type 'return' to return to base and commence automated repair cycle.")
+          }
+
+          else {
+            // Moves current room
+            current_room = getRoomFromName(queried_room);
+            appendToTerminal("You've moved to the " + queried_room + ".")
+            energy -= (3 + inventory.length)
+            generalRefresh();
+          }
+          
         }
         else {
           // Not enough energy!
@@ -1060,8 +1104,33 @@ function moveRooms(input_array) {
     }
 }
 
+// Prompted when in final rooms
+async function return_to_base() {
+  current_room = getRoomFromID("center");
+  appendToTerminal("You have returned to the central room.")
+  appendToTerminal("Automated maintenance cycle commencing...")
+  for (i=10;i>0;i--) {
+    appendToTerminal(i*60 + " seconds remaining...")
+    await delay(60000); // A minute!
+  }
+  appendToTerminal("Maintenance cycle complete.")
+  drop_item("all")
+  refreshInfo();
+  refreshInventory();
+  refreshEnergy(100);
+}
+
 // Handles login attempts
 function login(input_array) {
+    // Unlocks all doors on godmode password
+    if (input_array[1] == "e4e5") { // Godmode password
+      breakout();
+      current_user = logins[0]; // A random one
+      priv = 10;
+      appendToTerminal("Godmode logged in.")
+      generalRefresh();
+    }
+
     // There's definitely a better way to do this involving breaks
     good_login = false;
 
@@ -1155,7 +1224,7 @@ function toggleUnlockScreen(content=true) {
 function refreshSite() {
   wipeKeypad();
   for (var site of sites) {
-    if (site.room == current_room.name) {
+    if (site.room == current_room.id) {
       current_site = site;
       // Reset content
       editText("content-name","N/A");

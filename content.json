@@ -1,6 +1,7 @@
 {
     "rooms": [
       {
+        "id": "outside",
         "name": "outside",
         "description": "blustery, with three doors.",
         "items": [],
@@ -10,6 +11,7 @@
         "passwords":["sesame"]
       },
       {
+        "id": "north1",
         "name": "north1",
         "description": "dark and rainy.",
         "items": [],
@@ -19,6 +21,7 @@
         "passwords":["sesame"]
       },
       {
+        "id": "north2",
         "name": "north2",
         "description": "dark and rainy.",
         "items": [],
@@ -28,6 +31,7 @@
         "passwords":["sesame2"]
       },
       {
+        "id": "north3",
         "name": "north3",
         "description": "dark and rainy.",
         "items": [],
@@ -37,6 +41,7 @@
         "passwords":["sesame"]
       },
       {
+        "id": "center",
         "name": "center",
         "description": "cold and dimly lit. The wind is whistling under the door.",
         "items": ["newspaper"],
@@ -46,6 +51,7 @@
         "passwords":["sesame"]
       },
       {
+        "id": "south1",
         "name": "south1",
         "description": "dark and rainy.",
         "items": [],
@@ -55,6 +61,7 @@
         "passwords":["sesame"]
       },
       {
+        "id": "south2",
         "name": "south2",
         "description": "dark and rainy.",
         "items": [],
@@ -64,6 +71,7 @@
         "passwords":["sesame"]
       },
       {
+        "id": "east1",
         "name": "east1",
         "description": "dark and rainy.",
         "items": ["note"],
@@ -73,6 +81,7 @@
         "passwords":["sesame"]
       },
       {
+        "id": "east2",
         "name": "east2",
         "description": "dark and rainy.",
         "items": [],
@@ -82,6 +91,7 @@
         "passwords":["sesame"]
       },
       {
+        "id": "east3",
         "name": "east3",
         "description": "dark and rainy.",
         "items": [],
@@ -91,6 +101,7 @@
         "passwords":["sesame"]
       },
       {
+        "id": "west1",
         "name": "west1",
         "description": "dark and rainy.",
         "items": [],
@@ -100,6 +111,7 @@
         "passwords":["sesame"]
       },
       {
+        "id": "west2",
         "name": "west2",
         "description": "dark and rainy.",
         "items": [],
@@ -109,6 +121,7 @@
         "passwords":["sesame"]
       },
       {
+        "id": "west3",
         "name": "west3",
         "description": "dark and rainy.",
         "items": [],
@@ -340,7 +353,7 @@
       "start_message": "Welcome to the A.N.G.E.L. Station Control Terminal.\nWARNING: Misuse of this terminal may result in disciplinary action, injury, or death.\nPlease log in using your M-NET credentials to continue."
     },
 
-    "files": [
+    "eng_files": [
         {
             "filename": "2031-03-01.txt",
             "content": "Temperature: 27\nAttitude: 47\nSolar Activity: 0.0\nEnergy Usage: 902"
@@ -1140,6 +1153,609 @@
         {
             "filename": "2034-08-13.txt",
             "content": "Temperature: 113\nAttitude: 136\nSolar Activity: 0.0\nEnergy Usage: 895"    
+        }
+    ],
+
+    "med_files": [
+        {
+            "filename": "Batch 293542.txt",
+            "content": "Temperature (C): 41.7\nGrowth Rate (/day): 20\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -35.1\npH: -1.8\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 300 mg of intraosseal . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 232754.txt",
+            "content": "Temperature (C): 34.54\nGrowth Rate (/day): 85\nEnzyme p755: High\nElectropotential (mV/cm^2): -14.47\npH: -6.6\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 900 mg of subdermal . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 005688.txt",
+            "content": "Temperature (C): 41.5\nGrowth Rate (/day): 110\nEnzyme p755: Low\nElectropotential (mV/cm^2): 24.97\npH: 4.7\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 400 mg of intrathecal aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 049802.txt",
+            "content": "Temperature (C): 35.16\nGrowth Rate (/day): 143\nEnzyme p755: Low\nElectropotential (mV/cm^2): -37.36\npH: 5.3\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 700 mg of gaseous ."
+        },
+        {
+            "filename": "Batch 583496.txt",
+            "content": "Temperature (C): 41.47\nGrowth Rate (/day): 125\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 49.29\npH: 2.2\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 600 mg of intravenous aldosterone."
+        },
+        {
+            "filename": "Batch 240908.txt",
+            "content": "Temperature (C): 33.65\nGrowth Rate (/day): 102\nEnzyme p755: High\nElectropotential (mV/cm^2): -9.76\npH: 6.9\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 100 mg of gaseous ."
+        },
+        {
+            "filename": "Batch 998630.txt",
+            "content": "Temperature (C): 41.91\nGrowth Rate (/day): 69\nEnzyme p755: High\nElectropotential (mV/cm^2): -1.47\npH: -6.2\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 300 mg of subdermal norepinephrine. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 398114.txt",
+            "content": "Temperature (C): 31.4\nGrowth Rate (/day): 51\nEnzyme p755: Low\nElectropotential (mV/cm^2): -8.68\npH: 6.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 500 mg of subdermal . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 998446.txt",
+            "content": "Temperature (C): 30.44\nGrowth Rate (/day): 30\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 27.38\npH: 3.1\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 300 mg of gaseous . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 432964.txt",
+            "content": "Temperature (C): 30.92\nGrowth Rate (/day): 133\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -5.94\npH: -6.9\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 100 mg of gaseous aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 614923.txt",
+            "content": "Temperature (C): 34.97\nGrowth Rate (/day): 148\nEnzyme p755: High\nElectropotential (mV/cm^2): -35.48\npH: -1.9\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 700 mg of intraosseal . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 061172.txt",
+            "content": "Temperature (C): 33.34\nGrowth Rate (/day): 115\nEnzyme p755: Low\nElectropotential (mV/cm^2): 13.58\npH: 3.6\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 100 mg of subdermal norepinephrine. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 757591.txt",
+            "content": "Temperature (C): 33.32\nGrowth Rate (/day): 36\nEnzyme p755: High\nElectropotential (mV/cm^2): -27.12\npH: 0.9\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 100 mg of intraosseal aldosterone."
+        },
+        {
+            "filename": "Batch 551176.txt",
+            "content": "Temperature (C): 31.54\nGrowth Rate (/day): 114\nEnzyme p755: Low\nElectropotential (mV/cm^2): 0.29\npH: -6.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed unremarkably and was given 400 mg of intravenous aldosterone."
+        },
+        {
+            "filename": "Batch 287187.txt",
+            "content": "Temperature (C): 34.34\nGrowth Rate (/day): 145\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 43.87\npH: -2.6\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 900 mg of intraosseal norepinephrine."   
+        },
+        {
+            "filename": "Batch 556551.txt",
+            "content": "Temperature (C): 38.8\nGrowth Rate (/day): 167\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -4.41\npH: 0.4\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 300 mg of intravenous . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 095307.txt",
+            "content": "Temperature (C): 41.19\nGrowth Rate (/day): 133\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -38.38\npH: -3.2\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 300 mg of intrathecal aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 302404.txt",
+            "content": "Temperature (C): 38.8\nGrowth Rate (/day): 155\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -49.02\npH: 5.7\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 900 mg of intraosseal aldosterone."
+        },
+        {
+            "filename": "Batch 334989.txt",
+            "content": "Temperature (C): 30.74\nGrowth Rate (/day): 70\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 12.74\npH: -0.3\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 900 mg of subdermal aldosterone. Further testing is recommended."     
+        },
+        {
+            "filename": "Batch 326135.txt",
+            "content": "Temperature (C): 38.82\nGrowth Rate (/day): 66\nEnzyme p755: High\nElectropotential (mV/cm^2): -39.71\npH: -2.4\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 300 mg of subdermal ."
+        },
+        {
+            "filename": "Batch 149465.txt",
+            "content": "Temperature (C): 36.68\nGrowth Rate (/day): 19\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -24.35\npH: 4.2\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 200 mg of intrathecal norepinephrine. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 524815.txt",
+            "content": "Temperature (C): 30.73\nGrowth Rate (/day): 142\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -40.84\npH: 4.1\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 700 mg of gaseous norepinephrine. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 101353.txt",
+            "content": "Temperature (C): 37.46\nGrowth Rate (/day): 91\nEnzyme p755: High\nElectropotential (mV/cm^2): -11.83\npH: 3.6\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 800 mg of gaseous aldosterone."
+        },
+        {
+            "filename": "Batch 055960.txt",
+            "content": "Temperature (C): 35.62\nGrowth Rate (/day): 49\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 18.81\npH: -2.1\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed unremarkably and was given 200 mg of gaseous norepinephrine. Further testing is recommended."      
+        },
+        {
+            "filename": "Batch 105473.txt",
+            "content": "Temperature (C): 38.77\nGrowth Rate (/day): 51\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 32.25\npH: 6.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 300 mg of intravenous . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 512861.txt",
+            "content": "Temperature (C): 41.51\nGrowth Rate (/day): 87\nEnzyme p755: High\nElectropotential (mV/cm^2): -37.75\npH: 1.6\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed unremarkably and was given 500 mg of gaseous norepinephrine."
+        },
+        {
+            "filename": "Batch 417998.txt",
+            "content": "Temperature (C): 35.86\nGrowth Rate (/day): 90\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -17.87\npH: -4.7\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 200 mg of intrathecal aldosterone."
+        },
+        {
+            "filename": "Batch 081210.txt",
+            "content": "Temperature (C): 38.23\nGrowth Rate (/day): 86\nEnzyme p755: High\nElectropotential (mV/cm^2): 12.95\npH: -1.0\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 900 mg of subdermal norepinephrine. Further testing is recommended."        
+        },
+        {
+            "filename": "Batch 484170.txt",
+            "content": "Temperature (C): 37.03\nGrowth Rate (/day): 73\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 38.88\npH: 5.4\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 300 mg of gaseous norepinephrine."
+        },
+        {
+            "filename": "Batch 919616.txt",
+            "content": "Temperature (C): 38.74\nGrowth Rate (/day): 32\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -47.23\npH: 0.6\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 900 mg of intraosseal . Further testing is recommended."        
+        },
+        {
+            "filename": "Batch 587837.txt",
+            "content": "Temperature (C): 33.07\nGrowth Rate (/day): 114\nEnzyme p755: High\nElectropotential (mV/cm^2): -16.81\npH: -1.7\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 600 mg of subdermal . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 840701.txt",
+            "content": "Temperature (C): 36.03\nGrowth Rate (/day): 87\nEnzyme p755: Low\nElectropotential (mV/cm^2): -12.74\npH: 5.5\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 900 mg of intravenous norepinephrine."
+        },
+        {
+            "filename": "Batch 805498.txt",
+            "content": "Temperature (C): 39.26\nGrowth Rate (/day): 38\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -27.19\npH: -6.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 100 mg of subcutaneous ."
+        },
+        {
+            "filename": "Batch 525255.txt",
+            "content": "Temperature (C): 35.96\nGrowth Rate (/day): 135\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -4.12\npH: -4.3\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 700 mg of gaseous norepinephrine."
+        },
+        {
+            "filename": "Batch 272824.txt",
+            "content": "Temperature (C): 40.49\nGrowth Rate (/day): 163\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 16.56\npH: -3.7\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed unremarkably and was given 400 mg of gaseous norepinephrine."
+        },
+        {
+            "filename": "Batch 544030.txt",
+            "content": "Temperature (C): 34.5\nGrowth Rate (/day): 113\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 21.64\npH: 5.5\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 300 mg of gaseous ."
+        },
+        {
+            "filename": "Batch 404061.txt",
+            "content": "Temperature (C): 34.37\nGrowth Rate (/day): 127\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -2.03\npH: 4.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 400 mg of intraosseal . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 609120.txt",
+            "content": "Temperature (C): 37.72\nGrowth Rate (/day): 111\nEnzyme p755: Low\nElectropotential (mV/cm^2): -27.29\npH: -6.5\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed unremarkably and was given 100 mg of intraosseal norepinephrine. Further testing is recommended."  
+        },
+        {
+            "filename": "Batch 726108.txt",
+            "content": "Temperature (C): 38.58\nGrowth Rate (/day): 95\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 31.07\npH: -1.8\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 200 mg of subdermal ."
+        },
+        {
+            "filename": "Batch 110041.txt",
+            "content": "Temperature (C): 38.29\nGrowth Rate (/day): 66\nEnzyme p755: High\nElectropotential (mV/cm^2): -14.18\npH: 1.7\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 900 mg of subdermal aldosterone."
+        },
+        {
+            "filename": "Batch 606783.txt",
+            "content": "Temperature (C): 41.61\nGrowth Rate (/day): 85\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 15.97\npH: 6.0\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 900 mg of subcutaneous norepinephrine."
+        },
+        {
+            "filename": "Batch 771510.txt",
+            "content": "Temperature (C): 35.12\nGrowth Rate (/day): 159\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -8.37\npH: -2.0\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 800 mg of intravenous ."
+        },
+        {
+            "filename": "Batch 482890.txt",
+            "content": "Temperature (C): 34.59\nGrowth Rate (/day): 174\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -11.22\npH: -1.5\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 200 mg of intrathecal ."
+        },
+        {
+            "filename": "Batch 408349.txt",
+            "content": "Temperature (C): 41.28\nGrowth Rate (/day): 56\nEnzyme p755: High\nElectropotential (mV/cm^2): 20.04\npH: -6.0\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 800 mg of intravenous norepinephrine."
+        },
+        {
+            "filename": "Batch 933489.txt",
+            "content": "Temperature (C): 40.23\nGrowth Rate (/day): 139\nEnzyme p755: Low\nElectropotential (mV/cm^2): 32.21\npH: 5.9\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 200 mg of subcutaneous . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 059501.txt",
+            "content": "Temperature (C): 32.3\nGrowth Rate (/day): 115\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -20.34\npH: 5.3\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 700 mg of gaseous aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 488636.txt",
+            "content": "Temperature (C): 34.63\nGrowth Rate (/day): 141\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 27.17\npH: 6.0\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 700 mg of subdermal norepinephrine."  
+        },
+        {
+            "filename": "Batch 139425.txt",
+            "content": "Temperature (C): 38.53\nGrowth Rate (/day): 150\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 42.1\npH: -3.3\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 500 mg of subcutaneous norepinephrine."
+        },
+        {
+            "filename": "Batch 805934.txt",
+            "content": "Temperature (C): 35.7\nGrowth Rate (/day): 104\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 19.66\npH: 4.1\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 500 mg of intrathecal norepinephrine. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 236732.txt",
+            "content": "Temperature (C): 41.35\nGrowth Rate (/day): 115\nEnzyme p755: High\nElectropotential (mV/cm^2): -16.01\npH: 3.1\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 700 mg of intravenous . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 094447.txt",
+            "content": "Temperature (C): 37.01\nGrowth Rate (/day): 73\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 31.68\npH: -0.5\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed unremarkably and was given 500 mg of subcutaneous ."
+        },
+        {
+            "filename": "Batch 405018.txt",
+            "content": "Temperature (C): 32.89\nGrowth Rate (/day): 121\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -16.41\npH: 2.5\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed unremarkably and was given 400 mg of subdermal ."
+        },
+        {
+            "filename": "Batch 456228.txt",
+            "content": "Temperature (C): 40.0\nGrowth Rate (/day): 148\nEnzyme p755: High\nElectropotential (mV/cm^2): -25.04\npH: 5.0\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 700 mg of intrathecal ."
+        },
+        {
+            "filename": "Batch 966474.txt",
+            "content": "Temperature (C): 38.67\nGrowth Rate (/day): 54\nEnzyme p755: Low\nElectropotential (mV/cm^2): -35.14\npH: 2.3\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed unremarkably and was given 200 mg of intravenous aldosterone."
+        },
+        {
+            "filename": "Batch 351770.txt",
+            "content": "Temperature (C): 37.53\nGrowth Rate (/day): 57\nEnzyme p755: High\nElectropotential (mV/cm^2): 20.51\npH: 4.2\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 400 mg of intravenous norepinephrine. Further testing is recommended."        
+        },
+        {
+            "filename": "Batch 394779.txt",
+            "content": "Temperature (C): 32.6\nGrowth Rate (/day): 26\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 18.03\npH: 0.3\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed unremarkably and was given 200 mg of gaseous aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 667457.txt",
+            "content": "Temperature (C): 36.7\nGrowth Rate (/day): 161\nEnzyme p755: Low\nElectropotential (mV/cm^2): -6.01\npH: -0.6\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 500 mg of intravenous norepinephrine."
+        },
+        {
+            "filename": "Batch 912990.txt",
+            "content": "Temperature (C): 30.93\nGrowth Rate (/day): 128\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 49.05\npH: 0.3\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 600 mg of intrathecal ."
+        },
+        {
+            "filename": "Batch 042761.txt",
+            "content": "Temperature (C): 31.64\nGrowth Rate (/day): 104\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 27.8\npH: 6.2\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 400 mg of intraosseal . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 405914.txt",
+            "content": "Temperature (C): 35.87\nGrowth Rate (/day): 90\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 42.97\npH: -5.3\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 300 mg of subcutaneous . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 224604.txt",
+            "content": "Temperature (C): 34.48\nGrowth Rate (/day): 91\nEnzyme p755: High\nElectropotential (mV/cm^2): 15.71\npH: -1.6\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 600 mg of intraosseal aldosterone."
+        },
+        {
+            "filename": "Batch 344036.txt",
+            "content": "Temperature (C): 40.81\nGrowth Rate (/day): 111\nEnzyme p755: High\nElectropotential (mV/cm^2): -37.01\npH: 3.4\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 700 mg of intrathecal norepinephrine."
+        },
+        {
+            "filename": "Batch 158186.txt",
+            "content": "Temperature (C): 33.23\nGrowth Rate (/day): 23\nEnzyme p755: Low\nElectropotential (mV/cm^2): -41.95\npH: 4.9\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 200 mg of intraosseal aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 357404.txt",
+            "content": "Temperature (C): 41.61\nGrowth Rate (/day): 70\nEnzyme p755: High\nElectropotential (mV/cm^2): -49.35\npH: 1.9\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed unremarkably and was given 200 mg of intrathecal norepinephrine."
+        },
+        {
+            "filename": "Batch 880798.txt",
+            "content": "Temperature (C): 39.0\nGrowth Rate (/day): 77\nEnzyme p755: Low\nElectropotential (mV/cm^2): 0.26\npH: -1.7\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 100 mg of intravenous norepinephrine."
+        },
+        {
+            "filename": "Batch 268901.txt",
+            "content": "Temperature (C): 41.2\nGrowth Rate (/day): 166\nEnzyme p755: High\nElectropotential (mV/cm^2): 12.63\npH: -1.4\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 500 mg of subdermal aldosterone."
+        },
+        {
+            "filename": "Batch 656882.txt",
+            "content": "Temperature (C): 37.69\nGrowth Rate (/day): 124\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -6.13\npH: -1.9\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 900 mg of subcutaneous . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 743730.txt",
+            "content": "Temperature (C): 38.97\nGrowth Rate (/day): 17\nEnzyme p755: Low\nElectropotential (mV/cm^2): 48.15\npH: 5.3\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed unremarkably and was given 100 mg of subdermal aldosterone."
+        },
+        {
+            "filename": "Batch 568980.txt",
+            "content": "Temperature (C): 41.17\nGrowth Rate (/day): 149\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -42.17\npH: -6.2\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 600 mg of intrathecal norepinephrine. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 957325.txt",
+            "content": "Temperature (C): 32.59\nGrowth Rate (/day): 171\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -3.05\npH: 3.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed unremarkably and was given 600 mg of subcutaneous ."
+        },
+        {
+            "filename": "Batch 609197.txt",
+            "content": "Temperature (C): 32.93\nGrowth Rate (/day): 163\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -19.44\npH: -4.2\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 800 mg of subdermal aldosterone."
+        },
+        {
+            "filename": "Batch 350760.txt",
+            "content": "Temperature (C): 38.76\nGrowth Rate (/day): 167\nEnzyme p755: High\nElectropotential (mV/cm^2): -33.21\npH: 6.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 200 mg of intraosseal ."
+        },
+        {
+            "filename": "Batch 737418.txt",
+            "content": "Temperature (C): 41.99\nGrowth Rate (/day): 167\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 49.19\npH: 2.4\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 400 mg of intraosseal aldosterone."
+        },
+        {
+            "filename": "Batch 200361.txt",
+            "content": "Temperature (C): 39.17\nGrowth Rate (/day): 135\nEnzyme p755: Low\nElectropotential (mV/cm^2): 1.94\npH: -5.2\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 500 mg of subcutaneous ."
+        },
+        {
+            "filename": "Batch 592852.txt",
+            "content": "Temperature (C): 39.34\nGrowth Rate (/day): 155\nEnzyme p755: Low\nElectropotential (mV/cm^2): -11.22\npH: -3.6\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 700 mg of intravenous aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 314615.txt",
+            "content": "Temperature (C): 38.84\nGrowth Rate (/day): 69\nEnzyme p755: High\nElectropotential (mV/cm^2): -36.58\npH: 3.3\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 900 mg of subdermal aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 221265.txt",
+            "content": "Temperature (C): 40.37\nGrowth Rate (/day): 155\nEnzyme p755: High\nElectropotential (mV/cm^2): -5.77\npH: 4.2\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 200 mg of intrathecal ."
+        },
+        {
+            "filename": "Batch 685077.txt",
+            "content": "Temperature (C): 38.65\nGrowth Rate (/day): 117\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 16.51\npH: -6.6\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 500 mg of intravenous aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 461486.txt",
+            "content": "Temperature (C): 32.41\nGrowth Rate (/day): 144\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -0.57\npH: -3.4\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 900 mg of intravenous norepinephrine."
+        },
+        {
+            "filename": "Batch 572811.txt",
+            "content": "Temperature (C): 32.13\nGrowth Rate (/day): 119\nEnzyme p755: High\nElectropotential (mV/cm^2): 28.09\npH: -4.2\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 600 mg of intraosseal norepinephrine. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 239346.txt",
+            "content": "Temperature (C): 39.12\nGrowth Rate (/day): 26\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -22.41\npH: -2.2\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 700 mg of gaseous aldosterone."
+        },
+        {
+            "filename": "Batch 670962.txt",
+            "content": "Temperature (C): 35.11\nGrowth Rate (/day): 108\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -36.51\npH: -6.2\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed unremarkably and was given 100 mg of intravenous ."
+        },
+        {
+            "filename": "Batch 079029.txt",
+            "content": "Temperature (C): 35.54\nGrowth Rate (/day): 180\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -13.91\npH: -5.7\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 100 mg of intraosseal . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 817203.txt",
+            "content": "Temperature (C): 40.33\nGrowth Rate (/day): 78\nEnzyme p755: High\nElectropotential (mV/cm^2): 14.25\npH: -5.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed unremarkably and was given 900 mg of intraosseal ."
+        },
+        {
+            "filename": "Batch 471375.txt",
+            "content": "Temperature (C): 38.74\nGrowth Rate (/day): 153\nEnzyme p755: High\nElectropotential (mV/cm^2): -34.16\npH: -5.1\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 900 mg of intrathecal norepinephrine."
+        },
+        {
+            "filename": "Batch 898657.txt",
+            "content": "Temperature (C): 35.37\nGrowth Rate (/day): 173\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -34.97\npH: -3.9\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 300 mg of gaseous norepinephrine."  
+        },
+        {
+            "filename": "Batch 980904.txt",
+            "content": "Temperature (C): 33.46\nGrowth Rate (/day): 16\nEnzyme p755: Low\nElectropotential (mV/cm^2): -0.62\npH: 2.5\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 500 mg of intraosseal . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 382527.txt",
+            "content": "Temperature (C): 31.37\nGrowth Rate (/day): 109\nEnzyme p755: High\nElectropotential (mV/cm^2): -48.66\npH: -2.1\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 900 mg of intraosseal aldosterone. Further testing is recommended."   
+        },
+        {
+            "filename": "Batch 123659.txt",
+            "content": "Temperature (C): 34.45\nGrowth Rate (/day): 141\nEnzyme p755: Low\nElectropotential (mV/cm^2): 48.95\npH: -4.0\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 900 mg of gaseous norepinephrine."
+        },
+        {
+            "filename": "Batch 763568.txt",
+            "content": "Temperature (C): 34.33\nGrowth Rate (/day): 104\nEnzyme p755: Low\nElectropotential (mV/cm^2): -24.52\npH: -5.2\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 200 mg of intrathecal norepinephrine. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 348525.txt",
+            "content": "Temperature (C): 32.61\nGrowth Rate (/day): 66\nEnzyme p755: High\nElectropotential (mV/cm^2): 2.9\npH: -3.5\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 300 mg of subdermal aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 165406.txt",
+            "content": "Temperature (C): 37.3\nGrowth Rate (/day): 180\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 44.41\npH: -0.9\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 400 mg of gaseous . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 590270.txt",
+            "content": "Temperature (C): 37.29\nGrowth Rate (/day): 165\nEnzyme p755: Low\nElectropotential (mV/cm^2): -42.9\npH: -6.6\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed unremarkably and was given 500 mg of subcutaneous ."
+        },
+        {
+            "filename": "Batch 865475.txt",
+            "content": "Temperature (C): 37.1\nGrowth Rate (/day): 119\nEnzyme p755: High\nElectropotential (mV/cm^2): -38.28\npH: -4.0\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 300 mg of subcutaneous ."
+        },
+        {
+            "filename": "Batch 852477.txt",
+            "content": "Temperature (C): 38.6\nGrowth Rate (/day): 61\nEnzyme p755: High\nElectropotential (mV/cm^2): 21.72\npH: 2.8\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 400 mg of intraosseal norepinephrine. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 096905.txt",
+            "content": "Temperature (C): 30.88\nGrowth Rate (/day): 133\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 35.54\npH: -1.4\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 700 mg of intravenous ."
+        },
+        {
+            "filename": "Batch 384509.txt",
+            "content": "Temperature (C): 33.85\nGrowth Rate (/day): 171\nEnzyme p755: High\nElectropotential (mV/cm^2): 11.99\npH: -1.2\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 100 mg of subcutaneous ."
+        },
+        {
+            "filename": "Batch 970768.txt",
+            "content": "Temperature (C): 38.02\nGrowth Rate (/day): 73\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -48.51\npH: -4.4\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 300 mg of intravenous aldosterone."
+        },
+        {
+            "filename": "Batch 469589.txt",
+            "content": "Temperature (C): 39.94\nGrowth Rate (/day): 97\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -36.2\npH: 1.3\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed unremarkably and was given 200 mg of intrathecal aldosterone. Further testing is recommended."       
+        },
+        {
+            "filename": "Batch 694885.txt",
+            "content": "Temperature (C): 33.72\nGrowth Rate (/day): 105\nEnzyme p755: Low\nElectropotential (mV/cm^2): -47.31\npH: -3.2\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 300 mg of intrathecal ."
+        },
+        {
+            "filename": "Batch 815678.txt",
+            "content": "Temperature (C): 40.41\nGrowth Rate (/day): 64\nEnzyme p755: High\nElectropotential (mV/cm^2): 31.14\npH: 2.2\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 900 mg of intravenous ."
+        },
+        {
+            "filename": "Batch 545664.txt",
+            "content": "Temperature (C): 33.75\nGrowth Rate (/day): 22\nEnzyme p755: Low\nElectropotential (mV/cm^2): 44.46\npH: 0.5\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 100 mg of intrathecal norepinephrine. Further testing is recommended."    
+        },
+        {
+            "filename": "Batch 429136.txt",
+            "content": "Temperature (C): 35.92\nGrowth Rate (/day): 147\nEnzyme p755: Low\nElectropotential (mV/cm^2): -3.76\npH: -5.4\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 600 mg of intravenous ."
+        },
+        {
+            "filename": "Batch 524443.txt",
+            "content": "Temperature (C): 31.08\nGrowth Rate (/day): 110\nEnzyme p755: Low\nElectropotential (mV/cm^2): 44.24\npH: 5.1\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 800 mg of intraosseal aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 307373.txt",
+            "content": "Temperature (C): 41.29\nGrowth Rate (/day): 154\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 40.04\npH: 4.8\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 100 mg of intrathecal ."
+        },
+        {
+            "filename": "Batch 572156.txt",
+            "content": "Temperature (C): 37.92\nGrowth Rate (/day): 116\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -15.75\npH: -2.6\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 800 mg of intraosseal norepinephrine."        
+        },
+        {
+            "filename": "Batch 090615.txt",
+            "content": "Temperature (C): 34.89\nGrowth Rate (/day): 32\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 36.67\npH: -3.2\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 200 mg of intraosseal . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 184473.txt",
+            "content": "Temperature (C): 34.51\nGrowth Rate (/day): 65\nEnzyme p755: High\nElectropotential (mV/cm^2): -48.52\npH: 2.1\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 800 mg of gaseous ."
+        },
+        {
+            "filename": "Batch 256738.txt",
+            "content": "Temperature (C): 30.32\nGrowth Rate (/day): 148\nEnzyme p755: High\nElectropotential (mV/cm^2): -48.88\npH: 6.5\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 700 mg of subcutaneous aldosterone."
+        },
+        {
+            "filename": "Batch 076487.txt",
+            "content": "Temperature (C): 30.83\nGrowth Rate (/day): 74\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 49.74\npH: 0.3\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 600 mg of gaseous norepinephrine."
+        },
+        {
+            "filename": "Batch 904723.txt",
+            "content": "Temperature (C): 32.05\nGrowth Rate (/day): 50\nEnzyme p755: Low\nElectropotential (mV/cm^2): -5.92\npH: 0.2\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 700 mg of subdermal . Further testing is recommended."  
+        },
+        {
+            "filename": "Batch 243343.txt",
+            "content": "Temperature (C): 39.5\nGrowth Rate (/day): 133\nEnzyme p755: High\nElectropotential (mV/cm^2): -0.75\npH: -4.6\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 500 mg of intravenous norepinephrine. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 723193.txt",
+            "content": "Temperature (C): 33.08\nGrowth Rate (/day): 160\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 40.14\npH: -6.0\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 700 mg of subcutaneous aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 861125.txt",
+            "content": "Temperature (C): 41.47\nGrowth Rate (/day): 37\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 44.15\npH: -5.3\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 500 mg of gaseous . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 193798.txt",
+            "content": "Temperature (C): 30.99\nGrowth Rate (/day): 146\nEnzyme p755: Low\nElectropotential (mV/cm^2): -18.77\npH: -4.7\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 200 mg of intrathecal . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 222782.txt",
+            "content": "Temperature (C): 34.23\nGrowth Rate (/day): 27\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -22.93\npH: -2.1\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 400 mg of intravenous aldosterone. Further testing is recommended."   
+        },
+        {
+            "filename": "Batch 826581.txt",
+            "content": "Temperature (C): 40.65\nGrowth Rate (/day): 180\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -1.74\npH: -5.0\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 100 mg of intrathecal norepinephrine."
+        },
+        {
+            "filename": "Batch 836352.txt",
+            "content": "Temperature (C): 33.69\nGrowth Rate (/day): 117\nEnzyme p755: Low\nElectropotential (mV/cm^2): -44.39\npH: -2.3\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 600 mg of gaseous aldosterone."
+        },
+        {
+            "filename": "Batch 468778.txt",
+            "content": "Temperature (C): 33.69\nGrowth Rate (/day): 178\nEnzyme p755: Low\nElectropotential (mV/cm^2): 19.79\npH: 6.5\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 600 mg of intrathecal norepinephrine."       
+        },
+        {
+            "filename": "Batch 341391.txt",
+            "content": "Temperature (C): 35.95\nGrowth Rate (/day): 38\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -15.09\npH: 6.1\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 600 mg of gaseous aldosterone."
+        },
+        {
+            "filename": "Batch 839205.txt",
+            "content": "Temperature (C): 30.54\nGrowth Rate (/day): 112\nEnzyme p755: High\nElectropotential (mV/cm^2): 18.34\npH: 4.3\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 100 mg of subcutaneous aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 869435.txt",
+            "content": "Temperature (C): 37.52\nGrowth Rate (/day): 77\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -7.58\npH: 1.5\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 600 mg of intravenous norepinephrine."
+        },
+        {
+            "filename": "Batch 201933.txt",
+            "content": "Temperature (C): 30.29\nGrowth Rate (/day): 109\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 32.51\npH: 0.8\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 900 mg of intravenous ."
+        },
+        {
+            "filename": "Batch 563763.txt",
+            "content": "Temperature (C): 34.3\nGrowth Rate (/day): 114\nEnzyme p755: Low\nElectropotential (mV/cm^2): -1.54\npH: 0.7\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 400 mg of intravenous aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 655339.txt",
+            "content": "Temperature (C): 36.98\nGrowth Rate (/day): 134\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -41.86\npH: 4.6\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 400 mg of subcutaneous . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 662169.txt",
+            "content": "Temperature (C): 39.75\nGrowth Rate (/day): 13\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 6.86\npH: -6.3\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 100 mg of subdermal aldosterone. Further testing is recommended."      
+        },
+        {
+            "filename": "Batch 476643.txt",
+            "content": "Temperature (C): 34.03\nGrowth Rate (/day): 10\nEnzyme p755: High\nElectropotential (mV/cm^2): 14.63\npH: 5.2\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 600 mg of subdermal ."
+        },
+        {
+            "filename": "Batch 097159.txt",
+            "content": "Temperature (C): 30.77\nGrowth Rate (/day): 61\nEnzyme p755: Low\nElectropotential (mV/cm^2): 33.37\npH: 5.3\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 100 mg of subcutaneous aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 952673.txt",
+            "content": "Temperature (C): 36.5\nGrowth Rate (/day): 63\nEnzyme p755: Low\nElectropotential (mV/cm^2): 38.49\npH: -3.9\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed unremarkably and was given 300 mg of subcutaneous ."
+        },
+        {
+            "filename": "Batch 777882.txt",
+            "content": "Temperature (C): 31.78\nGrowth Rate (/day): 73\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -11.02\npH: -5.3\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 100 mg of intraosseal norepinephrine."
+        },
+        {
+            "filename": "Batch 541313.txt",
+            "content": "Temperature (C): 31.82\nGrowth Rate (/day): 148\nEnzyme p755: Low\nElectropotential (mV/cm^2): -29.6\npH: -4.8\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 200 mg of intraosseal ."
+        },
+        {
+            "filename": "Batch 217796.txt",
+            "content": "Temperature (C): 37.13\nGrowth Rate (/day): 180\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -31.31\npH: -5.9\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 700 mg of subcutaneous aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 282268.txt",
+            "content": "Temperature (C): 37.51\nGrowth Rate (/day): 90\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -19.05\npH: -4.5\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 600 mg of intrathecal norepinephrine."
+        },
+        {
+            "filename": "Batch 349411.txt",
+            "content": "Temperature (C): 32.2\nGrowth Rate (/day): 114\nEnzyme p755: High\nElectropotential (mV/cm^2): 14.38\npH: 4.8\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 200 mg of intravenous aldosterone."
+        },
+        {
+            "filename": "Batch 733391.txt",
+            "content": "Temperature (C): 32.71\nGrowth Rate (/day): 46\nEnzyme p755: Low\nElectropotential (mV/cm^2): 23.29\npH: -1.0\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 400 mg of subdermal aldosterone."
+        },
+        {
+            "filename": "Batch 688327.txt",
+            "content": "Temperature (C): 36.72\nGrowth Rate (/day): 165\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 21.21\npH: -2.7\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 800 mg of gaseous norepinephrine."
+        },
+        {
+            "filename": "Batch 709092.txt",
+            "content": "Temperature (C): 39.7\nGrowth Rate (/day): 35\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 26.16\npH: -0.2\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 100 mg of intravenous norepinephrine."
+        },
+        {
+            "filename": "Batch 108685.txt",
+            "content": "Temperature (C): 30.97\nGrowth Rate (/day): 129\nEnzyme p755: High\nElectropotential (mV/cm^2): 0.18\npH: 2.8\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 900 mg of subcutaneous norepinephrine."
+        },
+        {
+            "filename": "Batch 763192.txt",
+            "content": "Temperature (C): 33.24\nGrowth Rate (/day): 178\nEnzyme p755: Low\nElectropotential (mV/cm^2): -14.73\npH: 1.2\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 300 mg of gaseous . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 610574.txt",
+            "content": "Temperature (C): 30.86\nGrowth Rate (/day): 66\nEnzyme p755: Low\nElectropotential (mV/cm^2): -41.26\npH: -0.0\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 200 mg of intrathecal ."
+        },
+        {
+            "filename": "Batch 367478.txt",
+            "content": "Temperature (C): 37.05\nGrowth Rate (/day): 20\nEnzyme p755: High\nElectropotential (mV/cm^2): -34.25\npH: 1.1\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 400 mg of subcutaneous aldosterone."        
+        },
+        {
+            "filename": "Batch 705050.txt",
+            "content": "Temperature (C): 38.1\nGrowth Rate (/day): 25\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -6.13\npH: -2.2\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 800 mg of intrathecal norepinephrine."
+        },
+        {
+            "filename": "Batch 948253.txt",
+            "content": "Temperature (C): 40.71\nGrowth Rate (/day): 172\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -18.28\npH: 6.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 700 mg of subcutaneous ."
+        },
+        {
+            "filename": "Batch 350202.txt",
+            "content": "Temperature (C): 34.89\nGrowth Rate (/day): 129\nEnzyme p755: Low\nElectropotential (mV/cm^2): 5.05\npH: 0.9\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 900 mg of subcutaneous ."
+        },
+        {
+            "filename": "Batch 518327.txt",
+            "content": "Temperature (C): 35.24\nGrowth Rate (/day): 87\nEnzyme p755: High\nElectropotential (mV/cm^2): -32.96\npH: 0.1\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 200 mg of intraosseal norepinephrine."
+        },
+        {
+            "filename": "Batch 308029.txt",
+            "content": "Temperature (C): 41.78\nGrowth Rate (/day): 54\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 34.65\npH: 0.6\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 600 mg of gaseous norepinephrine. Further testing is recommended."     
+        },
+        {
+            "filename": "Batch 184956.txt",
+            "content": "Temperature (C): 40.59\nGrowth Rate (/day): 116\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -12.12\npH: -1.7\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 100 mg of subcutaneous aldosterone. Further testing is recommended."
+        },
+        {
+            "filename": "Batch 571421.txt",
+            "content": "Temperature (C): 30.78\nGrowth Rate (/day): 111\nEnzyme p755: Low\nElectropotential (mV/cm^2): -34.57\npH: 4.2\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 800 mg of subcutaneous ."
+        },
+        {
+            "filename": "Batch 464116.txt",
+            "content": "Temperature (C): 34.77\nGrowth Rate (/day): 172\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 45.36\npH: 4.1\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 200 mg of intraosseal . Further testing is recommended."
+        },
+        {
+            "filename": "Batch 966100.txt",
+            "content": "Temperature (C): 36.44\nGrowth Rate (/day): 36\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 22.94\npH: 0.1\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 500 mg of intraosseal norepinephrine."
         }
     ]
 }
