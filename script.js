@@ -369,7 +369,7 @@ function createInputLine(loc="term-input") {
             appendToTerminal("> " + input, false, "terminal");
           }
           
-          else if (loc == "site-content-left") {
+          else if (loc == "site-content-left") { // Only in modality 1
             editText(loc,"FILENAME QUERY: "+input)
             displaySearch(input);
           }
@@ -556,7 +556,13 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
     }
     else if (current_tab === 3) { // Site tab
       // TODO - Correct site modality
-      document.getElementById("site-modality-1").style.display = "flex";
+      var modality = current_site.modality // 0 or null for no site, 1 for file search, 2 for action buttons, 3 for decryption
+
+      // Makes current modality visible, all others hidden using some funky maths
+      document.getElementById("site-modality-" + modality).style.display = "flex"; 
+      document.getElementById("site-modality-" + ((modality + 1)%3+1)).style.display = "none"; 
+      document.getElementById("site-modality-" + ((modality - 1)%3+2)).style.display = "none"; 
+
       if (current_site) {// Shouldn't trigger on null
         createInputLine("site-content-left");
       }
@@ -639,10 +645,12 @@ function toggleKeypad() {
 
 // Resets all keys on the keypad to blank
 function wipeKeypad() {
-  var focus_key = document.getElementById("keypad-" + keynum.toString());
-  focus_key.style.backgroundColor = "";
-   
-  keypad[keynum] = 0
+  for (i=0;i<padsize**2;i++) {
+    var focus_key = document.getElementById("keypad-" + i.toString());
+    focus_key.style.backgroundColor = "";
+    keypad[i] = 0
+  }
+  keynum = 0; // Resets focus key to top left
 }
 
 // Takes a string, a character, and an index and returns the same string with that index replaced by the char
@@ -1088,6 +1096,7 @@ function moveRooms(input_array) {
             current_room = getRoomFromName(queried_room);
             appendToTerminal("You've moved to the " + queried_room + ".")
             energy -= (3 + inventory.length)
+            wipeKeypad();
             generalRefresh();
           }
           
@@ -1109,15 +1118,17 @@ async function return_to_base() {
   current_room = getRoomFromID("center");
   appendToTerminal("You have returned to the central room.")
   appendToTerminal("Automated maintenance cycle commencing...")
+  timing = 60000 // A minute in ms
+  if (inventory.includes('g')) { // TODO - Pull this out
+    timing = 6000 // Speeds up by 10
+  }
   for (i=10;i>0;i--) {
-    appendToTerminal(i*60 + " seconds remaining...")
-    await delay(60000); // A minute!
+    appendToTerminal(i*(timing/1000) + " seconds remaining...")
+    await delay(timing); 
   }
   appendToTerminal("Maintenance cycle complete.")
   drop_item("all")
-  refreshInfo();
-  refreshInventory();
-  refreshEnergy(100);
+  generalRefresh();
 }
 
 // Handles login attempts
