@@ -20,8 +20,13 @@ var start_string;
 var weight = 3; // Movement cost when nothing in inventory
 var sites;
 var current_site = null; // String equal to current site room
+var modality; // 0 or null for no site, 1 for file search, 2 for action buttons, 3 for decryption
 var eng_files;
 var med_files;
+var actionOptions = (document.getElementById("action-grid").getElementsByClassName("keypad-button")); // HTMLCollection of action buttons (all divs with class keypad-button in div action-grid)
+var actionStates = new Array(actionOptions.length).fill(0); // Will be filled with as many 0's as there are actionOptions
+var focusAction = 0; // Will cycle
+
 
 // Decryption text
 var d_size = 1800; // May well need to ramp this up to cover screen
@@ -84,7 +89,7 @@ function getRandomInt(n) {
 }
 
 // Edits text by ID
-function editText(loc,txt="") {
+function editTextByID(loc,txt="") {
 
     const location = document.getElementById(loc);
     location.textContent = txt;
@@ -110,7 +115,7 @@ function appendToTerminal(text, slowText=true,loc="terminal") {
 
 // A broader "refresh and write to box" function
 function newBoxText(box,txt) {
-  editText(box,"");
+  editTextByID(box,"");
   
   // The box title
   const title = document.createElement("h4");
@@ -356,8 +361,9 @@ function createInputLine(loc="term-input") {
     // This is what triggers whenever a command is entered!
     inputLine.addEventListener("keypress", function(event) {
       
-      document.getElementById("single-click").play();
-      if (event.key === "Enter") {
+      document.getElementById("single-click").play(); // Plays every time a key is pressed
+
+      if (event.key === "Enter") { // Does different things depending on the screen
           event.preventDefault();
           const input = this.value;
           
@@ -370,7 +376,7 @@ function createInputLine(loc="term-input") {
           }
           
           else if (loc == "site-content-left") { // Only in modality 1
-            editText(loc,"FILENAME QUERY: "+input)
+            editTextByID(loc,"FILENAME QUERY: "+input)
             displaySearch(input);
           }
           
@@ -425,7 +431,7 @@ async function typeLineEffect(box,str) {
   var lines = str.split("\r\n");
 
   const div = document.getElementById(box);
-  editText(box,"");
+  editTextByID(box,"");
 
   // The box title
   const title = document.createElement("h4");
@@ -459,26 +465,34 @@ function highlightKeypad() {
     var button = keypad_buttons[b];
 
     if ("keypad-" + keynum.toString() === button.id) {
-      button.style.border = "6px solid #008000";
-      button.style.width = "34px";
-      button.style.height = "34px";
+      highlightKey(button);
     }
 
     else if (button.className === "keypad-button") {
-      button.style.border = "3px solid #008000";
-      button.style.width = "40px";
-      button.style.height = "40px";
+      highlightKey(button,false);
     }
   }
 }
 
+// Highlights or unhighlights the specified keypad-button div
+function highlightKey(key, on=true) {
+  if (on) {
+    key.style.border = "6px solid #008000";
+    key.style.width = "34px";
+    key.style.height = "34px";
+  }
+  else {
+    key.style.border = "3px solid #008000";
+    key.style.width = "40px";
+    key.style.height = "40px";
+  }
+}
 
 // Function to highlight current_tip help button and display the relevant text
 function helpOption() {
 
   displayHelp(); // Displays current_tip text in the help display box
 
-  // TODO: Can I pull buttons directly from html?
   var help_buttons = document.getElementById("help-menu").children;
 
   for (b in help_buttons) {
@@ -532,6 +546,10 @@ function swapView(clickedView) {
   }
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//  Document-wide listeners
+///////////////////////////////////////////////////////////////////////////////
+
 // OnClick listener - if the user is pressing a button, activate, otherwise focus input line
 
 document.addEventListener("click", function() {
@@ -555,13 +573,15 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
         helpOption(); // By default sets it to the first option (help-clear)
     }
     else if (current_tab === 3) { // Site tab
-      // TODO - Correct site modality
-      var modality = current_site.modality // 0 or null for no site, 1 for file search, 2 for action buttons, 3 for decryption
+      
+      modality = current_site.modality // 0 or null for no site, 1 for file search, 2 for action buttons, 3 for decryption
 
-      // Makes current modality visible, all others hidden using some funky maths
+      // Makes current modality visible, all others hidden
       document.getElementById("site-modality-" + modality).style.display = "flex"; 
-      document.getElementById("site-modality-" + ((modality + 1)%3+1)).style.display = "none"; 
-      document.getElementById("site-modality-" + ((modality - 1)%3+2)).style.display = "none"; 
+      var wrong_modalities = [1,2,3].filter(item => item !== modality);
+      for (var m of wrong_modalities) {
+        document.getElementById("site-modality-" + m).style.display = "none"; 
+      }
 
       if (current_site) {// Shouldn't trigger on null
         createInputLine("site-content-left");
@@ -595,49 +615,93 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
     helpOption();
   }
 
-  // Keypad logic
+  // Site logic
   else if (current_tab === 3) {
-  
-    // Movement
-    if (["ArrowDown","ArrowUp","ArrowRight","ArrowLeft"].includes(event.key)) {
-      var padcount = padsize**2
-      switch (event.key) {
-        case "ArrowUp":
-          keynum = (keynum - padsize + padcount)%padcount;
-          break;
-        
-        case "ArrowDown":
-          keynum = (keynum + padsize)%padcount;
-          break;
-        
-        case "ArrowLeft":
-          keynum = (keynum - 1 + padcount)%padcount;
-          break;
-  
-        case "ArrowRight":
-          keynum = (keynum +1)%padcount;
-          break;
-  
-        default:
-          break;
-      }
-      highlightKeypad();
+    console.log(modality)
+
+    // Keypad logic
+    if (current_site && current_site.locked) {
+        // Movement
+        if (["ArrowDown","ArrowUp","ArrowRight","ArrowLeft"].includes(event.key)) {
+            var padcount = padsize**2
+            switch (event.key) {
+            case "ArrowUp":
+                keynum = (keynum - padsize + padcount)%padcount;
+                break;
+            
+            case "ArrowDown":
+                keynum = (keynum + padsize)%padcount;
+                break;
+            
+            case "ArrowLeft":
+                keynum = (keynum - 1 + padcount)%padcount;
+                break;
+
+            case "ArrowRight":
+                keynum = (keynum +1)%padcount;
+                break;
+
+            default:
+                break;
+            }
+            highlightKeypad();
+        }
+        else if (event.code == "Space" || event.code == "Enter") { // Would otherwise do event.key but this is more readable for Space (where key = ' ')
+            toggleKeypad()
+        }
     }
-    else if (event.code == "Space" || event.code == "Enter") { // Would otherwise do event.key but this is more readable
-      toggleKeypad()
+
+    // Action logic
+    else if (modality == 2) { // Should only trigger on unlocked action sites
+        switch (event.key) { // Will move focused action key up or down, or toggle on enter
+            case "ArrowUp":
+              highlightKey(actionOptions[focusAction], false) // Turn off current key
+              focusAction = (focusAction + actionOptions.length - 1)%actionOptions.length; // Same as mod of fA-1 without risk of negatives
+              highlightKey(actionOptions[focusAction]) // Turn on new key
+            break;
+
+            case "ArrowDown":
+              highlightKey(actionOptions[focusAction], false) // Turn off current key
+              focusAction = (focusAction + 1)%actionOptions.length;
+              highlightKey(actionOptions[focusAction]) // Turn on new key
+            break;
+
+            case " ": // Fall-through: triggers on both Space and Enter
+            case "Enter":
+              toggleDiv(actionOptions[focusAction]); // Toggles visual of the button on/off
+              actionStates[focusAction] = (actionStates[focusAction] + 1)%2; // Toggles it between 0 and 1
+              // TODO - Toggle text
+              // TODO - Pull text being toggled out to content.json
+            break;
+        }
     }
+
+    // Decrypt logic
+    else if (modality == 3) {
+        switch (event.key) { // Really only listening for Enter at the moment
+          case "Enter":
+            decrypt();
+          break;
+        }
+    }
+
   }
 })
+
+// Toggles the background of the passed div
+function toggleDiv(div) {
+    if (div.style.backgroundColor == "rgb(0, 128, 0)") { // This is what it becomes behind the scenes - equivalent to #008000
+        div.style.backgroundColor = "";
+      }
+      else {
+        div.style.backgroundColor = "rgb(0, 128, 0)";
+      }
+}
 
 // Toggles selected key on/off and compares to current code
 function toggleKeypad() {
   var focus_key = document.getElementById("keypad-" + keynum.toString());
-  if (focus_key.style.backgroundColor == "rgb(0, 128, 0)") { // This is what it becomes behind the scenes - equivalent to #008000
-    focus_key.style.backgroundColor = "";
-  }
-  else {
-    focus_key.style.backgroundColor = "rgb(0, 128, 0)";
-  }
+  toggleDiv(focus_key);
    
   keypad[keynum] = (keypad[keynum] + 1)%2 // Toggles the corresponding digit in the keypad between 1 and 0
   checkKeypad()
@@ -712,6 +776,7 @@ async function roomSetup() {
         console.error('Error fetching rooms:', error);
     }
 }
+
 ///////////////////////////////////////////////////////////////////////////////
 //  Initial setup + core gameplay loop
 ///////////////////////////////////////////////////////////////////////////////
@@ -776,7 +841,11 @@ function gameStart(rooms_json) {
       keypad_button.className = "keypad-button";
       site_login.append(keypad_button);
     }
+
     highlightKeypad(); // Initialises first key being selected
+
+    // Highlight the top actionOption
+    highlightKey(actionOptions[focusAction]);
     
     // Initialise the right hand side
     generalRefresh();
@@ -824,7 +893,7 @@ function parseInput(raw_input) {
       break;
 
       case "clear":
-        editText("terminal","");
+        editTextByID("terminal","");
       break;
       
       case "inspect":
@@ -1015,8 +1084,19 @@ function inspect_item(item) {
 
 // Prints a description of the room to the terminal and makes info panel print list of room items.
 function inspect_room(room_name){
-  var room = getRoomFromName(room_name);
-  if ((room && room.name == current_room.name) || room_name == "room") {
+  var room;
+  if (room_name == "room") {
+    room = current_room;
+  }
+  else if (getRoomFromName(room_name)) { // Should only trigger if this isn't null
+    room = getRoomFromName(room_name)
+  }
+  else { // There's no room name
+    appendToTerminal(room_name + " is not a valid room or item.")
+    return;
+  }
+    
+  if ((room && room.name == current_room.name) || room_name == "room") { // Checks if the room is the current room
     appendToTerminal("The " + room.name + " is " + room.description);
     room.inspected = true;
     refreshInfo();
@@ -1119,7 +1199,7 @@ async function return_to_base() {
   appendToTerminal("You have returned to the central room.")
   appendToTerminal("Automated maintenance cycle commencing...")
   timing = 60000 // A minute in ms
-  if (inventory.includes('g')) { // TODO - Pull this out
+  if (inventory.includes('g')) { // TODO - Pull this out to content.json
     timing = 6000 // Speeds up by 10
   }
   for (i=10;i>0;i--) {
@@ -1187,7 +1267,7 @@ function displayHelp() {
 
 // A broader "refresh and write to help box" function
 function newHelpText(box,topic,txt) {
-  editText(box,"");
+  editTextByID(box,"");
   
   // The box title
   const title = document.createElement("h4");
@@ -1206,10 +1286,10 @@ function newHelpText(box,topic,txt) {
 }
 
 // Checks to see if the keypad matches the combination
-// TODO: Update this to take advantage of current_site
+// TODO: Update this to take advantage of current_site (Should be done now)
 async function checkKeypad() {
-  if (keypad.toString() == combo.toString()) {
-    editText("site-login-title-text","Unlocked");
+  if (keypad.toString() == current_site.combo.toString()) {
+    editTextByID("site-login-title-text","Unlocked");
     await delay(500);
     toggleUnlockScreen(true)
   }
@@ -1238,12 +1318,12 @@ function refreshSite() {
     if (site.room == current_room.id) {
       current_site = site;
       // Reset content
-      editText("content-name","N/A");
-      editText("content-desc","No filenames searched yet");
+      editTextByID("content-name","N/A");
+      editTextByID("content-desc","No filenames searched yet");
 
       if (site.locked) { // Reset login screen
         toggleUnlockScreen(false)
-        editText("site-login-title-text","Please log in to the " + site.name + " site computer.");
+        editTextByID("site-login-title-text","Please log in to the " + site.name + " site computer.");
         document.getElementById("site-login").style.display = "grid";
         combo = site.combo;
         return;
@@ -1255,7 +1335,7 @@ function refreshSite() {
     }
     current_site = null // Means "There is currently no site"
     toggleUnlockScreen(false)
-    editText("site-login-title-text","This room does not have a site computer.");
+    editTextByID("site-login-title-text","This room does not have a site computer.");
     document.getElementById("site-login").style.display = "none";
   }
 }
@@ -1269,8 +1349,8 @@ function displaySearch(input_string) {
     output_string = "1 MATCH FOUND FOR " + input_string + " ON THIS DEVICE.";
     output_desc = current_site.file_content;
   }
-  editText("content-name", output_string);
-  editText("content-desc", output_desc);
+  editTextByID("content-name", output_string);
+  editTextByID("content-desc", output_desc);
 }
 
 // Launches a decryption screen + timer
@@ -1278,7 +1358,7 @@ async function decrypt() {
   d_screen = document.getElementById("decrypt-screen");
   d_screen.style.display = "block";
   document.getElementById("interactive-screen").style.display = "none"; // Hides everything else
-  editText("decrypt-text",d_text_array.join(""));
+  editTextByID("decrypt-text",d_text_array.join(""));
   delay(50); // Brief pause to give screen time to update
   for (t=0;t<d_size;t++) {// 10 minutes in 500ms intervals - will be slightly longer as this is just the delays
     for (c of d_array) { // Cycles over each character to begin with
@@ -1291,12 +1371,16 @@ async function decrypt() {
     d_text_array[d_array[random_char]] = final_text.charAt(d_array[random_char]); // Gets the corresponding remaining character index
     d_array.splice(random_char,1); // Should remove that character
     // TODO - Harmonise length of d_array and number of loops
-    editText("decrypt-text",d_text_array.join(""));
+    editTextByID("decrypt-text",d_text_array.join(""));
     await delay(100) // Taking a guess that the calculation will take 0.1s per loop? TODO - Check this 
   }
 
   // Once it's all done...
   document.getElementById("decrypt-timer-box").style.display = "flex"; // Shows finished box
+
+  // Change decryption screen
+  editTextByID("site-decrypt-title","Contents Decrypted");
+  editTextByID("site-decrypt-text", "We've been trying to reach you about your space station's extended warranty.") // TODO - Pull this text out to the content.json file
 
   await delay(3000) // Some time to admire the handiwork
   d_screen.style.display = "none"; // Hides the decryption screen
