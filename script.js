@@ -25,11 +25,12 @@ var current_site = null; // String equal to current site room
 var modality; // 0 or null for no site, 1 for file search, 2 for action buttons, 3 for decryption
 var eng_files;
 var med_files;
-var actionOptions = (document.getElementById("action-grid").getElementsByClassName("keypad-button")); // HTMLCollection of action buttons (all divs with class keypad-button in div action-grid)
+var actionOptions = (document.getElementById("dispenser").getElementsByClassName("keypad-button")); // HTMLCollection of action buttons (all divs with class keypad-button in div action-grid)
 var actionStates = new Array(actionOptions.length).fill(0); // Will be filled with as many 0's as there are actionOptions
 var focusAction = 0; // Will cycle
 var actionVariables; // All of the action-related text etc - from JSON
-var actionItem; // Name of item that you get in site modality 2 - pulled from JSON
+var actionItems; // Name/locations of items that you get in site modality 2 - pulled from JSON
+var actionItemsDropped = false; // Becomes true on first dispenser activation
 var combo; // Will be 16-digit 0/1 array pulled from JSON
 
 
@@ -41,7 +42,8 @@ var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 var final_text = "           1                                                                5                         64                                                            28                           88                                                          60                             80                                                        00                           4   001                                                     00   3                        49   008                 400000000000000006               900   48                         003  6005            10081              74004          1000  700                       79  8007 70005          10061               6005        20003  800  65                     90  3000  30000093        4000000000000000097     79000004  0004  00                       809  40002  72000006                          20000057  10009  400                         9009  50006      90001                     80007     40004  6008                            8009   9000       6001                7008       8008   4000                                0000    1003       902            700       7003    8000                                0   60003               0          87              70008   81                             1007   5006                                      4009    005                                0004     301                                7827    5000                                    00005                                          200001                                       200002                                    100004                                             760087                               80087                                                                                                                                            96                                  697                                                      30000665                26600003                              "
 d_text_array.forEach(function(c, charind, arr) { // Randomises the characters in d_text_array
   arr[charind] = chars.charAt(Math.floor(Math.random() * chars.length));
-}); 
+});
+var decryptComplete = false; // Becomes true once decryption completed
 
 
 // Tabs
@@ -90,6 +92,12 @@ function editTextByID(loc,txt="") {
 
     const location = document.getElementById(loc);
     location.textContent = txt;
+}
+
+// Takes a string and makes the first letter capitalised
+function makeCap(lowerString) {
+  var newStr = lowerString.charAt(0).toUpperCase() + lowerString.slice(1);
+  return newStr;
 }
 
 // Takes a string and a Boolean of whether to make it slow or all at once
@@ -153,7 +161,19 @@ function refreshInventory() {
     inventory_str = "None";
   }
   else {
-    inventory_str = inventory.join('\n');
+    var keyInv = [];
+    var regInv = [];
+    for (var i of inventory) { // Split out key items from regular items
+      if (getItemFromName(i).key) {
+        keyInv.push("**" + i + "**");
+      }
+      else {
+        regInv.push(i);
+      }
+    }
+
+    // Now rejoin them!
+    inventory_str = keyInv.join('\n') + '\n' + regInv.join('\n');
   }
   newBoxText("inventory",inventory_str);
 }
@@ -583,6 +603,18 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
       if (current_site) {// Shouldn't trigger on null
         createInputLine("site-content-left");
       }
+
+      if (modality == 2) { // Select the correct version of the action site
+        for (v of ["airlock","dispenser"]) { // TODO - Hard-coding these in seems...bad
+          if (v == current_site.type) {
+            document.getElementById(v).style.display = "grid";
+            updateActions(v);
+          }
+          else {
+            document.getElementById(v).style.display = "none";
+          }
+        }
+      }
     }
   }
 
@@ -614,7 +646,6 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
 
   // Site logic
   else if (current_tab === 3) {
-    console.log(modality)
 
     // Keypad logic
     if (current_site && current_site.locked) {
@@ -650,6 +681,8 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
 
     // Action logic
     else if (modality == 2) { // Should only trigger on unlocked action sites
+
+      if (current_site.type == "dispenser") { // Only if it's the site with multiple options
         switch (event.key) { // Will move focused action key up or down, or toggle on enter
             case "ArrowUp":
               highlightKey(actionOptions[focusAction], false) // Turn off current key
@@ -667,16 +700,30 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
             case "Enter":
               toggleDiv(actionOptions[focusAction]); // Toggles visual of the button on/off
               actionStates[focusAction] = (actionStates[focusAction] + 1)%2; // Toggles it between 0 and 1
-              updateActions();
+              updateActions("dispenser");
             break;
         }
+      }
+
+      else if (current_site.type == "airlock") {
+        switch (event.key) {
+          case " ": // Fall-through: triggers on both Space and Enter
+          case "Enter":
+            toggleDiv(document.getElementById("airlock-action-0-button")); // Toggles visual of the button on/off
+            // TODO - Remove all solid items
+            updateActions("airlock");
+          break;
+        }
+      }
     }
 
     // Decrypt logic
     else if (modality == 3) {
         switch (event.key) { // Really only listening for Enter at the moment
           case "Enter":
-            decrypt();
+            if (!decryptComplete) { // Only decrypt if you haven't already
+              decrypt();
+            }
           break;
         }
     }
@@ -711,6 +758,7 @@ function wipeKeypad() {
     keypad[i] = 0
   }
   keynum = 0; // Resets focus key to top left
+  highlightKeypad(); // Resets visual
 }
 
 // Takes a string, a character, and an index and returns the same string with that index replaced by the char
@@ -846,15 +894,13 @@ function gameStart(rooms_json) {
     // Highlight the top actionOption
     highlightKey(actionOptions[focusAction]);
 
-    // Allocate actionItem
-    actionItem = actionVariables.actionItem;
-
-    // Initialise action site text
-    updateActions();
+    // Create array of action_item JSONs
+    actionItems = rooms_json.action_items;
 
     // Update decryption text
-    editTextByID("site-decrypt-title",rooms_json["decryption_variables"]["predecryptTitle"]);
-    editTextByID("site-decrypt-text",rooms_json["decryption_variables"]["predecryptText"]);
+    editTextByID("site-decrypt-title",rooms_json.decryption_variables.predecryptTitle);
+    editTextByID("site-decrypt-text",rooms_json.decryption_variables.predecryptText);
+    
     
     // Initialise the right hand side
     generalRefresh();
@@ -1150,7 +1196,7 @@ function moveRooms(input_array) {
     if (door != null) {
       // Checks if door is unlocked
       if (door.locked) {
-        appendToTerminal("The door to " + queried_room + " is locked. Enter 'unlock [room-name] [password] to unlock.");
+        appendToTerminal("The door to " + makeCap(queried_room) + " is locked. Enter 'unlock [room-name] [password] to unlock.");
       }
       else {
         // Checks energy
@@ -1163,7 +1209,7 @@ function moveRooms(input_array) {
           else {
             // Moves current room
             current_room = getRoomFromName(queried_room);
-            appendToTerminal("You've moved to " + queried_room + ".")
+            appendToTerminal("You've moved to " + makeCap(queried_room) + ".")
             energy -= (3 + inventory.length)
             wipeKeypad();
             generalRefresh();
@@ -1187,16 +1233,28 @@ async function return_to_base() {
   current_room = getRoomFromID("center");
   appendToTerminal("You have returned to the central room.")
   appendToTerminal("Automated maintenance cycle commencing...")
-  timing = 60000 // A minute in ms
+  timing = 1000 * (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline)
   if (inventory.includes(rooms_json.speed_item)) {
-    timing = 6000 // Speeds up by 10
+    timing = 6000 // Speeds up to a minute
   }
-  for (i=10;i>0;i--) {
+  for (i=10;i>0;i--) { // Will have a marker every 1/10th of the time
     appendToTerminal(i*(timing/1000) + " seconds remaining...")
     await delay(timing); 
   }
   appendToTerminal("Maintenance cycle complete.")
-  drop_item("all")
+  appendToTerminal("You have recovered:")
+  var temp_items = inventory.slice(); // Clone by value not reference - avoids issues with slicing list while iterating through it
+  for (var i of temp_items) {
+    var item = getItemFromName(i);
+    appendToTerminal(item.name); // TODO - Where it was picked up?
+    if (!item.key) { // Dropping it
+      if (item.weight > 0) {
+        current_room.items.push(item.name); // Only solid non-key items end up in center inventory
+      }
+      inventory.splice(inventory.indexOf(item.name),1); // Remove item
+      weight -= item.weight; // Remove weight (should only matter for solid items)
+    }
+  }
   generalRefresh();
 }
 
@@ -1312,7 +1370,7 @@ function refreshSite() {
 
       if (site.locked) { // Reset login screen
         toggleUnlockScreen(false)
-        editTextByID("site-login-title-text","Please log in to the " + site.name + " site computer.");
+        editTextByID("site-login-title-text","Please log in to the " + makeCap(getRoomFromID(site.room).name) + " site computer.");
         document.getElementById("site-login").style.display = "grid";
         combo = site.combo;
         return;
@@ -1349,7 +1407,8 @@ async function decrypt() {
   document.getElementById("interactive-screen").style.display = "none"; // Hides everything else
   editTextByID("decrypt-text",d_text_array.join(""));
   delay(50); // Brief pause to give screen time to update
-  for (t=0;t<d_size;t++) {// 10 minutes in 500ms intervals - will be slightly longer as this is just the delays
+  var decrypt_pause = (rooms_json.decryption_variables.approx_decrypt_time_in_seconds - 20) * 1000 / d_size; // In theory should get the correct length of pause per loop; accounted for 20 seconds of actual calcs.
+  for (t=0;t<d_size;t++) {// d_size is currently 1800.
     for (c of d_array) { // Cycles over each character to begin with
       if (getRandomInt(20) < 1) { // 5% chance of any character changing each cycle
         d_text_array[c] = chars.charAt(getRandomInt(62))
@@ -1361,43 +1420,77 @@ async function decrypt() {
     d_array.splice(random_char,1); // Should remove that character
     // TODO - Harmonise length of d_array and number of loops
     editTextByID("decrypt-text",d_text_array.join(""));
-    await delay(100) // Taking a guess that the calculation will take 0.1s per loop? TODO - Check this 
+    await delay(decrypt_pause) // Taking a guess that the calculation will take 0.1s per loop? TODO - Check this 
   }
 
   // Once it's all done...
   document.getElementById("decrypt-timer-box").style.display = "flex"; // Shows finished box
 
   // Change decryption screen
-  editTextByID("site-decrypt-title","Contents Decrypted");
-  editTextByID("site-decrypt-text", "We've been trying to reach you about your space station's extended warranty.") // TODO - Pull this text out to the content.json file
+  editTextByID("site-decrypt-title",rooms_json.decryption_variables.postdecryptTitle);
+  editTextByID("site-decrypt-text",rooms_json.decryption_variables.postdecryptText);
 
   await delay(3000) // Some time to admire the handiwork
+  decryptComplete = true; // Mark the decryption done!
+
   d_screen.style.display = "none"; // Hides the decryption screen
   document.getElementById("interactive-screen").style.display = "flex"; // Shows everything else again
 }
 
-// Checks actionStates for what to do
-function updateActions() {
-  var states = ["Off","On"] // 0 is Off, 1 is On - translating int to str
-  for (i in actionStates) { // Deliberately going "in" not "of" for easy index referencing
-    var state = actionStates[i]; // 0 or 1
-    var varTextName = "action" + i + "Text" + states[state];
-    var varTitleName = "action" + i + "Title" + states[state];
-    console.log(varTextName);
-    var newText = actionVariables[varTextName];
-    console.log(newText);
-    var textLoc = "action-" + i + "-status";
-    var titleLoc = "action-" + i + "-title";
-    editTextByID(textLoc,actionVariables[varTextName]);
-    editTextByID(titleLoc,actionVariables[varTitleName]);
+// Checks actionStates for what to do - should just rely on currentSite
+// TODO - Make it fully general for a range of 2-modalities
+async function updateActions(typeName) {
+  var states = ["pre","post"] // 0 is Off, 1 is On - translating int to str
+  if (typeName == "dispenser") {
+    for (i in actionStates) { // Deliberately going "in" not "of" for easy index referencing
+      var state = actionStates[i]; // 0 or 1
+      updateActionText(typeName,i,states[state]);
+    }
   }
-
-  // Gives item if allowed and not already present
-  if (actionStates[0] && !inventory.includes(actionItem)) {
-    inventory.push(actionItem)
-    refreshInventory() // TODO - Test this given will only happen in site
+  else if (typeName == "airlock") {
+    updateActionText(typeName,0,"post");
+    await delay(3000);
+    updateActionText(typeName,0,"pre");
+    toggleDiv(document.getElementById("airlock-action-0-button"));
+    
+    // Dumps solid items!
+    var temp_inv = inventory.slice(); // Clone by value
+    for (var i of temp_inv) {
+      item = getItemFromName(i);
+      if (item.weight > 0 && !item.key) {
+        inventory.splice(inventory.indexOf(item),1);
+        weight -= item.weight;
+      }
+    }
+    generalRefresh();
   }
+  
 
+  // Drops item if allowed and not already done
+  if (actionStates[0] && !actionItemsDropped) {
+    for (var item of actionItems) {
+      getRoomFromID(item.room).items.push(item.name); // Drops items into room
+      console.log(item.name + " is now in " + item.room);
+    }
+    actionItemsDropped = true;
+  }
+}
+
+// Does the repetitive part of the above (pulling out the correct text and editing it) - e.g. "airlock, 0, 'pre'"
+function updateActionText(typeName,actionNum,state) {
+  var varTextName = state + "_text";
+  var varTitleName = state + "_title";
+
+  var textLoc = typeName + "-action-" + actionNum + "-status";
+  var titleLoc = typeName + "-action-" + actionNum + "-title";
+
+  editTextByID(textLoc,current_site.actions[actionNum][varTextName]);
+  editTextByID(titleLoc,current_site.actions[actionNum][varTitleName]);
+}
+
+// Creates action buttons for site modality 2 based on what's in the JSON
+function createActionSite() {
+  // Nothing here yet!
 }
 
 // Call the function to set up the rooms

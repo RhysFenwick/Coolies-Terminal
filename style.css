@@ -107,7 +107,7 @@ Scrollbar settings - don't work on Firefox :(
   animation: boxShadow 1.6s infinite;
 }
 
-#action-grid {
+.action-grid {
   display: grid;
   width: 90%;
   grid-template-columns: 30% 10% 60%;

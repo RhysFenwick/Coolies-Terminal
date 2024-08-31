@@ -1,4 +1,14 @@
 {
+
+    "room-notes-for-connor":[
+      "Rooms! Don't touch the id's - those are used internally to reference the rooms (although the players should never see them).",
+      "Names can be whatever you want (as long as it's lowercase, one word, and unique). Mapname must be exactly 5 characters, all caps (although the 5 can include spaces.",
+      "Items are a comma-separated list of the items in the room (e.g. ['item1','item2'] (but with double quotes). Names must match the names in the item array below.",
+      "I assume you just want one password per room, although let me know if that changes.",
+      "The description will appear after 'the room is ', e.g. 'dark and stormy, with two doors.' becomes 'the room is dark and stormy, with two doors.'",
+      "Leave 'inspected' and 'coords' as is."
+    ],
+
     "rooms": [
       {
         "id": "outside",
@@ -37,7 +47,7 @@
         "items": [],
         "inspected": false,
         "coords": [3,2],
-        "mapname": "NRTH3",
+        "mapname": "MEDIC",
         "passwords":["sesame"]
       },
       {
@@ -52,86 +62,90 @@
       },
       {
         "id": "south1",
-        "name": "south1",
+        "name": "engine",
         "description": "dark and rainy.",
         "items": [],
         "inspected": false,
         "coords": [3,5],
-        "mapname": "SOUT1",
+        "mapname": "ENGRM",
         "passwords":["sesame"]
       },
       {
         "id": "south2",
-        "name": "south2",
+        "name": "reactor",
         "description": "dark and rainy.",
         "items": [],
         "inspected": false,
         "coords": [3,4],
-        "mapname": "SOUT2",
+        "mapname": "REACT",
         "passwords":["sesame"]
       },
       {
         "id": "east1",
-        "name": "east1",
+        "name": "cupola",
         "description": "dark and rainy.",
         "items": ["note"],
         "inspected": false,
         "coords": [6,3],
-        "mapname": "EAST1",
+        "mapname": "CUPLA",
         "passwords":["sesame"]
       },
       {
         "id": "east2",
-        "name": "east2",
+        "name": "decontamination",
         "description": "dark and rainy.",
         "items": [],
         "inspected": false,
         "coords": [5,3],
-        "mapname": "EAST2",
+        "mapname": "DECON",
         "passwords":["sesame"]
       },
       {
         "id": "east3",
-        "name": "east3",
+        "name": "navigation",
         "description": "dark and rainy.",
         "items": [],
         "inspected": false,
         "coords": [4,3],
-        "mapname": "EAST3",
+        "mapname": "NAVIG",
         "passwords":["sesame"]
       },
       {
         "id": "west1",
-        "name": "west1",
+        "name": "laboratory",
         "description": "dark and rainy.",
         "items": [],
         "inspected": false,
         "coords": [0,3],
-        "mapname": "WEST1",
+        "mapname": " LAB ",
         "passwords":["sesame"]
       },
       {
         "id": "west2",
-        "name": "west2",
+        "name": "communications",
         "description": "dark and rainy.",
         "items": [],
         "inspected": false,
         "coords": [1,3],
-        "mapname": "WEST2",
+        "mapname": "COMMS",
         "passwords":["sesame"]
       },
       {
         "id": "west3",
-        "name": "west3",
+        "name": "telescope",
         "description": "dark and rainy.",
         "items": [],
         "inspected": false,
         "coords": [2,3],
-        "mapname": "WEST3",
+        "mapname": "TLSCP",
         "passwords":["sesame"]
       }
     ],
     
+    "login-notes-for-connor":[
+      "You can make as many of these as you like! As long as priv > 1, they'll be enough to start the game. The most significant thing is the notes, which appear in the info panel.",
+      "uid + password have to be lowercase, no spaces."
+    ],
 
     "logins": [
       {
@@ -148,6 +162,11 @@
         "priv": 1,
         "notes": "None"
       }
+    ],
+
+    "exit-notes-for-connor":[
+      "A.K.A airlocks - doors to the outside. At some point I'll add the one to center, but if you're reading this I haven't yet.",
+      "These all start off locked, but that might need to change. Probably don't need to touch these, overall."
     ],
 
     "exits": [
@@ -168,13 +187,18 @@
       }
     ],
 
+    "door-notes-for-connor":[
+      "Doors (not including the four that lead outside). Shouldn't have to touch most of this - a lot of this was written for different potential ways of moving around that we didn't go with.",
+      "The big one here is keys - those are the names of the items that can be used (and destroyed) to open a room. Currently the only one is the door from center -> south2.",
+      "I assume by default you want all the doors to all start closed and locked, but you can change that if you want."
+    ],
 
     "doors": [
       {
         "room1": "north1",
         "room2": "north2",
         "locked": true,
-        "keys": ["mystery","password"],
+        "keys": [],
         "uids":[],
         "open": false
       },
@@ -198,7 +222,7 @@
         "room1": "south2",
         "room2": "center",
         "locked": true,
-        "keys": [],
+        "keys": ["secretkey"],
         "uids":[],
         "open": false
       },
@@ -285,13 +309,19 @@
       }
     ],
 
+    "site-notes-for-connor":[
+      "The shorter name for a schmerminal. Each one needs a room ID (not name!) - one site per room. The site name is just the name (not ID!) of the room it's in + 'computer'.",
+      "Modality is the type of site. 1 is lots-of-files, 2 is interactive-buttons (i.e. the one that drops a bunch of items and the one that gets rid of your solid items), 3 is decrypt.",
+      "Currently there's one modality 1, two modality 2 ('airlock' and 'dispenser'), and one modality 3 - keep it that way!",
+      "The modality 2 sites have actions - each action is an on/off switch, with both the title and text settable below. The first action in 'dispenser' is the one that dispenses the items when activated.",
+      "Locked will always start set to true. Broken currently isn't used, just leave it set to false.",
+      "Combo is the keypad combo - one for on, zero for off, no quotation marks."
+    ],
+
     "sites": [
       {
         "room":"north1",
-        "name":"Botany",
         "modality": 3,
-        "file_name":"Algae_fluorescence_microscopy_snapshots.omex",
-        "file_content":"It is an image file with hundreds of microscope images of plant cells.",
         "broken":false,
         "locked":true,
         "combo": [
@@ -302,11 +332,25 @@
         ]
       },
       {
-        "room":"north2",
-        "name":"Engineering",
+        "room":"south2",
         "modality": 2,
-        "file_name":"Obvious_Clue.txt",
-        "file_content":"Note to self: it would be SO easy to murder someone on this station lol",
+        "type": "dispenser",
+        "actions": [
+          {
+            "pre_title":"Action 1",
+            "post_title":"Action 1 Complete",
+
+            "pre_text":"Press for item",
+            "post_text":"Item acquired!"
+          },
+          {
+            "pre_title":"Run Maintenance",
+            "post_title":"Maintenance Complete",
+
+            "pre_text":"Last cycle: N/A",
+            "post_text":"Last cycle: 178 days 18 hours 4 minutes."
+          }
+        ],
         "broken":false,
         "locked":true,
         "combo": [
@@ -318,7 +362,6 @@
       },
       {
         "room":"north3",
-        "name":"Medical",
         "modality": 1,
         "file_name":"Obvious_Clue.txt",
         "file_content":"Note to self: it would be SO easy to murder someone on this station lol",
@@ -330,55 +373,129 @@
           1,0,0,0,
           1,1,1,1
         ]
+      },
+      {
+        "room":"east3",
+        "modality": 2,
+        "type": "airlock",
+        "actions": [
+          {
+            "pre_title":"Airlock [Closed]",
+            "post_title":"Airlock [Open].",
+
+            "pre_text":"WARNING: Unsecured items may be lost.",
+            "post_text":"Airlock activated."
+          }
+        ],
+        "broken":false,
+        "locked":true,
+        "combo": [
+          1,1,1,0,
+          1,0,0,0,
+          1,1,0,0,
+          1,0,0,0
+        ]
       }
 
     ],
 
 
-    "items": [
-      {"name":"newspaper", "description":"The yellowing paper is barely readable. The headline is about last year's election.","weight":1},
-      {"name":"knife", "description":"Worn, but still sharp enough to hurt.","weight":1},
-      {"name":"note", "description":"It reads 'To do: change the admin login away from the default.'","weight":1},
-      {"name":"paperweight", "description":"A pyramid of smoked quartz the size of a fist.","weight":1},
-      {"name":"diary", "description":"It's written in a language you don't recognise - perhaps some sort of cipher.","weight":1},
-      {"name":"a", "description":"Filler item for testing.","weight":1},
-      {"name":"b", "description":"Filler item for testing.","weight":1},
-      {"name":"c", "description":"Filler item for testing.","weight":1},
-      {"name":"d", "description":"Filler item for testing.","weight":1},
-      {"name":"e", "description":"Filler item for testing.","weight":1},
-      {"name":"f", "description":"Filler item for testing.","weight":1},
-      {"name":"g", "description":"Filler item for testing.","weight":1},
-      {"name":"h", "description":"Filler item for testing.","weight":1},
-      {"name":"i", "description":"Filler item for testing.","weight":1},
-      {"name":"speedboost", "description":"Reduces return time to 1 minute.","weight":0},
-      {"name":"actionitem","description":"You get this item after flicking a switch in Engineering.","weight":0}
+    "items-notes-for-connor": [
+      "Item names must be unique, one word, and all lowercase. The spelling must be the same as in starting_inventory,action_items, or the room they're in - and they can only be in one place at a time.",
+      "weight dictates whether the object is solid or ephemeral. Ephemeral object have a weight of 0 and, if they're not key items, disappear on returning to the center.",
+      "key is whether the item is a key item or not - must be true/false with no capitals or quotation marks. (Key = can't be removed by normal means, highlighted in the inventory.)"
+    ],
 
+    "items": [
+      {"name":"newspaper", "description":"The yellowing paper is barely readable. The headline is about last year's election.","weight":1,"key":false},
+      {"name":"knife", "description":"Worn, but still sharp enough to hurt.","weight":1,"key":false},
+      {"name":"note", "description":"It reads 'To do: change the admin login away from the default.'","weight":1,"key":false},
+      {"name":"paperweight", "description":"A pyramid of smoked quartz the size of a fist.","weight":1,"key":false},
+      {"name":"diary", "description":"It's written in a language you don't recognise - perhaps some sort of cipher.","weight":1,"key":false},
+      {"name":"a", "description":"Filler item for testing.","weight":1,"key":false},
+      {"name":"b", "description":"Filler item for testing.","weight":1,"key":false},
+      {"name":"c", "description":"Filler item for testing.","weight":1,"key":false},
+      {"name":"d", "description":"Filler item for testing.","weight":1,"key":false},
+      {"name":"e", "description":"Filler item for testing.","weight":1,"key":false},
+      {"name":"f", "description":"Filler item for testing.","weight":1,"key":false},
+      {"name":"g", "description":"Filler item for testing.","weight":1,"key":false},
+      {"name":"h", "description":"Filler item for testing.","weight":1,"key":false},
+      {"name":"i", "description":"Filler item for testing.","weight":1,"key":false},
+      {"name":"speedboost", "description":"Reduces return time to 1 minute.","weight":0,"key":true},
+      {"name":"actionitem","description":"You get this item after flicking a switch in Engineering.","weight":0,"key":true},
+      {"name":"secretkey","description":"Opens the door to South 2 from Center.","weight":0,"key":true}
+
+    ],
+
+    "starting-inventory-notes-for-connor":[
+      "Just have to match the item names above and not be repeated in rooms/action_items/decrypt_items etc."
     ],
     
     "starting_inventory":["a","b","c","d","e","speedboost"],
 
+    "return-time-variables-notes-for-connor":[
+      "The per-weight time is how much extra time is added each unit of weight, in seconds - e.g. if it's 30, an item of weight 2 will extend return by a minute",
+      "Baseline time is how long the return is with 0 weight, in seconds.",
+      "Getting the speed_item sets it to 1 minute regardless of weight or these values.",
+      "speed_item is 'the (key) item that speeds up transit.'"
+    ],
+
+    "return_time_per_weight":30,
+    "return_time_baseline":300,
     "speed_item":"speedboost",
 
-    "action_variables": {
-      "actionItem":"actionitem",
 
-      "action0TitleOff":"Action 1",
-      "action0TitleOn":"Action 1 Complete",
-      "action0TextOff":"Awaiting activation",
-      "action0TextOn":"Activated! Item acquired.",
+    "action-item-notes-for-connor":[
+      "These are the items dropped by the room with two actions (currently in north2, with the type 'dispenser'.",
+      "The item is the item name and the room is the id (not name!) of the room it gets dropped into. As long as the items are all listed in the item list above, add as many as you like!"
+    ],
 
-      "action1TitleOff":"Action 2",
-      "action1TitleOn":"Action 2 Complete",
-      "action1TextOff":"Status unchecked",
-      "action1TextOn":"No update for 172 days 13 hours 5 minutes."
-    },
+    "action_items":[
+      {
+        "name":"actionitem",
+        "room":"north3"
+      },
+      {
+        "name":"h",
+        "room":"east3"
+      }
+
+    ],
+
+    "decrypt-item-notes-for-connor":[
+      "Same rules as action_items."
+    ],
+
+    "decrypt_items":[
+      {
+        "item":"g",
+        "room":"north1"
+      },
+      {
+        "item":"i",
+        "room":"east2"
+      }
+
+    ],
+
+    "decrypt-variables-notes-for-connor":[
+      "The wording on the decryption screen before/after decryption. postdecryptText is probably where you want to put any cool messages the group discover.",
+      "approx_decrypt_time_in_seconds is exactly what it seems - think +/- 15 seconds depending on your tablet's computing power (I did the animation super-inefficiently, so it takes a bit of time to process).",
+      "Just don't set it to anything below 30 and you should be good!"
+    ],
 
     "decryption_variables": {
       "predecryptTitle":"Contents Encrypted",
       "postdecryptTitle":"Contents Decrypted",
       "predecryptText":"This site computer is encrypted with an AES-4096 isomorphic algorithm. Decryption will take approximately 600 seconds.\nPress Enter to proceed.",
-      "postdecryptText":"We've been trying to reach you about your space station's extended warranty."
+      "postdecryptText":"We've been trying to reach you about your space station's extended warranty.",
+
+      "approx_decrypt_time_in_seconds":60
     },
+
+    "help-tips-notes-for-connor":[
+      "As long as the tip name is lowercase, anything goes - add, subtract, edit etc."
+    ],
 
     "help_tips": {
       "clear":"Clears the terminal of all previous interactions.",
@@ -391,1414 +508,12 @@
       "unlock":"Syntax: unlock [room] [password]. Unlocks a locked door accessible from your current room."
     },
 
+    "string-notes-for-connor":[
+      "General-purpose text; top of the terminal and the first thing that shows on load."
+    ],
+
     "strings":{
       "title": "A.N.G.E.L. Station M-NET Control Terminal",
       "start_message": "Welcome to the A.N.G.E.L. Station Control Terminal.\nWARNING: Misuse of this terminal may result in disciplinary action, injury, or death.\nPlease log in using your M-NET credentials to continue."
-    },
-
-    "eng_files": [
-        {
-            "filename": "2031-03-01.txt",
-            "content": "Temperature: 27\nAttitude: 47\nSolar Activity: 0.0\nEnergy Usage: 902"
-        },
-        {
-            "filename": "2038-03-10.txt",
-            "content": "Temperature: 81\nAttitude: 84\nSolar Activity: 2.7\nEnergy Usage: 941"      
-        },
-        {
-            "filename": "2032-04-13.txt",
-            "content": "Temperature: 59\nAttitude: 128\nSolar Activity: 4.5\nEnergy Usage: 863"     
-        },
-        {
-            "filename": "2039-07-13.txt",
-            "content": "Temperature: -23\nAttitude: -82\nSolar Activity: 1.9\nEnergy Usage: 788"    
-        },
-        {
-            "filename": "2031-04-17.txt",
-            "content": "Temperature: -28\nAttitude: 24\nSolar Activity: 4.0\nEnergy Usage: 912"     
-        },
-        {
-            "filename": "2030-11-30.txt",
-            "content": "Temperature: 65\nAttitude: 92\nSolar Activity: 1.5\nEnergy Usage: 889"      
-        },
-        {
-            "filename": "2033-07-06.txt",
-            "content": "Temperature: -29\nAttitude: 39\nSolar Activity: 2.1\nEnergy Usage: 952"     
-        },
-        {
-            "filename": "2038-10-29.txt",
-            "content": "Temperature: -5\nAttitude: 50\nSolar Activity: 3.2\nEnergy Usage: 1040"     
-        },
-        {
-            "filename": "2030-02-23.txt",
-            "content": "Temperature: 105\nAttitude: 42\nSolar Activity: 0.4\nEnergy Usage: 1044"    
-        },
-        {
-            "filename": "2031-05-13.txt",
-            "content": "Temperature: 86\nAttitude: -108\nSolar Activity: 4.3\nEnergy Usage: 1157"   
-        },
-        {
-            "filename": "2030-08-07.txt",
-            "content": "Temperature: 14\nAttitude: -57\nSolar Activity: 2.5\nEnergy Usage: 908"     
-        },
-        {
-            "filename": "2040-07-16.txt",
-            "content": "Temperature: 46\nAttitude: 7\nSolar Activity: 0.0\nEnergy Usage: 863"       
-        },
-        {
-            "filename": "2031-11-18.txt",
-            "content": "Temperature: -48\nAttitude: -179\nSolar Activity: 0.1\nEnergy Usage: 773"   
-        },
-        {
-            "filename": "2034-07-27.txt",
-            "content": "Temperature: -37\nAttitude: 52\nSolar Activity: 2.2\nEnergy Usage: 872"     
-        },
-        {
-            "filename": "2039-03-07.txt",
-            "content": "Temperature: 48\nAttitude: 83\nSolar Activity: 4.8\nEnergy Usage: 1073"     
-        },
-        {
-            "filename": "2031-08-17.txt",
-            "content": "Temperature: 11\nAttitude: -73\nSolar Activity: 4.3\nEnergy Usage: 1193"    
-        },
-        {
-            "filename": "2035-07-20.txt",
-            "content": "Temperature: 104\nAttitude: 176\nSolar Activity: 0.9\nEnergy Usage: 778"    
-        },
-        {
-            "filename": "2039-04-25.txt",
-            "content": "Temperature: -38\nAttitude: -149\nSolar Activity: 4.2\nEnergy Usage: 950"   
-        },
-        {
-            "filename": "2032-11-10.txt",
-            "content": "Temperature: 32\nAttitude: -68\nSolar Activity: 4.6\nEnergy Usage: 897"     
-        },
-        {
-            "filename": "2038-12-18.txt",
-            "content": "Temperature: -21\nAttitude: -31\nSolar Activity: 4.4\nEnergy Usage: 876"    
-        },
-        {
-            "filename": "2032-08-24.txt",
-            "content": "Temperature: -42\nAttitude: -52\nSolar Activity: 3.1\nEnergy Usage: 881"    
-        },
-        {
-            "filename": "2038-05-26.txt",
-            "content": "Temperature: 93\nAttitude: -54\nSolar Activity: 0.3\nEnergy Usage: 763"     
-        },
-        {
-            "filename": "2032-07-28.txt",
-            "content": "Temperature: 49\nAttitude: -113\nSolar Activity: 3.7\nEnergy Usage: 1129"   
-        },
-        {
-            "filename": "2031-08-16.txt",
-            "content": "Temperature: 24\nAttitude: 90\nSolar Activity: 4.3\nEnergy Usage: 1197"     
-        },
-        {
-            "filename": "2038-11-15.txt",
-            "content": "Temperature: -12\nAttitude: 37\nSolar Activity: 1.0\nEnergy Usage: 764"     
-        },
-        {
-            "filename": "2030-07-02.txt",
-            "content": "Temperature: 43\nAttitude: -37\nSolar Activity: 1.1\nEnergy Usage: 831"     
-        },
-        {
-            "filename": "2030-08-30.txt",
-            "content": "Temperature: 52\nAttitude: -102\nSolar Activity: 2.8\nEnergy Usage: 926"    
-        },
-        {
-            "filename": "2038-11-12.txt",
-            "content": "Temperature: 71\nAttitude: -131\nSolar Activity: 1.6\nEnergy Usage: 975"    
-        },
-        {
-            "filename": "2037-10-14.txt",
-            "content": "Temperature: 117\nAttitude: -119\nSolar Activity: 0.5\nEnergy Usage: 978"   
-        },
-        {
-            "filename": "2036-03-03.txt",
-            "content": "Temperature: -43\nAttitude: -114\nSolar Activity: 0.4\nEnergy Usage: 1167"  
-        },
-        {
-            "filename": "2036-06-03.txt",
-            "content": "Temperature: -35\nAttitude: 171\nSolar Activity: 2.7\nEnergy Usage: 1104"   
-        },
-        {
-            "filename": "2040-10-09.txt",
-            "content": "Temperature: -41\nAttitude: -95\nSolar Activity: 3.1\nEnergy Usage: 1104"   
-        },
-        {
-            "filename": "2035-05-14.txt",
-            "content": "Temperature: 114\nAttitude: 66\nSolar Activity: 1.7\nEnergy Usage: 861"     
-        },
-        {
-            "filename": "2038-08-28.txt",
-            "content": "Temperature: -40\nAttitude: -31\nSolar Activity: 3.0\nEnergy Usage: 919"    
-        },
-        {
-            "filename": "2037-08-02.txt",
-            "content": "Temperature: -34\nAttitude: 78\nSolar Activity: 1.3\nEnergy Usage: 1065"    
-        },
-        {
-            "filename": "2034-01-01.txt",
-            "content": "Temperature: 4\nAttitude: 91\nSolar Activity: 2.1\nEnergy Usage: 790"       
-        },
-        {
-            "filename": "2035-10-06.txt",
-            "content": "Temperature: -23\nAttitude: 161\nSolar Activity: 3.0\nEnergy Usage: 1160"   
-        },
-        {
-            "filename": "2036-09-10.txt",
-            "content": "Temperature: 45\nAttitude: 180\nSolar Activity: 0.3\nEnergy Usage: 900"     
-        },
-        {
-            "filename": "2032-11-19.txt",
-            "content": "Temperature: 23\nAttitude: -57\nSolar Activity: 2.6\nEnergy Usage: 945"     
-        },
-        {
-            "filename": "2031-01-26.txt",
-            "content": "Temperature: 18\nAttitude: -77\nSolar Activity: 0.4\nEnergy Usage: 885"     
-        },
-        {
-            "filename": "2037-01-18.txt",
-            "content": "Temperature: 111\nAttitude: 66\nSolar Activity: 3.4\nEnergy Usage: 878"     
-        },
-        {
-            "filename": "2036-06-07.txt",
-            "content": "Temperature: -13\nAttitude: -114\nSolar Activity: 0.4\nEnergy Usage: 919"   
-        },
-        {
-            "filename": "2040-10-29.txt",
-            "content": "Temperature: 119\nAttitude: 116\nSolar Activity: 1.4\nEnergy Usage: 1001"   
-        },
-        {
-            "filename": "2039-07-08.txt",
-            "content": "Temperature: -1\nAttitude: -85\nSolar Activity: 0.4\nEnergy Usage: 1196"    
-        },
-        {
-            "filename": "2037-01-26.txt",
-            "content": "Temperature: 83\nAttitude: 95\nSolar Activity: 0.3\nEnergy Usage: 827"      
-        },
-        {
-            "filename": "2030-01-30.txt",
-            "content": "Temperature: 80\nAttitude: 34\nSolar Activity: 2.6\nEnergy Usage: 769"      
-        },
-        {
-            "filename": "2039-05-21.txt",
-            "content": "Temperature: 104\nAttitude: -59\nSolar Activity: 3.3\nEnergy Usage: 1162"   
-        },
-        {
-            "filename": "2034-12-20.txt",
-            "content": "Temperature: -28\nAttitude: 111\nSolar Activity: 2.3\nEnergy Usage: 772"    
-        },
-        {
-            "filename": "2030-10-20.txt",
-            "content": "Temperature: -12\nAttitude: -53\nSolar Activity: 2.1\nEnergy Usage: 1184"   
-        },
-        {
-            "filename": "2038-11-15.txt",
-            "content": "Temperature: 15\nAttitude: 40\nSolar Activity: 1.5\nEnergy Usage: 895"      
-        },
-        {
-            "filename": "2040-12-02.txt",
-            "content": "Temperature: 64\nAttitude: -34\nSolar Activity: 3.7\nEnergy Usage: 1010"    
-        },
-        {
-            "filename": "2039-02-10.txt",
-            "content": "Temperature: 74\nAttitude: -26\nSolar Activity: 0.9\nEnergy Usage: 1077"    
-        },
-        {
-            "filename": "2031-04-28.txt",
-            "content": "Temperature: 113\nAttitude: -172\nSolar Activity: 4.7\nEnergy Usage: 794"   
-        },
-        {
-            "filename": "2037-04-02.txt",
-            "content": "Temperature: 110\nAttitude: -67\nSolar Activity: 2.6\nEnergy Usage: 1005"   
-        },
-        {
-            "filename": "2032-02-18.txt",
-            "content": "Temperature: -28\nAttitude: -135\nSolar Activity: 4.2\nEnergy Usage: 959"   
-        },
-        {
-            "filename": "2036-03-12.txt",
-            "content": "Temperature: 73\nAttitude: -81\nSolar Activity: 2.1\nEnergy Usage: 853"     
-        },
-        {
-            "filename": "2040-01-10.txt",
-            "content": "Temperature: 64\nAttitude: -8\nSolar Activity: 4.7\nEnergy Usage: 751"      
-        },
-        {
-            "filename": "2031-04-08.txt",
-            "content": "Temperature: 22\nAttitude: 97\nSolar Activity: 3.1\nEnergy Usage: 1041"     
-        },
-        {
-            "filename": "2036-08-24.txt",
-            "content": "Temperature: 104\nAttitude: 98\nSolar Activity: 1.1\nEnergy Usage: 1148"    
-        },
-        {
-            "filename": "2039-10-17.txt",
-            "content": "Temperature: 88\nAttitude: -88\nSolar Activity: 2.4\nEnergy Usage: 1042"    
-        },
-        {
-            "filename": "2035-03-13.txt",
-            "content": "Temperature: 72\nAttitude: 43\nSolar Activity: 4.4\nEnergy Usage: 1185"     
-        },
-        {
-            "filename": "2035-08-22.txt",
-            "content": "Temperature: 64\nAttitude: -124\nSolar Activity: 0.5\nEnergy Usage: 1175"   
-        },
-        {
-            "filename": "2036-11-09.txt",
-            "content": "Temperature: -4\nAttitude: -77\nSolar Activity: 4.8\nEnergy Usage: 1197"    
-        },
-        {
-            "filename": "2038-01-27.txt",
-            "content": "Temperature: 91\nAttitude: -12\nSolar Activity: 1.5\nEnergy Usage: 860"     
-        },
-        {
-            "filename": "2030-09-27.txt",
-            "content": "Temperature: 62\nAttitude: 172\nSolar Activity: 3.8\nEnergy Usage: 893"     
-        },
-        {
-            "filename": "2031-08-03.txt",
-            "content": "Temperature: 6\nAttitude: -53\nSolar Activity: 5.0\nEnergy Usage: 753"      
-        },
-        {
-            "filename": "2038-02-06.txt",
-            "content": "Temperature: -36\nAttitude: 44\nSolar Activity: 3.1\nEnergy Usage: 888"     
-        },
-        {
-            "filename": "2033-05-11.txt",
-            "content": "Temperature: 20\nAttitude: 77\nSolar Activity: 4.0\nEnergy Usage: 879"      
-        },
-        {
-            "filename": "2039-02-04.txt",
-            "content": "Temperature: 33\nAttitude: -84\nSolar Activity: 2.8\nEnergy Usage: 1005"    
-        },
-        {
-            "filename": "2037-02-01.txt",
-            "content": "Temperature: 23\nAttitude: -37\nSolar Activity: 1.9\nEnergy Usage: 1118"    
-        },
-        {
-            "filename": "2032-09-28.txt",
-            "content": "Temperature: -39\nAttitude: 60\nSolar Activity: 4.2\nEnergy Usage: 1138"    
-        },
-        {
-            "filename": "2030-04-05.txt",
-            "content": "Temperature: 99\nAttitude: 158\nSolar Activity: 3.1\nEnergy Usage: 753"     
-        },
-        {
-            "filename": "2036-09-27.txt",
-            "content": "Temperature: -40\nAttitude: -173\nSolar Activity: 1.5\nEnergy Usage: 1010"  
-        },
-        {
-            "filename": "2037-11-17.txt",
-            "content": "Temperature: 36\nAttitude: -28\nSolar Activity: 0.8\nEnergy Usage: 810"     
-        },
-        {
-            "filename": "2031-12-14.txt",
-            "content": "Temperature: 55\nAttitude: -149\nSolar Activity: 1.6\nEnergy Usage: 1110"   
-        },
-        {
-            "filename": "2040-03-07.txt",
-            "content": "Temperature: 113\nAttitude: -111\nSolar Activity: 1.9\nEnergy Usage: 1159"  
-        },
-        {
-            "filename": "2039-11-02.txt",
-            "content": "Temperature: -46\nAttitude: -136\nSolar Activity: 2.3\nEnergy Usage: 890"   
-        },
-        {
-            "filename": "2037-01-26.txt",
-            "content": "Temperature: 52\nAttitude: 10\nSolar Activity: 1.0\nEnergy Usage: 905"      
-        },
-        {
-            "filename": "2040-04-03.txt",
-            "content": "Temperature: -22\nAttitude: 174\nSolar Activity: 1.3\nEnergy Usage: 1010"   
-        },
-        {
-            "filename": "2040-10-06.txt",
-            "content": "Temperature: -32\nAttitude: 74\nSolar Activity: 0.8\nEnergy Usage: 977"     
-        },
-        {
-            "filename": "2032-04-02.txt",
-            "content": "Temperature: -39\nAttitude: 122\nSolar Activity: 0.3\nEnergy Usage: 1084"   
-        },
-        {
-            "filename": "2036-09-06.txt",
-            "content": "Temperature: 18\nAttitude: -16\nSolar Activity: 4.5\nEnergy Usage: 1118"    
-        },
-        {
-            "filename": "2034-12-13.txt",
-            "content": "Temperature: 99\nAttitude: -99\nSolar Activity: 3.8\nEnergy Usage: 1137"    
-        },
-        {
-            "filename": "2031-05-24.txt",
-            "content": "Temperature: 51\nAttitude: -25\nSolar Activity: 5.0\nEnergy Usage: 1125"    
-        },
-        {
-            "filename": "2038-02-14.txt",
-            "content": "Temperature: 44\nAttitude: -124\nSolar Activity: 4.4\nEnergy Usage: 794"    
-        },
-        {
-            "filename": "2040-02-19.txt",
-            "content": "Temperature: 16\nAttitude: -5\nSolar Activity: 1.0\nEnergy Usage: 803"      
-        },
-        {
-            "filename": "2034-03-27.txt",
-            "content": "Temperature: 16\nAttitude: 45\nSolar Activity: 4.1\nEnergy Usage: 864"      
-        },
-        {
-            "filename": "2037-11-09.txt",
-            "content": "Temperature: 45\nAttitude: -137\nSolar Activity: 1.6\nEnergy Usage: 1160"   
-        },
-        {
-            "filename": "2036-04-25.txt",
-            "content": "Temperature: 100\nAttitude: 139\nSolar Activity: 3.8\nEnergy Usage: 820"    
-        },
-        {
-            "filename": "2030-02-02.txt",
-            "content": "Temperature: 78\nAttitude: -146\nSolar Activity: 2.4\nEnergy Usage: 1005"   
-        },
-        {
-            "filename": "2035-11-04.txt",
-            "content": "Temperature: -5\nAttitude: -82\nSolar Activity: 4.1\nEnergy Usage: 926"     
-        },
-        {
-            "filename": "2033-06-26.txt",
-            "content": "Temperature: 8\nAttitude: -167\nSolar Activity: 1.4\nEnergy Usage: 918"     
-        },
-        {
-            "filename": "2037-04-04.txt",
-            "content": "Temperature: 99\nAttitude: 124\nSolar Activity: 2.6\nEnergy Usage: 945"     
-        },
-        {
-            "filename": "2036-01-25.txt",
-            "content": "Temperature: 29\nAttitude: -100\nSolar Activity: 3.6\nEnergy Usage: 795"    
-        },
-        {
-            "filename": "2031-05-07.txt",
-            "content": "Temperature: 23\nAttitude: 28\nSolar Activity: 3.0\nEnergy Usage: 851"      
-        },
-        {
-            "filename": "2033-01-27.txt",
-            "content": "Temperature: -10\nAttitude: -33\nSolar Activity: 3.4\nEnergy Usage: 925"    
-        },
-        {
-            "filename": "2037-11-14.txt",
-            "content": "Temperature: 86\nAttitude: -128\nSolar Activity: 4.2\nEnergy Usage: 1039"   
-        },
-        {
-            "filename": "2031-05-30.txt",
-            "content": "Temperature: 15\nAttitude: -28\nSolar Activity: 3.4\nEnergy Usage: 996"     
-        },
-        {
-            "filename": "2039-03-03.txt",
-            "content": "Temperature: 8\nAttitude: 90\nSolar Activity: 3.5\nEnergy Usage: 970"       
-        },
-        {
-            "filename": "2037-12-03.txt",
-            "content": "Temperature: -20\nAttitude: -160\nSolar Activity: 4.3\nEnergy Usage: 788"   
-        },
-        {
-            "filename": "2040-02-25.txt",
-            "content": "Temperature: 69\nAttitude: -95\nSolar Activity: 3.8\nEnergy Usage: 1112"    
-        },
-        {
-            "filename": "2032-12-17.txt",
-            "content": "Temperature: 79\nAttitude: 44\nSolar Activity: 3.4\nEnergy Usage: 886"      
-        },
-        {
-            "filename": "2032-11-30.txt",
-            "content": "Temperature: 86\nAttitude: -114\nSolar Activity: 3.7\nEnergy Usage: 797"    
-        },
-        {
-            "filename": "2032-06-11.txt",
-            "content": "Temperature: 86\nAttitude: -77\nSolar Activity: 1.6\nEnergy Usage: 1143"    
-        },
-        {
-            "filename": "2038-10-24.txt",
-            "content": "Temperature: 112\nAttitude: 135\nSolar Activity: 2.9\nEnergy Usage: 810"    
-        },
-        {
-            "filename": "2032-03-15.txt",
-            "content": "Temperature: 38\nAttitude: 167\nSolar Activity: 0.4\nEnergy Usage: 1130"    
-        },
-        {
-            "filename": "2033-02-14.txt",
-            "content": "Temperature: 99\nAttitude: -57\nSolar Activity: 1.4\nEnergy Usage: 1196"    
-        },
-        {
-            "filename": "2031-08-04.txt",
-            "content": "Temperature: 78\nAttitude: 91\nSolar Activity: 2.4\nEnergy Usage: 845"      
-        },
-        {
-            "filename": "2040-03-04.txt",
-            "content": "Temperature: 39\nAttitude: -40\nSolar Activity: 0.3\nEnergy Usage: 1058"    
-        },
-        {
-            "filename": "2033-02-11.txt",
-            "content": "Temperature: 22\nAttitude: 34\nSolar Activity: 0.3\nEnergy Usage: 1196"     
-        },
-        {
-            "filename": "2040-10-29.txt",
-            "content": "Temperature: 92\nAttitude: -13\nSolar Activity: 4.8\nEnergy Usage: 1140"    
-        },
-        {
-            "filename": "2037-11-21.txt",
-            "content": "Temperature: 53\nAttitude: -155\nSolar Activity: 0.5\nEnergy Usage: 908"    
-        },
-        {
-            "filename": "2034-02-03.txt",
-            "content": "Temperature: 69\nAttitude: 106\nSolar Activity: 2.8\nEnergy Usage: 1015"    
-        },
-        {
-            "filename": "2030-08-29.txt",
-            "content": "Temperature: -48\nAttitude: -25\nSolar Activity: 0.4\nEnergy Usage: 1148"   
-        },
-        {
-            "filename": "2036-06-12.txt",
-            "content": "Temperature: 21\nAttitude: 32\nSolar Activity: 3.1\nEnergy Usage: 979"      
-        },
-        {
-            "filename": "2033-07-14.txt",
-            "content": "Temperature: -20\nAttitude: -99\nSolar Activity: 0.8\nEnergy Usage: 856"    
-        },
-        {
-            "filename": "2038-10-20.txt",
-            "content": "Temperature: -45\nAttitude: -94\nSolar Activity: 1.7\nEnergy Usage: 798"    
-        },
-        {
-            "filename": "2030-08-24.txt",
-            "content": "Temperature: -15\nAttitude: -61\nSolar Activity: 0.6\nEnergy Usage: 1081"   
-        },
-        {
-            "filename": "2035-02-05.txt",
-            "content": "Temperature: 35\nAttitude: -165\nSolar Activity: 3.9\nEnergy Usage: 1049"   
-        },
-        {
-            "filename": "2038-01-27.txt",
-            "content": "Temperature: -37\nAttitude: 149\nSolar Activity: 2.6\nEnergy Usage: 939"    
-        },
-        {
-            "filename": "2035-09-29.txt",
-            "content": "Temperature: 55\nAttitude: -16\nSolar Activity: 0.2\nEnergy Usage: 1024"    
-        },
-        {
-            "filename": "2040-09-09.txt",
-            "content": "Temperature: 29\nAttitude: 18\nSolar Activity: 3.8\nEnergy Usage: 878"      
-        },
-        {
-            "filename": "2036-05-23.txt",
-            "content": "Temperature: 35\nAttitude: 46\nSolar Activity: 0.5\nEnergy Usage: 1020"     
-        },
-        {
-            "filename": "2039-02-04.txt",
-            "content": "Temperature: -24\nAttitude: 26\nSolar Activity: 2.3\nEnergy Usage: 1106"    
-        },
-        {
-            "filename": "2030-02-08.txt",
-            "content": "Temperature: 67\nAttitude: 106\nSolar Activity: 3.5\nEnergy Usage: 1183"    
-        },
-        {
-            "filename": "2035-09-18.txt",
-            "content": "Temperature: 36\nAttitude: -82\nSolar Activity: 2.4\nEnergy Usage: 860"     
-        },
-        {
-            "filename": "2037-02-26.txt",
-            "content": "Temperature: -19\nAttitude: -9\nSolar Activity: 2.0\nEnergy Usage: 1033"    
-        },
-        {
-            "filename": "2035-05-24.txt",
-            "content": "Temperature: 63\nAttitude: 65\nSolar Activity: 1.3\nEnergy Usage: 1116"     
-        },
-        {
-            "filename": "2031-09-11.txt",
-            "content": "Temperature: -44\nAttitude: 30\nSolar Activity: 1.3\nEnergy Usage: 1024"    
-        },
-        {
-            "filename": "2032-11-02.txt",
-            "content": "Temperature: -47\nAttitude: 57\nSolar Activity: 3.5\nEnergy Usage: 904"     
-        },
-        {
-            "filename": "2033-06-17.txt",
-            "content": "Temperature: 99\nAttitude: -130\nSolar Activity: 3.6\nEnergy Usage: 808"    
-        },
-        {
-            "filename": "2037-10-13.txt",
-            "content": "Temperature: 6\nAttitude: 30\nSolar Activity: 4.2\nEnergy Usage: 1114"      
-        },
-        {
-            "filename": "2039-03-12.txt",
-            "content": "Temperature: 1\nAttitude: -1\nSolar Activity: 2.0\nEnergy Usage: 1011"      
-        },
-        {
-            "filename": "2033-02-18.txt",
-            "content": "Temperature: -21\nAttitude: 37\nSolar Activity: 0.3\nEnergy Usage: 801"     
-        },
-        {
-            "filename": "2034-09-20.txt",
-            "content": "Temperature: 51\nAttitude: 154\nSolar Activity: 1.9\nEnergy Usage: 1107"    
-        },
-        {
-            "filename": "2030-05-29.txt",
-            "content": "Temperature: 69\nAttitude: -92\nSolar Activity: 4.9\nEnergy Usage: 1051"    
-        },
-        {
-            "filename": "2030-05-03.txt",
-            "content": "Temperature: -48\nAttitude: -168\nSolar Activity: 3.2\nEnergy Usage: 897"   
-        },
-        {
-            "filename": "2034-05-19.txt",
-            "content": "Temperature: 20\nAttitude: 20\nSolar Activity: 5.0\nEnergy Usage: 866"      
-        },
-        {
-            "filename": "2036-01-27.txt",
-            "content": "Temperature: 102\nAttitude: 149\nSolar Activity: 1.5\nEnergy Usage: 1102"   
-        },
-        {
-            "filename": "2032-10-23.txt",
-            "content": "Temperature: 5\nAttitude: -23\nSolar Activity: 5.0\nEnergy Usage: 972"      
-        },
-        {
-            "filename": "2038-06-25.txt",
-            "content": "Temperature: 5\nAttitude: -43\nSolar Activity: 0.1\nEnergy Usage: 1004"     
-        },
-        {
-            "filename": "2038-01-16.txt",
-            "content": "Temperature: 114\nAttitude: -165\nSolar Activity: 1.2\nEnergy Usage: 914"   
-        },
-        {
-            "filename": "2038-10-20.txt",
-            "content": "Temperature: 89\nAttitude: -69\nSolar Activity: 4.1\nEnergy Usage: 1097"    
-        },
-        {
-            "filename": "2030-07-13.txt",
-            "content": "Temperature: -19\nAttitude: -114\nSolar Activity: 2.8\nEnergy Usage: 1045"  
-        },
-        {
-            "filename": "2032-08-08.txt",
-            "content": "Temperature: -6\nAttitude: 47\nSolar Activity: 1.0\nEnergy Usage: 980"      
-        },
-        {
-            "filename": "2031-11-26.txt",
-            "content": "Temperature: 10\nAttitude: -33\nSolar Activity: 3.2\nEnergy Usage: 1107"    
-        },
-        {
-            "filename": "2039-04-28.txt",
-            "content": "Temperature: 102\nAttitude: -127\nSolar Activity: 3.2\nEnergy Usage: 829"   
-        },
-        {
-            "filename": "2034-11-26.txt",
-            "content": "Temperature: 10\nAttitude: -22\nSolar Activity: 4.0\nEnergy Usage: 806"     
-        },
-        {
-            "filename": "2033-02-24.txt",
-            "content": "Temperature: 12\nAttitude: -174\nSolar Activity: 0.2\nEnergy Usage: 973"    
-        },
-        {
-            "filename": "2035-01-02.txt",
-            "content": "Temperature: -12\nAttitude: -85\nSolar Activity: 2.1\nEnergy Usage: 937"    
-        },
-        {
-            "filename": "2039-02-15.txt",
-            "content": "Temperature: -41\nAttitude: 173\nSolar Activity: 0.5\nEnergy Usage: 764"    
-        },
-        {
-            "filename": "2032-01-16.txt",
-            "content": "Temperature: 94\nAttitude: -5\nSolar Activity: 3.3\nEnergy Usage: 1121"     
-        },
-        {
-            "filename": "2033-01-01.txt",
-            "content": "Temperature: 38\nAttitude: -53\nSolar Activity: 4.6\nEnergy Usage: 1102"    
-        },
-        {
-            "filename": "2038-02-08.txt",
-            "content": "Temperature: 99\nAttitude: 23\nSolar Activity: 4.8\nEnergy Usage: 1171"     
-        },
-        {
-            "filename": "2039-04-29.txt",
-            "content": "Temperature: 86\nAttitude: -29\nSolar Activity: 0.4\nEnergy Usage: 959"     
-        },
-        {
-            "filename": "2037-01-30.txt",
-            "content": "Temperature: 79\nAttitude: 108\nSolar Activity: 0.9\nEnergy Usage: 1038"    
-        },
-        {
-            "filename": "2037-08-13.txt",
-            "content": "Temperature: 103\nAttitude: 180\nSolar Activity: 1.2\nEnergy Usage: 1027"   
-        },
-        {
-            "filename": "2036-01-03.txt",
-            "content": "Temperature: -6\nAttitude: -43\nSolar Activity: 1.7\nEnergy Usage: 1193"    
-        },
-        {
-            "filename": "2034-11-18.txt",
-            "content": "Temperature: 112\nAttitude: -55\nSolar Activity: 3.5\nEnergy Usage: 893"    
-        },
-        {
-            "filename": "2032-11-21.txt",
-            "content": "Temperature: 69\nAttitude: 153\nSolar Activity: 4.8\nEnergy Usage: 1142"    
-        },
-        {
-            "filename": "2040-01-19.txt",
-            "content": "Temperature: 106\nAttitude: 39\nSolar Activity: 4.0\nEnergy Usage: 1014"    
-        },
-        {
-            "filename": "2032-12-29.txt",
-            "content": "Temperature: 71\nAttitude: -59\nSolar Activity: 0.6\nEnergy Usage: 1057"    
-        },
-        {
-            "filename": "2040-11-19.txt",
-            "content": "Temperature: 76\nAttitude: -117\nSolar Activity: 3.5\nEnergy Usage: 859"    
-        },
-        {
-            "filename": "2040-12-20.txt",
-            "content": "Temperature: 67\nAttitude: 51\nSolar Activity: 3.9\nEnergy Usage: 1003"     
-        },
-        {
-            "filename": "2033-02-19.txt",
-            "content": "Temperature: -9\nAttitude: -74\nSolar Activity: 3.5\nEnergy Usage: 954"     
-        },
-        {
-            "filename": "2039-11-29.txt",
-            "content": "Temperature: -15\nAttitude: 70\nSolar Activity: 1.7\nEnergy Usage: 835"     
-        },
-        {
-            "filename": "2040-03-24.txt",
-            "content": "Temperature: -34\nAttitude: 94\nSolar Activity: 3.3\nEnergy Usage: 754"     
-        },
-        {
-            "filename": "2037-05-28.txt",
-            "content": "Temperature: -36\nAttitude: -94\nSolar Activity: 2.2\nEnergy Usage: 899"    
-        },
-        {
-            "filename": "2032-01-22.txt",
-            "content": "Temperature: 104\nAttitude: -87\nSolar Activity: 2.3\nEnergy Usage: 1191"   
-        },
-        {
-            "filename": "2031-03-14.txt",
-            "content": "Temperature: 31\nAttitude: -9\nSolar Activity: 2.4\nEnergy Usage: 768"      
-        },
-        {
-            "filename": "2034-12-31.txt",
-            "content": "Temperature: 20\nAttitude: -63\nSolar Activity: 4.8\nEnergy Usage: 1070"    
-        },
-        {
-            "filename": "2034-10-15.txt",
-            "content": "Temperature: 82\nAttitude: 70\nSolar Activity: 0.5\nEnergy Usage: 800"      
-        },
-        {
-            "filename": "2033-10-15.txt",
-            "content": "Temperature: 70\nAttitude: 4\nSolar Activity: 2.5\nEnergy Usage: 778"       
-        },
-        {
-            "filename": "2032-10-20.txt",
-            "content": "Temperature: -45\nAttitude: 58\nSolar Activity: 4.6\nEnergy Usage: 1096"    
-        },
-        {
-            "filename": "2036-02-26.txt",
-            "content": "Temperature: 109\nAttitude: -109\nSolar Activity: 4.4\nEnergy Usage: 801"   
-        },
-        {
-            "filename": "2031-06-09.txt",
-            "content": "Temperature: 114\nAttitude: 107\nSolar Activity: 3.1\nEnergy Usage: 1030"   
-        },
-        {
-            "filename": "2036-03-07.txt",
-            "content": "Temperature: 3\nAttitude: 90\nSolar Activity: 0.1\nEnergy Usage: 932"       
-        },
-        {
-            "filename": "2032-03-19.txt",
-            "content": "Temperature: 45\nAttitude: -81\nSolar Activity: 0.7\nEnergy Usage: 1119"    
-        },
-        {
-            "filename": "2031-06-30.txt",
-            "content": "Temperature: 68\nAttitude: -127\nSolar Activity: 1.1\nEnergy Usage: 993"    
-        },
-        {
-            "filename": "2039-01-18.txt",
-            "content": "Temperature: 42\nAttitude: 108\nSolar Activity: 4.8\nEnergy Usage: 1002"    
-        },
-        {
-            "filename": "2037-06-08.txt",
-            "content": "Temperature: 104\nAttitude: -6\nSolar Activity: 2.2\nEnergy Usage: 1046"    
-        },
-        {
-            "filename": "2033-04-06.txt",
-            "content": "Temperature: -24\nAttitude: 22\nSolar Activity: 1.4\nEnergy Usage: 829"     
-        },
-        {
-            "filename": "2036-10-23.txt",
-            "content": "Temperature: 14\nAttitude: -6\nSolar Activity: 3.4\nEnergy Usage: 1137"     
-        },
-        {
-            "filename": "2038-08-03.txt",
-            "content": "Temperature: 5\nAttitude: 164\nSolar Activity: 2.9\nEnergy Usage: 1070"     
-        },
-        {
-            "filename": "2033-02-20.txt",
-            "content": "Temperature: -32\nAttitude: -123\nSolar Activity: 1.4\nEnergy Usage: 801"   
-        },
-        {
-            "filename": "2037-10-29.txt",
-            "content": "Temperature: -16\nAttitude: 67\nSolar Activity: 1.0\nEnergy Usage: 907"     
-        },
-        {
-            "filename": "2033-12-19.txt",
-            "content": "Temperature: 35\nAttitude: -101\nSolar Activity: 0.7\nEnergy Usage: 1010"   
-        },
-        {
-            "filename": "2031-09-23.txt",
-            "content": "Temperature: 49\nAttitude: 39\nSolar Activity: 2.4\nEnergy Usage: 996"      
-        },
-        {
-            "filename": "2032-03-27.txt",
-            "content": "Temperature: -11\nAttitude: -79\nSolar Activity: 4.7\nEnergy Usage: 939"    
-        },
-        {
-            "filename": "2040-01-21.txt",
-            "content": "Temperature: 111\nAttitude: -151\nSolar Activity: 3.7\nEnergy Usage: 995"   
-        },
-        {
-            "filename": "2036-05-01.txt",
-            "content": "Temperature: 61\nAttitude: -11\nSolar Activity: 4.1\nEnergy Usage: 897"     
-        },
-        {
-            "filename": "2034-03-11.txt",
-            "content": "Temperature: 4\nAttitude: 48\nSolar Activity: 2.3\nEnergy Usage: 1196"      
-        },
-        {
-            "filename": "2037-06-27.txt",
-            "content": "Temperature: 36\nAttitude: 44\nSolar Activity: 3.0\nEnergy Usage: 1102"     
-        },
-        {
-            "filename": "2038-06-20.txt",
-            "content": "Temperature: -4\nAttitude: 140\nSolar Activity: 4.8\nEnergy Usage: 1109"    
-        },
-        {
-            "filename": "2034-12-09.txt",
-            "content": "Temperature: 42\nAttitude: -91\nSolar Activity: 4.3\nEnergy Usage: 1044"    
-        },
-        {
-            "filename": "2030-06-11.txt",
-            "content": "Temperature: -13\nAttitude: -155\nSolar Activity: 1.5\nEnergy Usage: 1025"  
-        },
-        {
-            "filename": "2033-08-12.txt",
-            "content": "Temperature: -45\nAttitude: 165\nSolar Activity: 4.7\nEnergy Usage: 782"    
-        },
-        {
-            "filename": "2039-03-30.txt",
-            "content": "Temperature: 105\nAttitude: -127\nSolar Activity: 3.0\nEnergy Usage: 1092"  
-        },
-        {
-            "filename": "2040-09-12.txt",
-            "content": "Temperature: 97\nAttitude: 101\nSolar Activity: 2.6\nEnergy Usage: 937"     
-        },
-        {
-            "filename": "2034-08-13.txt",
-            "content": "Temperature: 113\nAttitude: 136\nSolar Activity: 0.0\nEnergy Usage: 895"    
-        }
-    ],
-
-    "med_files": [
-        {
-            "filename": "Batch 293542.txt",
-            "content": "Temperature (C): 41.7\nGrowth Rate (/day): 20\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -35.1\npH: -1.8\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 300 mg of intraosseal . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 232754.txt",
-            "content": "Temperature (C): 34.54\nGrowth Rate (/day): 85\nEnzyme p755: High\nElectropotential (mV/cm^2): -14.47\npH: -6.6\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 900 mg of subdermal . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 005688.txt",
-            "content": "Temperature (C): 41.5\nGrowth Rate (/day): 110\nEnzyme p755: Low\nElectropotential (mV/cm^2): 24.97\npH: 4.7\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 400 mg of intrathecal aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 049802.txt",
-            "content": "Temperature (C): 35.16\nGrowth Rate (/day): 143\nEnzyme p755: Low\nElectropotential (mV/cm^2): -37.36\npH: 5.3\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 700 mg of gaseous ."
-        },
-        {
-            "filename": "Batch 583496.txt",
-            "content": "Temperature (C): 41.47\nGrowth Rate (/day): 125\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 49.29\npH: 2.2\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 600 mg of intravenous aldosterone."
-        },
-        {
-            "filename": "Batch 240908.txt",
-            "content": "Temperature (C): 33.65\nGrowth Rate (/day): 102\nEnzyme p755: High\nElectropotential (mV/cm^2): -9.76\npH: 6.9\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 100 mg of gaseous ."
-        },
-        {
-            "filename": "Batch 998630.txt",
-            "content": "Temperature (C): 41.91\nGrowth Rate (/day): 69\nEnzyme p755: High\nElectropotential (mV/cm^2): -1.47\npH: -6.2\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 300 mg of subdermal norepinephrine. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 398114.txt",
-            "content": "Temperature (C): 31.4\nGrowth Rate (/day): 51\nEnzyme p755: Low\nElectropotential (mV/cm^2): -8.68\npH: 6.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 500 mg of subdermal . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 998446.txt",
-            "content": "Temperature (C): 30.44\nGrowth Rate (/day): 30\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 27.38\npH: 3.1\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 300 mg of gaseous . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 432964.txt",
-            "content": "Temperature (C): 30.92\nGrowth Rate (/day): 133\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -5.94\npH: -6.9\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 100 mg of gaseous aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 614923.txt",
-            "content": "Temperature (C): 34.97\nGrowth Rate (/day): 148\nEnzyme p755: High\nElectropotential (mV/cm^2): -35.48\npH: -1.9\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 700 mg of intraosseal . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 061172.txt",
-            "content": "Temperature (C): 33.34\nGrowth Rate (/day): 115\nEnzyme p755: Low\nElectropotential (mV/cm^2): 13.58\npH: 3.6\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 100 mg of subdermal norepinephrine. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 757591.txt",
-            "content": "Temperature (C): 33.32\nGrowth Rate (/day): 36\nEnzyme p755: High\nElectropotential (mV/cm^2): -27.12\npH: 0.9\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 100 mg of intraosseal aldosterone."
-        },
-        {
-            "filename": "Batch 551176.txt",
-            "content": "Temperature (C): 31.54\nGrowth Rate (/day): 114\nEnzyme p755: Low\nElectropotential (mV/cm^2): 0.29\npH: -6.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed unremarkably and was given 400 mg of intravenous aldosterone."
-        },
-        {
-            "filename": "Batch 287187.txt",
-            "content": "Temperature (C): 34.34\nGrowth Rate (/day): 145\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 43.87\npH: -2.6\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 900 mg of intraosseal norepinephrine."   
-        },
-        {
-            "filename": "Batch 556551.txt",
-            "content": "Temperature (C): 38.8\nGrowth Rate (/day): 167\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -4.41\npH: 0.4\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 300 mg of intravenous . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 095307.txt",
-            "content": "Temperature (C): 41.19\nGrowth Rate (/day): 133\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -38.38\npH: -3.2\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 300 mg of intrathecal aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 302404.txt",
-            "content": "Temperature (C): 38.8\nGrowth Rate (/day): 155\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -49.02\npH: 5.7\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 900 mg of intraosseal aldosterone."
-        },
-        {
-            "filename": "Batch 334989.txt",
-            "content": "Temperature (C): 30.74\nGrowth Rate (/day): 70\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 12.74\npH: -0.3\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 900 mg of subdermal aldosterone. Further testing is recommended."     
-        },
-        {
-            "filename": "Batch 326135.txt",
-            "content": "Temperature (C): 38.82\nGrowth Rate (/day): 66\nEnzyme p755: High\nElectropotential (mV/cm^2): -39.71\npH: -2.4\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 300 mg of subdermal ."
-        },
-        {
-            "filename": "Batch 149465.txt",
-            "content": "Temperature (C): 36.68\nGrowth Rate (/day): 19\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -24.35\npH: 4.2\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 200 mg of intrathecal norepinephrine. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 524815.txt",
-            "content": "Temperature (C): 30.73\nGrowth Rate (/day): 142\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -40.84\npH: 4.1\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 700 mg of gaseous norepinephrine. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 101353.txt",
-            "content": "Temperature (C): 37.46\nGrowth Rate (/day): 91\nEnzyme p755: High\nElectropotential (mV/cm^2): -11.83\npH: 3.6\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 800 mg of gaseous aldosterone."
-        },
-        {
-            "filename": "Batch 055960.txt",
-            "content": "Temperature (C): 35.62\nGrowth Rate (/day): 49\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 18.81\npH: -2.1\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed unremarkably and was given 200 mg of gaseous norepinephrine. Further testing is recommended."      
-        },
-        {
-            "filename": "Batch 105473.txt",
-            "content": "Temperature (C): 38.77\nGrowth Rate (/day): 51\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 32.25\npH: 6.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 300 mg of intravenous . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 512861.txt",
-            "content": "Temperature (C): 41.51\nGrowth Rate (/day): 87\nEnzyme p755: High\nElectropotential (mV/cm^2): -37.75\npH: 1.6\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed unremarkably and was given 500 mg of gaseous norepinephrine."
-        },
-        {
-            "filename": "Batch 417998.txt",
-            "content": "Temperature (C): 35.86\nGrowth Rate (/day): 90\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -17.87\npH: -4.7\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 200 mg of intrathecal aldosterone."
-        },
-        {
-            "filename": "Batch 081210.txt",
-            "content": "Temperature (C): 38.23\nGrowth Rate (/day): 86\nEnzyme p755: High\nElectropotential (mV/cm^2): 12.95\npH: -1.0\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 900 mg of subdermal norepinephrine. Further testing is recommended."        
-        },
-        {
-            "filename": "Batch 484170.txt",
-            "content": "Temperature (C): 37.03\nGrowth Rate (/day): 73\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 38.88\npH: 5.4\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 300 mg of gaseous norepinephrine."
-        },
-        {
-            "filename": "Batch 919616.txt",
-            "content": "Temperature (C): 38.74\nGrowth Rate (/day): 32\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -47.23\npH: 0.6\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 900 mg of intraosseal . Further testing is recommended."        
-        },
-        {
-            "filename": "Batch 587837.txt",
-            "content": "Temperature (C): 33.07\nGrowth Rate (/day): 114\nEnzyme p755: High\nElectropotential (mV/cm^2): -16.81\npH: -1.7\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 600 mg of subdermal . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 840701.txt",
-            "content": "Temperature (C): 36.03\nGrowth Rate (/day): 87\nEnzyme p755: Low\nElectropotential (mV/cm^2): -12.74\npH: 5.5\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 900 mg of intravenous norepinephrine."
-        },
-        {
-            "filename": "Batch 805498.txt",
-            "content": "Temperature (C): 39.26\nGrowth Rate (/day): 38\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -27.19\npH: -6.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 100 mg of subcutaneous ."
-        },
-        {
-            "filename": "Batch 525255.txt",
-            "content": "Temperature (C): 35.96\nGrowth Rate (/day): 135\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -4.12\npH: -4.3\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 700 mg of gaseous norepinephrine."
-        },
-        {
-            "filename": "Batch 272824.txt",
-            "content": "Temperature (C): 40.49\nGrowth Rate (/day): 163\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 16.56\npH: -3.7\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed unremarkably and was given 400 mg of gaseous norepinephrine."
-        },
-        {
-            "filename": "Batch 544030.txt",
-            "content": "Temperature (C): 34.5\nGrowth Rate (/day): 113\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 21.64\npH: 5.5\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 300 mg of gaseous ."
-        },
-        {
-            "filename": "Batch 404061.txt",
-            "content": "Temperature (C): 34.37\nGrowth Rate (/day): 127\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -2.03\npH: 4.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 400 mg of intraosseal . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 609120.txt",
-            "content": "Temperature (C): 37.72\nGrowth Rate (/day): 111\nEnzyme p755: Low\nElectropotential (mV/cm^2): -27.29\npH: -6.5\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed unremarkably and was given 100 mg of intraosseal norepinephrine. Further testing is recommended."  
-        },
-        {
-            "filename": "Batch 726108.txt",
-            "content": "Temperature (C): 38.58\nGrowth Rate (/day): 95\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 31.07\npH: -1.8\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 200 mg of subdermal ."
-        },
-        {
-            "filename": "Batch 110041.txt",
-            "content": "Temperature (C): 38.29\nGrowth Rate (/day): 66\nEnzyme p755: High\nElectropotential (mV/cm^2): -14.18\npH: 1.7\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 900 mg of subdermal aldosterone."
-        },
-        {
-            "filename": "Batch 606783.txt",
-            "content": "Temperature (C): 41.61\nGrowth Rate (/day): 85\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 15.97\npH: 6.0\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 900 mg of subcutaneous norepinephrine."
-        },
-        {
-            "filename": "Batch 771510.txt",
-            "content": "Temperature (C): 35.12\nGrowth Rate (/day): 159\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -8.37\npH: -2.0\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 800 mg of intravenous ."
-        },
-        {
-            "filename": "Batch 482890.txt",
-            "content": "Temperature (C): 34.59\nGrowth Rate (/day): 174\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -11.22\npH: -1.5\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 200 mg of intrathecal ."
-        },
-        {
-            "filename": "Batch 408349.txt",
-            "content": "Temperature (C): 41.28\nGrowth Rate (/day): 56\nEnzyme p755: High\nElectropotential (mV/cm^2): 20.04\npH: -6.0\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 800 mg of intravenous norepinephrine."
-        },
-        {
-            "filename": "Batch 933489.txt",
-            "content": "Temperature (C): 40.23\nGrowth Rate (/day): 139\nEnzyme p755: Low\nElectropotential (mV/cm^2): 32.21\npH: 5.9\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 200 mg of subcutaneous . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 059501.txt",
-            "content": "Temperature (C): 32.3\nGrowth Rate (/day): 115\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -20.34\npH: 5.3\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 700 mg of gaseous aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 488636.txt",
-            "content": "Temperature (C): 34.63\nGrowth Rate (/day): 141\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 27.17\npH: 6.0\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 700 mg of subdermal norepinephrine."  
-        },
-        {
-            "filename": "Batch 139425.txt",
-            "content": "Temperature (C): 38.53\nGrowth Rate (/day): 150\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 42.1\npH: -3.3\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 500 mg of subcutaneous norepinephrine."
-        },
-        {
-            "filename": "Batch 805934.txt",
-            "content": "Temperature (C): 35.7\nGrowth Rate (/day): 104\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 19.66\npH: 4.1\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 500 mg of intrathecal norepinephrine. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 236732.txt",
-            "content": "Temperature (C): 41.35\nGrowth Rate (/day): 115\nEnzyme p755: High\nElectropotential (mV/cm^2): -16.01\npH: 3.1\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 700 mg of intravenous . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 094447.txt",
-            "content": "Temperature (C): 37.01\nGrowth Rate (/day): 73\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 31.68\npH: -0.5\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed unremarkably and was given 500 mg of subcutaneous ."
-        },
-        {
-            "filename": "Batch 405018.txt",
-            "content": "Temperature (C): 32.89\nGrowth Rate (/day): 121\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -16.41\npH: 2.5\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed unremarkably and was given 400 mg of subdermal ."
-        },
-        {
-            "filename": "Batch 456228.txt",
-            "content": "Temperature (C): 40.0\nGrowth Rate (/day): 148\nEnzyme p755: High\nElectropotential (mV/cm^2): -25.04\npH: 5.0\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 700 mg of intrathecal ."
-        },
-        {
-            "filename": "Batch 966474.txt",
-            "content": "Temperature (C): 38.67\nGrowth Rate (/day): 54\nEnzyme p755: Low\nElectropotential (mV/cm^2): -35.14\npH: 2.3\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed unremarkably and was given 200 mg of intravenous aldosterone."
-        },
-        {
-            "filename": "Batch 351770.txt",
-            "content": "Temperature (C): 37.53\nGrowth Rate (/day): 57\nEnzyme p755: High\nElectropotential (mV/cm^2): 20.51\npH: 4.2\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 400 mg of intravenous norepinephrine. Further testing is recommended."        
-        },
-        {
-            "filename": "Batch 394779.txt",
-            "content": "Temperature (C): 32.6\nGrowth Rate (/day): 26\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 18.03\npH: 0.3\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed unremarkably and was given 200 mg of gaseous aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 667457.txt",
-            "content": "Temperature (C): 36.7\nGrowth Rate (/day): 161\nEnzyme p755: Low\nElectropotential (mV/cm^2): -6.01\npH: -0.6\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 500 mg of intravenous norepinephrine."
-        },
-        {
-            "filename": "Batch 912990.txt",
-            "content": "Temperature (C): 30.93\nGrowth Rate (/day): 128\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 49.05\npH: 0.3\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 600 mg of intrathecal ."
-        },
-        {
-            "filename": "Batch 042761.txt",
-            "content": "Temperature (C): 31.64\nGrowth Rate (/day): 104\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 27.8\npH: 6.2\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 400 mg of intraosseal . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 405914.txt",
-            "content": "Temperature (C): 35.87\nGrowth Rate (/day): 90\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 42.97\npH: -5.3\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 300 mg of subcutaneous . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 224604.txt",
-            "content": "Temperature (C): 34.48\nGrowth Rate (/day): 91\nEnzyme p755: High\nElectropotential (mV/cm^2): 15.71\npH: -1.6\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 600 mg of intraosseal aldosterone."
-        },
-        {
-            "filename": "Batch 344036.txt",
-            "content": "Temperature (C): 40.81\nGrowth Rate (/day): 111\nEnzyme p755: High\nElectropotential (mV/cm^2): -37.01\npH: 3.4\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 700 mg of intrathecal norepinephrine."
-        },
-        {
-            "filename": "Batch 158186.txt",
-            "content": "Temperature (C): 33.23\nGrowth Rate (/day): 23\nEnzyme p755: Low\nElectropotential (mV/cm^2): -41.95\npH: 4.9\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 200 mg of intraosseal aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 357404.txt",
-            "content": "Temperature (C): 41.61\nGrowth Rate (/day): 70\nEnzyme p755: High\nElectropotential (mV/cm^2): -49.35\npH: 1.9\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed unremarkably and was given 200 mg of intrathecal norepinephrine."
-        },
-        {
-            "filename": "Batch 880798.txt",
-            "content": "Temperature (C): 39.0\nGrowth Rate (/day): 77\nEnzyme p755: Low\nElectropotential (mV/cm^2): 0.26\npH: -1.7\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 100 mg of intravenous norepinephrine."
-        },
-        {
-            "filename": "Batch 268901.txt",
-            "content": "Temperature (C): 41.2\nGrowth Rate (/day): 166\nEnzyme p755: High\nElectropotential (mV/cm^2): 12.63\npH: -1.4\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 500 mg of subdermal aldosterone."
-        },
-        {
-            "filename": "Batch 656882.txt",
-            "content": "Temperature (C): 37.69\nGrowth Rate (/day): 124\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -6.13\npH: -1.9\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 900 mg of subcutaneous . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 743730.txt",
-            "content": "Temperature (C): 38.97\nGrowth Rate (/day): 17\nEnzyme p755: Low\nElectropotential (mV/cm^2): 48.15\npH: 5.3\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed unremarkably and was given 100 mg of subdermal aldosterone."
-        },
-        {
-            "filename": "Batch 568980.txt",
-            "content": "Temperature (C): 41.17\nGrowth Rate (/day): 149\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -42.17\npH: -6.2\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 600 mg of intrathecal norepinephrine. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 957325.txt",
-            "content": "Temperature (C): 32.59\nGrowth Rate (/day): 171\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -3.05\npH: 3.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed unremarkably and was given 600 mg of subcutaneous ."
-        },
-        {
-            "filename": "Batch 609197.txt",
-            "content": "Temperature (C): 32.93\nGrowth Rate (/day): 163\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -19.44\npH: -4.2\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 800 mg of subdermal aldosterone."
-        },
-        {
-            "filename": "Batch 350760.txt",
-            "content": "Temperature (C): 38.76\nGrowth Rate (/day): 167\nEnzyme p755: High\nElectropotential (mV/cm^2): -33.21\npH: 6.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 200 mg of intraosseal ."
-        },
-        {
-            "filename": "Batch 737418.txt",
-            "content": "Temperature (C): 41.99\nGrowth Rate (/day): 167\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 49.19\npH: 2.4\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 400 mg of intraosseal aldosterone."
-        },
-        {
-            "filename": "Batch 200361.txt",
-            "content": "Temperature (C): 39.17\nGrowth Rate (/day): 135\nEnzyme p755: Low\nElectropotential (mV/cm^2): 1.94\npH: -5.2\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 500 mg of subcutaneous ."
-        },
-        {
-            "filename": "Batch 592852.txt",
-            "content": "Temperature (C): 39.34\nGrowth Rate (/day): 155\nEnzyme p755: Low\nElectropotential (mV/cm^2): -11.22\npH: -3.6\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 700 mg of intravenous aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 314615.txt",
-            "content": "Temperature (C): 38.84\nGrowth Rate (/day): 69\nEnzyme p755: High\nElectropotential (mV/cm^2): -36.58\npH: 3.3\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 900 mg of subdermal aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 221265.txt",
-            "content": "Temperature (C): 40.37\nGrowth Rate (/day): 155\nEnzyme p755: High\nElectropotential (mV/cm^2): -5.77\npH: 4.2\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 200 mg of intrathecal ."
-        },
-        {
-            "filename": "Batch 685077.txt",
-            "content": "Temperature (C): 38.65\nGrowth Rate (/day): 117\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 16.51\npH: -6.6\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 500 mg of intravenous aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 461486.txt",
-            "content": "Temperature (C): 32.41\nGrowth Rate (/day): 144\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -0.57\npH: -3.4\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 900 mg of intravenous norepinephrine."
-        },
-        {
-            "filename": "Batch 572811.txt",
-            "content": "Temperature (C): 32.13\nGrowth Rate (/day): 119\nEnzyme p755: High\nElectropotential (mV/cm^2): 28.09\npH: -4.2\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 600 mg of intraosseal norepinephrine. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 239346.txt",
-            "content": "Temperature (C): 39.12\nGrowth Rate (/day): 26\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -22.41\npH: -2.2\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 700 mg of gaseous aldosterone."
-        },
-        {
-            "filename": "Batch 670962.txt",
-            "content": "Temperature (C): 35.11\nGrowth Rate (/day): 108\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -36.51\npH: -6.2\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed unremarkably and was given 100 mg of intravenous ."
-        },
-        {
-            "filename": "Batch 079029.txt",
-            "content": "Temperature (C): 35.54\nGrowth Rate (/day): 180\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -13.91\npH: -5.7\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 100 mg of intraosseal . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 817203.txt",
-            "content": "Temperature (C): 40.33\nGrowth Rate (/day): 78\nEnzyme p755: High\nElectropotential (mV/cm^2): 14.25\npH: -5.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed unremarkably and was given 900 mg of intraosseal ."
-        },
-        {
-            "filename": "Batch 471375.txt",
-            "content": "Temperature (C): 38.74\nGrowth Rate (/day): 153\nEnzyme p755: High\nElectropotential (mV/cm^2): -34.16\npH: -5.1\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 900 mg of intrathecal norepinephrine."
-        },
-        {
-            "filename": "Batch 898657.txt",
-            "content": "Temperature (C): 35.37\nGrowth Rate (/day): 173\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -34.97\npH: -3.9\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 300 mg of gaseous norepinephrine."  
-        },
-        {
-            "filename": "Batch 980904.txt",
-            "content": "Temperature (C): 33.46\nGrowth Rate (/day): 16\nEnzyme p755: Low\nElectropotential (mV/cm^2): -0.62\npH: 2.5\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 500 mg of intraosseal . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 382527.txt",
-            "content": "Temperature (C): 31.37\nGrowth Rate (/day): 109\nEnzyme p755: High\nElectropotential (mV/cm^2): -48.66\npH: -2.1\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 900 mg of intraosseal aldosterone. Further testing is recommended."   
-        },
-        {
-            "filename": "Batch 123659.txt",
-            "content": "Temperature (C): 34.45\nGrowth Rate (/day): 141\nEnzyme p755: Low\nElectropotential (mV/cm^2): 48.95\npH: -4.0\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 900 mg of gaseous norepinephrine."
-        },
-        {
-            "filename": "Batch 763568.txt",
-            "content": "Temperature (C): 34.33\nGrowth Rate (/day): 104\nEnzyme p755: Low\nElectropotential (mV/cm^2): -24.52\npH: -5.2\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 200 mg of intrathecal norepinephrine. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 348525.txt",
-            "content": "Temperature (C): 32.61\nGrowth Rate (/day): 66\nEnzyme p755: High\nElectropotential (mV/cm^2): 2.9\npH: -3.5\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 300 mg of subdermal aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 165406.txt",
-            "content": "Temperature (C): 37.3\nGrowth Rate (/day): 180\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 44.41\npH: -0.9\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 400 mg of gaseous . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 590270.txt",
-            "content": "Temperature (C): 37.29\nGrowth Rate (/day): 165\nEnzyme p755: Low\nElectropotential (mV/cm^2): -42.9\npH: -6.6\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed unremarkably and was given 500 mg of subcutaneous ."
-        },
-        {
-            "filename": "Batch 865475.txt",
-            "content": "Temperature (C): 37.1\nGrowth Rate (/day): 119\nEnzyme p755: High\nElectropotential (mV/cm^2): -38.28\npH: -4.0\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 300 mg of subcutaneous ."
-        },
-        {
-            "filename": "Batch 852477.txt",
-            "content": "Temperature (C): 38.6\nGrowth Rate (/day): 61\nEnzyme p755: High\nElectropotential (mV/cm^2): 21.72\npH: 2.8\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 400 mg of intraosseal norepinephrine. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 096905.txt",
-            "content": "Temperature (C): 30.88\nGrowth Rate (/day): 133\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 35.54\npH: -1.4\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 700 mg of intravenous ."
-        },
-        {
-            "filename": "Batch 384509.txt",
-            "content": "Temperature (C): 33.85\nGrowth Rate (/day): 171\nEnzyme p755: High\nElectropotential (mV/cm^2): 11.99\npH: -1.2\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 100 mg of subcutaneous ."
-        },
-        {
-            "filename": "Batch 970768.txt",
-            "content": "Temperature (C): 38.02\nGrowth Rate (/day): 73\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -48.51\npH: -4.4\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 300 mg of intravenous aldosterone."
-        },
-        {
-            "filename": "Batch 469589.txt",
-            "content": "Temperature (C): 39.94\nGrowth Rate (/day): 97\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -36.2\npH: 1.3\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed unremarkably and was given 200 mg of intrathecal aldosterone. Further testing is recommended."       
-        },
-        {
-            "filename": "Batch 694885.txt",
-            "content": "Temperature (C): 33.72\nGrowth Rate (/day): 105\nEnzyme p755: Low\nElectropotential (mV/cm^2): -47.31\npH: -3.2\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 300 mg of intrathecal ."
-        },
-        {
-            "filename": "Batch 815678.txt",
-            "content": "Temperature (C): 40.41\nGrowth Rate (/day): 64\nEnzyme p755: High\nElectropotential (mV/cm^2): 31.14\npH: 2.2\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 900 mg of intravenous ."
-        },
-        {
-            "filename": "Batch 545664.txt",
-            "content": "Temperature (C): 33.75\nGrowth Rate (/day): 22\nEnzyme p755: Low\nElectropotential (mV/cm^2): 44.46\npH: 0.5\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 100 mg of intrathecal norepinephrine. Further testing is recommended."    
-        },
-        {
-            "filename": "Batch 429136.txt",
-            "content": "Temperature (C): 35.92\nGrowth Rate (/day): 147\nEnzyme p755: Low\nElectropotential (mV/cm^2): -3.76\npH: -5.4\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 600 mg of intravenous ."
-        },
-        {
-            "filename": "Batch 524443.txt",
-            "content": "Temperature (C): 31.08\nGrowth Rate (/day): 110\nEnzyme p755: Low\nElectropotential (mV/cm^2): 44.24\npH: 5.1\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 800 mg of intraosseal aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 307373.txt",
-            "content": "Temperature (C): 41.29\nGrowth Rate (/day): 154\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 40.04\npH: 4.8\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 100 mg of intrathecal ."
-        },
-        {
-            "filename": "Batch 572156.txt",
-            "content": "Temperature (C): 37.92\nGrowth Rate (/day): 116\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -15.75\npH: -2.6\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 800 mg of intraosseal norepinephrine."        
-        },
-        {
-            "filename": "Batch 090615.txt",
-            "content": "Temperature (C): 34.89\nGrowth Rate (/day): 32\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 36.67\npH: -3.2\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 200 mg of intraosseal . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 184473.txt",
-            "content": "Temperature (C): 34.51\nGrowth Rate (/day): 65\nEnzyme p755: High\nElectropotential (mV/cm^2): -48.52\npH: 2.1\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 800 mg of gaseous ."
-        },
-        {
-            "filename": "Batch 256738.txt",
-            "content": "Temperature (C): 30.32\nGrowth Rate (/day): 148\nEnzyme p755: High\nElectropotential (mV/cm^2): -48.88\npH: 6.5\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 700 mg of subcutaneous aldosterone."
-        },
-        {
-            "filename": "Batch 076487.txt",
-            "content": "Temperature (C): 30.83\nGrowth Rate (/day): 74\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 49.74\npH: 0.3\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 600 mg of gaseous norepinephrine."
-        },
-        {
-            "filename": "Batch 904723.txt",
-            "content": "Temperature (C): 32.05\nGrowth Rate (/day): 50\nEnzyme p755: Low\nElectropotential (mV/cm^2): -5.92\npH: 0.2\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 700 mg of subdermal . Further testing is recommended."  
-        },
-        {
-            "filename": "Batch 243343.txt",
-            "content": "Temperature (C): 39.5\nGrowth Rate (/day): 133\nEnzyme p755: High\nElectropotential (mV/cm^2): -0.75\npH: -4.6\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 500 mg of intravenous norepinephrine. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 723193.txt",
-            "content": "Temperature (C): 33.08\nGrowth Rate (/day): 160\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 40.14\npH: -6.0\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 700 mg of subcutaneous aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 861125.txt",
-            "content": "Temperature (C): 41.47\nGrowth Rate (/day): 37\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 44.15\npH: -5.3\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 500 mg of gaseous . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 193798.txt",
-            "content": "Temperature (C): 30.99\nGrowth Rate (/day): 146\nEnzyme p755: Low\nElectropotential (mV/cm^2): -18.77\npH: -4.7\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 200 mg of intrathecal . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 222782.txt",
-            "content": "Temperature (C): 34.23\nGrowth Rate (/day): 27\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -22.93\npH: -2.1\nPhotosensitivity: Absent\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 400 mg of intravenous aldosterone. Further testing is recommended."   
-        },
-        {
-            "filename": "Batch 826581.txt",
-            "content": "Temperature (C): 40.65\nGrowth Rate (/day): 180\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -1.74\npH: -5.0\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 100 mg of intrathecal norepinephrine."
-        },
-        {
-            "filename": "Batch 836352.txt",
-            "content": "Temperature (C): 33.69\nGrowth Rate (/day): 117\nEnzyme p755: Low\nElectropotential (mV/cm^2): -44.39\npH: -2.3\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 600 mg of gaseous aldosterone."
-        },
-        {
-            "filename": "Batch 468778.txt",
-            "content": "Temperature (C): 33.69\nGrowth Rate (/day): 178\nEnzyme p755: Low\nElectropotential (mV/cm^2): 19.79\npH: 6.5\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 600 mg of intrathecal norepinephrine."       
-        },
-        {
-            "filename": "Batch 341391.txt",
-            "content": "Temperature (C): 35.95\nGrowth Rate (/day): 38\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -15.09\npH: 6.1\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 600 mg of gaseous aldosterone."
-        },
-        {
-            "filename": "Batch 839205.txt",
-            "content": "Temperature (C): 30.54\nGrowth Rate (/day): 112\nEnzyme p755: High\nElectropotential (mV/cm^2): 18.34\npH: 4.3\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 100 mg of subcutaneous aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 869435.txt",
-            "content": "Temperature (C): 37.52\nGrowth Rate (/day): 77\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -7.58\npH: 1.5\nPhotosensitivity: Absent\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 600 mg of intravenous norepinephrine."
-        },
-        {
-            "filename": "Batch 201933.txt",
-            "content": "Temperature (C): 30.29\nGrowth Rate (/day): 109\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 32.51\npH: 0.8\nPhotosensitivity: Inconclusive\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 900 mg of intravenous ."
-        },
-        {
-            "filename": "Batch 563763.txt",
-            "content": "Temperature (C): 34.3\nGrowth Rate (/day): 114\nEnzyme p755: Low\nElectropotential (mV/cm^2): -1.54\npH: 0.7\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 400 mg of intravenous aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 655339.txt",
-            "content": "Temperature (C): 36.98\nGrowth Rate (/day): 134\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -41.86\npH: 4.6\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 400 mg of subcutaneous . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 662169.txt",
-            "content": "Temperature (C): 39.75\nGrowth Rate (/day): 13\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 6.86\npH: -6.3\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 100 mg of subdermal aldosterone. Further testing is recommended."      
-        },
-        {
-            "filename": "Batch 476643.txt",
-            "content": "Temperature (C): 34.03\nGrowth Rate (/day): 10\nEnzyme p755: High\nElectropotential (mV/cm^2): 14.63\npH: 5.2\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 600 mg of subdermal ."
-        },
-        {
-            "filename": "Batch 097159.txt",
-            "content": "Temperature (C): 30.77\nGrowth Rate (/day): 61\nEnzyme p755: Low\nElectropotential (mV/cm^2): 33.37\npH: 5.3\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 100 mg of subcutaneous aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 952673.txt",
-            "content": "Temperature (C): 36.5\nGrowth Rate (/day): 63\nEnzyme p755: Low\nElectropotential (mV/cm^2): 38.49\npH: -3.9\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed unremarkably and was given 300 mg of subcutaneous ."
-        },
-        {
-            "filename": "Batch 777882.txt",
-            "content": "Temperature (C): 31.78\nGrowth Rate (/day): 73\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -11.02\npH: -5.3\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 100 mg of intraosseal norepinephrine."
-        },
-        {
-            "filename": "Batch 541313.txt",
-            "content": "Temperature (C): 31.82\nGrowth Rate (/day): 148\nEnzyme p755: Low\nElectropotential (mV/cm^2): -29.6\npH: -4.8\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 200 mg of intraosseal ."
-        },
-        {
-            "filename": "Batch 217796.txt",
-            "content": "Temperature (C): 37.13\nGrowth Rate (/day): 180\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -31.31\npH: -5.9\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 700 mg of subcutaneous aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 282268.txt",
-            "content": "Temperature (C): 37.51\nGrowth Rate (/day): 90\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -19.05\npH: -4.5\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 600 mg of intrathecal norepinephrine."
-        },
-        {
-            "filename": "Batch 349411.txt",
-            "content": "Temperature (C): 32.2\nGrowth Rate (/day): 114\nEnzyme p755: High\nElectropotential (mV/cm^2): 14.38\npH: 4.8\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 200 mg of intravenous aldosterone."
-        },
-        {
-            "filename": "Batch 733391.txt",
-            "content": "Temperature (C): 32.71\nGrowth Rate (/day): 46\nEnzyme p755: Low\nElectropotential (mV/cm^2): 23.29\npH: -1.0\nPhotosensitivity: Present\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 400 mg of subdermal aldosterone."
-        },
-        {
-            "filename": "Batch 688327.txt",
-            "content": "Temperature (C): 36.72\nGrowth Rate (/day): 165\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 21.21\npH: -2.7\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 800 mg of gaseous norepinephrine."
-        },
-        {
-            "filename": "Batch 709092.txt",
-            "content": "Temperature (C): 39.7\nGrowth Rate (/day): 35\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 26.16\npH: -0.2\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 100 mg of intravenous norepinephrine."
-        },
-        {
-            "filename": "Batch 108685.txt",
-            "content": "Temperature (C): 30.97\nGrowth Rate (/day): 129\nEnzyme p755: High\nElectropotential (mV/cm^2): 0.18\npH: 2.8\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 900 mg of subcutaneous norepinephrine."
-        },
-        {
-            "filename": "Batch 763192.txt",
-            "content": "Temperature (C): 33.24\nGrowth Rate (/day): 178\nEnzyme p755: Low\nElectropotential (mV/cm^2): -14.73\npH: 1.2\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 300 mg of gaseous . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 610574.txt",
-            "content": "Temperature (C): 30.86\nGrowth Rate (/day): 66\nEnzyme p755: Low\nElectropotential (mV/cm^2): -41.26\npH: -0.0\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 200 mg of intrathecal ."
-        },
-        {
-            "filename": "Batch 367478.txt",
-            "content": "Temperature (C): 37.05\nGrowth Rate (/day): 20\nEnzyme p755: High\nElectropotential (mV/cm^2): -34.25\npH: 1.1\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 400 mg of subcutaneous aldosterone."        
-        },
-        {
-            "filename": "Batch 705050.txt",
-            "content": "Temperature (C): 38.1\nGrowth Rate (/day): 25\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -6.13\npH: -2.2\nPhotosensitivity: Inconclusive\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 800 mg of intrathecal norepinephrine."
-        },
-        {
-            "filename": "Batch 948253.txt",
-            "content": "Temperature (C): 40.71\nGrowth Rate (/day): 172\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): -18.28\npH: 6.4\nPhotosensitivity: Inconclusive\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 700 mg of subcutaneous ."
-        },
-        {
-            "filename": "Batch 350202.txt",
-            "content": "Temperature (C): 34.89\nGrowth Rate (/day): 129\nEnzyme p755: Low\nElectropotential (mV/cm^2): 5.05\npH: 0.9\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed complications upon further testing and was given 900 mg of subcutaneous ."
-        },
-        {
-            "filename": "Batch 518327.txt",
-            "content": "Temperature (C): 35.24\nGrowth Rate (/day): 87\nEnzyme p755: High\nElectropotential (mV/cm^2): -32.96\npH: 0.1\nPhotosensitivity: Present\nNotes: Initial test was highly promising. Subject developed unremarkably and was given 200 mg of intraosseal norepinephrine."
-        },
-        {
-            "filename": "Batch 308029.txt",
-            "content": "Temperature (C): 41.78\nGrowth Rate (/day): 54\nEnzyme p755: Undetected\nElectropotential (mV/cm^2): 34.65\npH: 0.6\nPhotosensitivity: Present\nNotes: Initial test was unpromising. Subject developed unremarkably and was given 600 mg of gaseous norepinephrine. Further testing is recommended."     
-        },
-        {
-            "filename": "Batch 184956.txt",
-            "content": "Temperature (C): 40.59\nGrowth Rate (/day): 116\nEnzyme p755: Medium\nElectropotential (mV/cm^2): -12.12\npH: -1.7\nPhotosensitivity: Absent\nNotes: Initial test was inconclusive. Subject developed complications upon further testing and was given 100 mg of subcutaneous aldosterone. Further testing is recommended."
-        },
-        {
-            "filename": "Batch 571421.txt",
-            "content": "Temperature (C): 30.78\nGrowth Rate (/day): 111\nEnzyme p755: Low\nElectropotential (mV/cm^2): -34.57\npH: 4.2\nPhotosensitivity: Present\nNotes: Initial test was inconclusive. Subject developed unremarkably and was given 800 mg of subcutaneous ."
-        },
-        {
-            "filename": "Batch 464116.txt",
-            "content": "Temperature (C): 34.77\nGrowth Rate (/day): 172\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 45.36\npH: 4.1\nPhotosensitivity: Absent\nNotes: Initial test was promising. Subject developed complications upon further testing and was given 200 mg of intraosseal . Further testing is recommended."
-        },
-        {
-            "filename": "Batch 966100.txt",
-            "content": "Temperature (C): 36.44\nGrowth Rate (/day): 36\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 22.94\npH: 0.1\nPhotosensitivity: Inconclusive\nNotes: Initial test was unpromising. Subject developed complications upon further testing and was given 500 mg of intraosseal norepinephrine."
-        }
-    ]
+    }
 }
