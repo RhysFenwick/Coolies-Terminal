@@ -28,6 +28,8 @@ var med_files;
 var actionOptions = (document.getElementById("action-grid").getElementsByClassName("keypad-button")); // HTMLCollection of action buttons (all divs with class keypad-button in div action-grid)
 var actionStates = new Array(actionOptions.length).fill(0); // Will be filled with as many 0's as there are actionOptions
 var focusAction = 0; // Will cycle
+var actionVariables; // All of the action-related text etc - from JSON
+var actionItem; // Name of item that you get in site modality 2 - pulled from JSON
 var combo; // Will be 16-digit 0/1 array pulled from JSON
 
 
@@ -665,8 +667,7 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
             case "Enter":
               toggleDiv(actionOptions[focusAction]); // Toggles visual of the button on/off
               actionStates[focusAction] = (actionStates[focusAction] + 1)%2; // Toggles it between 0 and 1
-              // TODO - Toggle text
-              // TODO - Pull text being toggled out to content.json
+              updateActions();
             break;
         }
     }
@@ -790,6 +791,7 @@ function gameStart(rooms_json) {
     sites = rooms_json.sites // An array of the site computer JSONs.
     eng_files = rooms_json.eng_files // An array of the engineer-style file JSONs.
     med_files = rooms_json.med_files // An array of the medical-style file JSONs.
+    actionVariables = rooms_json.action_variables; // An array highlighting the action text + the item you get
 
     terminal_title = rooms_json.strings.title;
     start_string = rooms_json.strings.start_message;
@@ -839,8 +841,20 @@ function gameStart(rooms_json) {
 
     highlightKeypad(); // Initialises first key being selected
 
+    // Action modality variables
+
     // Highlight the top actionOption
     highlightKey(actionOptions[focusAction]);
+
+    // Allocate actionItem
+    actionItem = actionVariables.actionItem;
+
+    // Initialise action site text
+    updateActions();
+
+    // Update decryption text
+    editTextByID("site-decrypt-title",rooms_json["decryption_variables"]["predecryptTitle"]);
+    editTextByID("site-decrypt-text",rooms_json["decryption_variables"]["predecryptText"]);
     
     // Initialise the right hand side
     generalRefresh();
@@ -1089,7 +1103,7 @@ function checkForDoor(queried_room) {
   for (d in doors) {
     var door = doors[d];
       // Is there a better way to do this?
-      if ((getRoomFromID(queried_room).id == door.room1 && current_room.id == door.room2) || (getRoomFromID(queried_room).id == door.room2 && current_room.id == door.room1)) {
+      if (getRoomFromName(queried_room) && (getRoomFromName(queried_room).id == door.room1 && current_room.id == door.room2) || (getRoomFromName(queried_room) && getRoomFromName(queried_room).id == door.room2 && current_room.id == door.room1)) {
         valid_room = door;
       }
     }
@@ -1149,7 +1163,7 @@ function moveRooms(input_array) {
           else {
             // Moves current room
             current_room = getRoomFromName(queried_room);
-            appendToTerminal("You've moved to the " + queried_room + ".")
+            appendToTerminal("You've moved to " + queried_room + ".")
             energy -= (3 + inventory.length)
             wipeKeypad();
             generalRefresh();
@@ -1174,7 +1188,7 @@ async function return_to_base() {
   appendToTerminal("You have returned to the central room.")
   appendToTerminal("Automated maintenance cycle commencing...")
   timing = 60000 // A minute in ms
-  if (inventory.includes('g')) { // TODO - Pull this out to content.json
+  if (inventory.includes(rooms_json.speed_item)) {
     timing = 6000 // Speeds up by 10
   }
   for (i=10;i>0;i--) {
@@ -1360,6 +1374,30 @@ async function decrypt() {
   await delay(3000) // Some time to admire the handiwork
   d_screen.style.display = "none"; // Hides the decryption screen
   document.getElementById("interactive-screen").style.display = "flex"; // Shows everything else again
+}
+
+// Checks actionStates for what to do
+function updateActions() {
+  var states = ["Off","On"] // 0 is Off, 1 is On - translating int to str
+  for (i in actionStates) { // Deliberately going "in" not "of" for easy index referencing
+    var state = actionStates[i]; // 0 or 1
+    var varTextName = "action" + i + "Text" + states[state];
+    var varTitleName = "action" + i + "Title" + states[state];
+    console.log(varTextName);
+    var newText = actionVariables[varTextName];
+    console.log(newText);
+    var textLoc = "action-" + i + "-status";
+    var titleLoc = "action-" + i + "-title";
+    editTextByID(textLoc,actionVariables[varTextName]);
+    editTextByID(titleLoc,actionVariables[varTitleName]);
+  }
+
+  // Gives item if allowed and not already present
+  if (actionStates[0] && !inventory.includes(actionItem)) {
+    inventory.push(actionItem)
+    refreshInventory() // TODO - Test this given will only happen in site
+  }
+
 }
 
 // Call the function to set up the rooms

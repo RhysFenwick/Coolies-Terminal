@@ -12,7 +12,7 @@
       },
       {
         "id": "north1",
-        "name": "north1",
+        "name": "botany",
         "description": "dark and rainy.",
         "items": [],
         "inspected": false,
@@ -22,7 +22,7 @@
       },
       {
         "id": "north2",
-        "name": "north2",
+        "name": "engineering",
         "description": "dark and rainy.",
         "items": [],
         "inspected": false,
@@ -32,7 +32,7 @@
       },
       {
         "id": "north3",
-        "name": "north3",
+        "name": "medical",
         "description": "dark and rainy.",
         "items": [],
         "inspected": false,
@@ -349,10 +349,36 @@
       {"name":"f", "description":"Filler item for testing.","weight":1},
       {"name":"g", "description":"Filler item for testing.","weight":1},
       {"name":"h", "description":"Filler item for testing.","weight":1},
-      {"name":"i", "description":"Filler item for testing.","weight":1}
+      {"name":"i", "description":"Filler item for testing.","weight":1},
+      {"name":"speedboost", "description":"Reduces return time to 1 minute.","weight":0},
+      {"name":"actionitem","description":"You get this item after flicking a switch in Engineering.","weight":0}
+
     ],
     
-    "starting_inventory":["a","b","c","d","e","f","g","h","i"],
+    "starting_inventory":["a","b","c","d","e","speedboost"],
+
+    "speed_item":"speedboost",
+
+    "action_variables": {
+      "actionItem":"actionitem",
+
+      "action0TitleOff":"Action 1",
+      "action0TitleOn":"Action 1 Complete",
+      "action0TextOff":"Awaiting activation",
+      "action0TextOn":"Activated! Item acquired.",
+
+      "action1TitleOff":"Action 2",
+      "action1TitleOn":"Action 2 Complete",
+      "action1TextOff":"Status unchecked",
+      "action1TextOn":"No update for 172 days 13 hours 5 minutes."
+    },
+
+    "decryption_variables": {
+      "predecryptTitle":"Contents Encrypted",
+      "postdecryptTitle":"Contents Decrypted",
+      "predecryptText":"This site computer is encrypted with an AES-4096 isomorphic algorithm. Decryption will take approximately 600 seconds.\nPress Enter to proceed.",
+      "postdecryptText":"We've been trying to reach you about your space station's extended warranty."
+    },
 
     "help_tips": {
       "clear":"Clears the terminal of all previous interactions.",
