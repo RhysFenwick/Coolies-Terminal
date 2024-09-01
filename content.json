@@ -314,6 +314,7 @@
       "Modality is the type of site. 1 is lots-of-files, 2 is interactive-buttons (i.e. the one that drops a bunch of items and the one that gets rid of your solid items), 3 is decrypt.",
       "Currently there's one modality 1, two modality 2 ('airlock' and 'dispenser'), and one modality 3 - keep it that way!",
       "The modality 2 sites have actions - each action is an on/off switch, with both the title and text settable below. The first action in 'dispenser' is the one that dispenses the items when activated.",
+      "The modality 1 site has the real files - the batch number just needs to be 6 digits (with quotation marks!), I can sort out the rest. If you want to change the format of the dummy files, just let me know!",
       "Locked will always start set to true. Broken currently isn't used, just leave it set to false.",
       "Combo is the keypad combo - one for on, zero for off, no quotation marks."
     ],
@@ -363,8 +364,16 @@
       {
         "room":"north3",
         "modality": 1,
-        "file_name":"Obvious_Clue.txt",
-        "file_content":"Note to self: it would be SO easy to murder someone on this station lol",
+        "real_files": [
+          {
+            "batch_number":"001122",
+            "file_contents":"Temperature (C): 35.23\nGrowth Rate (/day): 107\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 40.87\npH: -3.5\nPhotosensitivity: Present\nNotes: Initial testing was promising. Subject developed unremarkably. Subject was given 600mg of subcutaneous aldosterone."
+          },
+          {
+            "batch_number":"123456",
+            "file_contents":"Temperature (C): 35.23\nGrowth Rate (/day): 107\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 40.87\npH: -3.5\nPhotosensitivity: Present\nNotes: Initial testing was promising. Subject developed unremarkably. Subject was given 500mg of subcutaneous aldosterone."
+          }
+        ],
         "broken":false,
         "locked":true,
         "combo": [
