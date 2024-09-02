@@ -1490,11 +1490,34 @@ function createActionSite() {
 
 // Load the rooms JSON
 async function get_rooms() {
-  const response = await fetch("./content.json");
-  const data = await response.json();
-  return data;
+  return content; // Should just be the JSON?
 }
 
-// Call the function to set up the rooms
-// This is the first function called! Everything else flows from here
-roomSetup();
+// Loads in content.json
+var content;
+document.getElementById('submitBtn').addEventListener('click', function() {
+  const fileInput = document.getElementById('fileInput');
+  const file = fileInput.files[0];
+
+  if (file && file.type === 'application/json') {
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+          try {
+              content = JSON.parse(event.target.result);
+              // Call the function to set up the rooms
+              // This is the first function called! Everything else flows from here
+              roomSetup();
+          } catch (e) {
+              alert('Invalid JSON file. Please upload a valid content.json file.');
+          }
+      };
+
+      reader.readAsText(file);
+  } else {
+      alert('Please upload your content.json file.');
+  }
+});
+
+
+

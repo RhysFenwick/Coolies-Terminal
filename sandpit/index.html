@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A.N.G.E.L. Station Control Terminal</title>
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+<link rel="stylesheet" href="style.css">
+<!-- Adding Monochromatty Reduced font by Bernd Ebertz -->
+<style>
+    @font-face { font-family: Monochromatty; src: url('monochromatty-reduced.ttf'); } 
+</style>
+
+<!-- Listing audio files -->
+<audio id="double-click" controls style="display:none" preload="auto">
+    <source src="./audio/Double_Click.mp3" type="audio/mpeg"> Your browser does not support the audio element.
+</audio>
+
+<audio id="single-click" controls style="display:none" preload="auto">
+    <source src="./audio/Short_Click.mp3" type="audio/mpeg"> Your browser does not support the audio element.
+</audio>
+
+</head>
+
+<body id="body">
+    <div id="json-uploader">
+        <input type="file" id="fileInput" accept=".json">
+        <button id="submitBtn">Submit</button>
+    </div>
+<div id="crt-container">
+    <div class="refresh"></div>
+    <div class="edgefade"></div>
+    <div class="crt">
+        <div id="splash" class="cover-screen">
+            <p id = "splashtext" class="splashtext">                                                                                 
+                                                                                        
+                1                                                                5                  </br>
+                 64                                                            28                   </br>
+                  88                                                          60                    </br>
+                   80                                                        00                     </br>
+                4   001                                                     00   3                  </br>
+                49   008                 400000000000000006               900   48                  </br>
+                 003  6005            10081              74004          1000  700                   </br>
+              79  8007 70005          10061               6005        20003  800  65                </br>
+               90  3000  30000093        4000000000000000097     79000004  0004  00                 </br>
+                809  40002  72000006                          20000057  10009  400                  </br>
+                 9009  50006      90001                     80007     40004  6008                   </br>
+                   8009   9000       6001                7008       8008   4000                     </br>
+                     0000    1003       902            700       7003    8000                       </br>
+                   0   60003               0          87              70008   81                    </br>
+                   1007   5006                                      4009    005                     </br>
+                     0004     301                                7827    5000                       </br>
+                       00005                                          200001                        </br>
+                         200002                                    100004                           </br>
+                            760087                               80087                              </br>
+                                                                                                    </br>
+                              96                                  697                               </br>
+                                 30000665                26600003                                   </br>
+
+     ___        _   __      ______       ______       __    </br>
+    /   |      / | / /     / ____/      / ____/      / /    </br>
+   / /| |     /  |/ /     / / __       / __/        / /     </br>
+  / ___ | _  / /|  /   _ / /_/ /   _  / /___    _  / /___ _ </br>
+ /_/  |_|(_)/_/ |_/   (_)\____/   (_)/_____/   (_)/_____/(_)</br>
+             </p>
+             <h2>Aerial Navigation and Geological Evaluation Low-orbit</h2>
+        <h1 id="loading-bar">
+            Loading
+        </h1>
+        </div>
+
+        <div id="interactive-screen" class="big-box row">  
+            
+            <div id="menu">
+                <div id="press-info" class="press-info">
+                    <p>Press<br>-<br>to cycle</p>
+                </div>
+
+                <div id="main-button" class="small-box menu-button">
+                    <p>Main</p>
+                </div>
+    
+                <div id="map-button" class="small-box menu-button">
+                    <p>Map</p>
+                </div>
+
+                <div id="help-button" class="small-box menu-button">
+                    <p>Help</p>
+                </div>
+
+                <div id="site-button" class="small-box menu-button">
+                    <p>Site</p>
+                </div>
+            </div>
+
+            <!-- The map screen -->
+                <div class="big-box" id="map-screen">
+                    <div id="map-box" class="small-box">
+                        <div id="map"></div>
+                    </div>
+                </div>
+            <!-- End map screen -->
+
+            <!-- The help screen -->
+                <div class="big-box" id="help-screen">
+                    <div id="help-commands-box" class="small-box">
+                        <p>Commands</p>
+                        <div id="help-menu">
+                        </div>
+                    </div>
+                    <div id="help-instructions-box" class="small-box">
+                        <p>Select a command for more information.</p>
+                    </div>
+                </div>
+            <!-- End help screen -->
+
+            <div id="main-screen" class="big-box">
+                <div id="term-box" class="small-box">
+                    <div id="title">
+                        <h1>A.N.G.E.L. Station Control Terminal v0.5</h1>
+                    </div>
+                    <div id="terminal"></div>
+                    <div id="term-input"></div>
+                </div>
+    
+                <div id="mid-col" class="col">
+       
+                    <div id="information-box" class="small-box">
+                        <div id="information"></div>
+                    </div>  
+                    
+                    <div id="messages-box" class="small-box">
+                        <div id="messages"></div>
+                    </div>
+                    
+                </div>
+    
+                <div id="right-col" class = "col">
+    
+                    <div id="energy-box" class="small-box">
+                        <div id="energy"></div>
+                    </div>
+    
+                    <div id="minimap-box" class="small-box">
+                        <div id="minimap"></div>
+                    </div>
+    
+                    <div id="inventory-box" class="small-box">
+                        <div id="inventory"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The site screen -->
+            <div class="big-box" id="site-screen">
+                <div id="site-box" class="small-box">
+                    <div id="site-login-screen">
+                        <div id="site-login-title"><h1 id="site-login-title-text">Login</h1></div>
+                        <div id="site-login"></div>
+                    </div>
+                    <div id="site-content-screen">
+                        <div id="site-modality-1">
+                            <div id="site-content-left" class="small-box">ENTER M-NET FILENAME TO OPEN/RUN FILE</div>
+                            <div id="site-content-right" class="small-box">
+                                <h1 id="content-name"></h1>
+                                <p id="content-desc"></p>
+                            </div>
+                        </div>
+                        <div id="site-modality-2">
+                            <div id="dispenser" class="action-grid">
+                                <div id="dispenser-action-grid-0-0" class="action-grid-cell" style="grid-row: 1; grid-column:1">
+                                    <h1 id="dispenser-action-0-title">Perform Action 1</h1>
+                                </div>
+                                <div id="dispenser-action-grid-0-1" class="action-grid-cell" style="grid-row: 1; grid-column:2">
+                                    <div id="dispenser-action-0-button" class="keypad-button"></div>
+                                </div>
+                                <div id="dispenser-action-grid-0-2" class="action-grid-cell" style="grid-row: 1; grid-column:3">
+                                    <h2 id="dispenser-action-0-status">Action 1 - not yet performed</h2>
+                                </div>
+                                <div id="dispenser-action-grid-1-0" class="action-grid-cell" style="grid-row: 2; grid-column:1">
+                                    <h1 id="dispenser-action-1-title">Perform Action 2</h1>
+                                </div>
+                                <div id="dispenser-action-grid-1-1" class="action-grid-cell" style="grid-row: 2; grid-column:2">
+                                    <div id="dispenser-action-1-button" class="keypad-button"></div>
+                                </div>
+                                <div id="dispenser-action-grid-1-2" class="action-grid-cell" style="grid-row: 2; grid-column:3">
+                                    <h2 id="dispenser-action-1-status">Action 2 - not yet performed</h2>
+                                </div>
+                            </div>
+
+                            <div id="airlock" class="action-grid">
+                                <div id="airlock-title" class="action-grid-cell" style="grid-row: 1; grid-column:1">
+                                    <h1 id="airlock-action-0-title">Perform Action 1</h1>
+                                </div>
+                                <div id="airlock-button" class="action-grid-cell" style="grid-row: 1; grid-column:2">
+                                    <div id="airlock-action-0-button" class="keypad-button"></div>
+                                </div>
+                                <div id="airlock-status" class="action-grid-cell" style="grid-row: 1; grid-column:3">
+                                    <h2 id="airlock-action-0-status">Action 1 - not yet performed</h2>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div id="site-modality-3">
+                            <div id="site-decrypt">
+                                <h1 id="site-decrypt-title">
+                                    Contents Encrypted
+                                </h1>
+                                <p id="site-decrypt-text">
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End site screen -->
+        </div>
+        <!-- End main interactive screen-->
+
+        <!-- The decryption screen -->
+        <div id="decrypt-screen">
+            <p id="decrypt-text"></p>
+            <div id="decrypt-timer-box">
+              <h1 id="timer">Decryption Complete</h1>
+            </div>
+        </div>
+        <!-- End decryption screen -->
+    </div>
+</div>
+
+
+<script type="text/javascript" src="content.json"></script>
+<script src="script.js"></script>
+</body>
+</html>
