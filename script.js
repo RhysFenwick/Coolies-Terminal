@@ -390,13 +390,7 @@ function createInputLine(loc="term-input") {
           if (loc == "term-input") {
             // Append the input text to the terminal
             appendToTerminal("> " + input, false, "terminal");
-          }
-          
-          else if (loc == "site-content-left") { // Only in modality 1
-            editTextByID(loc,"FILENAME QUERY: "+input)
-            displaySearch(input);
-          }
-          
+          }          
 
           if (current_tab == 0) {
             // Type anything in terminal that's needed here
@@ -563,6 +557,18 @@ function swapView(clickedView) {
   }
 }
 
+// Function for the file site search - takes a highlighted div and creates the correct column to the right
+function makeRightFileDiv(folder_div) {
+  var file_col = folder_div.parentElement;
+  var range_digits = folder_div.textContent;
+  var start_digits = range_digits.split("-")[0] // The start of the range for the next folder
+  var oom = parseInt(file_col.id.split("-")[2]) + 1 // The order of magnitude digit to be cycled through, e.g. 2 from file-column-1. This is because digit[2] (i.e. 3rd digit) will iterate in file-column-2.
+  // TODO - Use editString to generate 10 version of the start-digits and end-digits to create new range-digits
+  // Then clear div to the right, generate new, add text content
+  // Also change the textcontent if oom=5 (only start-digits plus "Batch " & ".txt")
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //  Document-wide listeners
 ///////////////////////////////////////////////////////////////////////////////
@@ -600,9 +606,6 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
         document.getElementById("site-modality-" + m).style.display = "none"; 
       }
 
-      if (current_site) {// Shouldn't trigger on null
-        createInputLine("site-content-left");
-      }
 
       if (modality == 2) { // Select the correct version of the action site
         for (v of ["airlock","dispenser"]) { // TODO - Hard-coding these in seems...bad
@@ -679,6 +682,11 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
         }
     }
 
+    // File system logic
+    else if (modality == 1) { // Should only trigger on unlocked file site
+
+    }
+
     // Action logic
     else if (modality == 2) { // Should only trigger on unlocked action sites
 
@@ -709,6 +717,7 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
         switch (event.key) {
           case " ": // Fall-through: triggers on both Space and Enter
           case "Enter":
+            console.log("Airlock triggered!")
             toggleDiv(document.getElementById("airlock-action-0-button")); // Toggles visual of the button on/off
             // TODO - Remove all solid items
             updateActions("airlock");
@@ -914,7 +923,6 @@ function parseInput(raw_input) {
 
     // The key instruction given - decides what happens next
     action = input_array[0];
-    console.log(action);
 
     switch(action) {
 
@@ -1341,7 +1349,6 @@ function toggleUnlockScreen(content=true) {
     document.getElementById("site-login-screen").style.display = "none";
     document.getElementById("site-content-screen").style.display = "block";
     if (current_site.locked) {
-      createInputLine("site-content-left");
       current_site.locked = false; // TODO: This isn't great - mixing up site/current_site...unless it's by reference?
     }
   }
@@ -1357,9 +1364,6 @@ function refreshSite() {
   for (var site of sites) {
     if (site.room == current_room.id) {
       current_site = site;
-      // Reset content
-      editTextByID("content-name","N/A");
-      editTextByID("content-desc","No filenames searched yet");
 
       if (site.locked) { // Reset login screen
         toggleUnlockScreen(false)
@@ -1463,7 +1467,6 @@ async function updateActions(typeName) {
   if (actionStates[0] && !actionItemsDropped) {
     for (var item of actionItems) {
       getRoomFromID(item.room).items.push(item.name); // Drops items into room
-      console.log(item.name + " is now in " + item.room);
     }
     actionItemsDropped = true;
   }

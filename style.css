@@ -120,6 +120,61 @@ Scrollbar settings - don't work on Firefox :(
   justify-content: center;
 }
 
+#file-area {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0%;
+  margin: 0%;
+}
+
+#file-title {
+  height: min-content;
+  padding: 0%;
+  margin: 0%;
+}
+
+#file-grid {
+  display: grid;
+  grid-template-columns: 15% 15% 15% 15% 15% 25%;
+  width: 105%;
+  margin: 0%;
+  padding: 0%;
+  height: 80%;
+  padding-top: 5%;
+}
+
+.file-column {
+  border: 2px solid #008000;
+  animation: boxShadow 1.6s infinite;
+  height: 100%;
+  width: 90%;
+  display: grid;
+  grid-template-rows: auto auto auto auto auto auto auto auto auto auto ;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-folder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.selected-folder {
+  border: 2px solid #008000;
+  animation: boxShadow 1.6s infinite;
+}
+
+
+#airlock {
+  grid-template-rows: 40% 20% 40%;
+  height: 100%;
+}
+
 #help-instructions-box {
   width: 50%;
 }
@@ -291,27 +346,22 @@ Scrollbar settings - don't work on Firefox :(
 #site-content-screen {
   display: none;
   width: 95%;
+  height: 100%;
 }
 
-#site-content-left {
-  float: left;
-  width: 20%;
-  min-height: 50vh;
-}
-
-#site-content-right {
-  float: right;
-  width: 40%;
-  height: 200%;
+#site-decrypt {
+  width: 100%;
 }
 
 #site-modality-1 {
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 
 #site-modality-2 {
   display: none;
+  height: 100%;
 }
 
 #site-modality-3 {
