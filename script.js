@@ -33,6 +33,10 @@ var actionItems; // Name/locations of items that you get in site modality 2 - pu
 var actionItemsDropped = false; // Becomes true on first dispenser activation
 var combo; // Will be 16-digit 0/1 array pulled from JSON
 
+// Coordinates of highlighted cell (from 0-5 and 0-9 respectively)
+var file_col = 0;
+var file_row = 0;
+
 
 // Decryption text
 var d_size = 1800; // May well need to ramp this up to cover screen
@@ -563,10 +567,43 @@ function makeRightFileDiv(folder_div) {
   var range_digits = folder_div.textContent;
   var start_digits = range_digits.split("-")[0] // The start of the range for the next folder
   var oom = parseInt(file_col.id.split("-")[2]) + 1 // The order of magnitude digit to be cycled through, e.g. 2 from file-column-1. This is because digit[2] (i.e. 3rd digit) will iterate in file-column-2.
-  // TODO - Use editString to generate 10 version of the start-digits and end-digits to create new range-digits
-  // Then clear div to the right, generate new, add text content
-  // Also change the textcontent if oom=5 (only start-digits plus "Batch " & ".txt")
+  
+  var new_col = null; // Will only stay null if the current file_col is already furthest to the right
+  if (oom < 6) {
+    new_col = document.getElementById("file-column-" + oom); // E.g. if current column is file-column-1, this should be file-column-2.
+    new_col.innerHTML = ""; // Clear out any HTML already in there
+    for (i=0;i<10;i++) { // Add in 10 fresh divs
+      var new_file_div = document.createElement("div");
+      new_file_div.className = "file-folder";
+      new_col.appendChild(new_file_div);
+    }
+  }
+  // By this point, if you are writing to a new column (i.e. you're not navigating the rightmost already), the structure should exist
 
+  var new_start_digits = []; // Will contain start_digits for new column as string
+  for (i=0;i<10;i++) {
+    var next_entry;
+    var next_digit = editString(start_digits,i.toString(),oom);
+    if (oom == 5) { // These will go in the rightmost column
+      next_entry = "Batch " + next_digit + ".log";
+    }
+    else { // Regular column
+      next_entry = next_digit + "-" + editString(start_digits,(i.toString() + "9".repeat(5-oom)),oom) // Should be the right number of nines?
+    }
+    new_start_digits.push(next_entry);
+  }
+  // By this point each entry in new_start_digits should be the correct string
+
+  // Get the freshly created child file-folder divs, then add the text to them
+  if (new_col) { // If not creating one too far to the right
+    var new_file_divs = new_col.childNodes;
+    for (var div in new_file_divs) { // 'in' not 'of' - want the number to cycle through new_start_digits
+      new_file_divs[div].textContent = new_start_digits[div];
+    }
+
+    // And finally draw SVG
+    drawSVG(folder_div,new_col);
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -684,7 +721,45 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
 
     // File system logic
     else if (modality == 1) { // Should only trigger on unlocked file site
+      switch(event.key) { // Arrows for nav, Enter/space for selecting file, Escape for removing file pop-up
+        case "ArrowUp":
+          file_row = (file_row + 9)%10 // Equivalent to -1 but cycles around without worrying about negatives
+          shiftFile();
+        break;
 
+        case "ArrowDown":
+          file_row = (file_row + 1)%10 
+          shiftFile();
+        break;
+
+        case "ArrowLeft":
+          file_col -= 1;
+          if (file_col < 0) {
+            file_col = 0;
+          }
+          shiftFile();
+        break;
+
+        case "ArrowRight":
+          file_col += 1;
+          if (file_col > 5) {
+            file_col = 5;
+          }
+          shiftFile();
+        break;
+
+        case " ":
+        case "Enter":
+          if (file_col == 5) { // In the final column
+
+          }
+        break;
+
+        case "Escape":
+
+        break;
+
+      }
     }
 
     // Action logic
@@ -1133,7 +1208,7 @@ function inspect_room(room_name){
   }
     
   if ((room && room.name == current_room.name) || room_name == "room") { // Checks if the room is the current room
-    appendToTerminal("The " + room.name + " is " + room.description);
+    appendToTerminal(makeCap(room.name) + " is " + room.description);
     room.inspected = true;
     refreshInfo();
   }
@@ -1175,14 +1250,33 @@ function unlock(input_array) {
     
     // There's a door and it's locked
     else {
-      if (getRoomFromName(queried_room).passwords.includes(password)) {
-        // Is this by reference?
+      // Check for password
+      if (getRoomFromName(queried_room).passwords.includes(password)) { // Correct password
         door.locked = false;
         appendToTerminal("Door unlocked.")
         refreshMap();
       }
-      else {
-        appendToTerminal("Incorrect password.")
+      else { // Wrong password
+        if (getRoomFromName(queried_room).keys.length > 0) { // Wrong password + at least one key exists
+          if (getRoomFromName(queried_room).keys.includes(password) && inventory.includes(password)) { // Correct key and in inventory
+            inventory.splice(inventory.indexOf(password),1); // Remove key from inventory
+            door.locked = false;
+            appendToTerminal("Door unlocked using " + password + ".");
+            refreshInventory();
+            refreshMap();
+          }
+          else { // Incorrect key/password, but a key does exist
+            if (inventory.includes(password)) { // You have the key
+              appendToTerminal("Incorrect password.\nIt appears this door can be unlocked using the " + password + " in your inventory.");
+            }
+            else { // A key exists but you don't have it
+              appendToTerminal("Incorrect password. It appears that this door can be unlocked with a password or an item.")
+            }
+          }
+        }
+        else { // Wrong password + no keys exist
+          appendToTerminal("Incorrect password.")
+        }
       }
     }
   }
@@ -1358,8 +1452,77 @@ function toggleUnlockScreen(content=true) {
   }
 }
 
+// Makes the correct file-folder div highlighted, based off file_row and file_col - wipes them all then resets
+function shiftFile() {
+  var file_folders = document.querySelectorAll('.file-folder'); // All file-folders present!
+  for (var div of file_folders) {
+    div.className = 'file-folder'; // Wipes all to just file-folder
+  }
+  var selected_col = document.getElementById("file-column-" + file_col);
+  var selected_div = selected_col.children[file_row];
+  selected_div.className = 'file-folder selected-folder';
+  
+
+  // Hides columns too far to the right
+  for (i=0;i<6;i++) {
+    if (i > file_col + 1) { // More than one to the right of current column
+      var right_col = document.getElementById("file-column-" + i);
+       if (right_col) { // If the column exists...
+        right_col.style.display = 'none'; // ...hide it
+        hideSVG(i);
+       }
+    }
+    else { // All other columns...
+      document.getElementById("file-column-" + i).style.display = "grid"; // ...Get displayed
+    }
+  }
+
+  makeRightFileDiv(selected_div);
+}
+
+// Handles the appearance and position of svg lines
+function drawSVG(leftDiv, rightDiv) {
+
+  var right_div_number = parseInt(rightDiv.id.split("-")[2]) // E.g. if right div is file-column-4, this will return int 4.
+
+  var leftRect = leftDiv.getBoundingClientRect();
+  var rightRect = rightDiv.getBoundingClientRect();
+  console.log(leftRect);
+  console.log(rightRect);
+
+  var startX = leftRect.right;
+  var startY = leftRect.top + leftRect.height / 2;
+
+  var endX1 = rightRect.left;
+  var endY1 = rightRect.top;
+
+  var endX2 = rightRect.left;
+  var endY2 = rightRect.bottom;
+
+  // Create the lines
+  var svg = document.getElementById("file-svg-" + (right_div_number - 1));
+  var svgRect = svg.getBoundingClientRect();
+  svg.innerHTML = `
+      <line x1="${0}" y1="${startY - svgRect.top}" x2="${svgRect.width}" y2="${0}" stroke="black" stroke-width="2" />
+      <line x1="${0}" y1="${startY - svgRect.top}" x2="${svgRect.width}" y2="${svgRect.height}" stroke="black" stroke-width="2" />
+  `;
+  console.log(svg.innerHTML);
+  svg.style.visibility = "visible"; // Make this svg appear!
+}
+
+// Takes in a file-column number and hides the svgs to the right of it. Will break if colnum < 1 but that...shouldn't happen.
+function hideSVG(colnum) {
+  var svg_prefix = "file-svg-" + (colnum-1);
+  document.getElementById(svg_prefix).style.visibility = "hidden";
+}
+
 // Checks if there's a site computer in the room and updates the site screen accordingly
 function refreshSite() {
+  // Resets file highlight
+  file_col = 0;
+  file_row = 0;
+  shiftFile();
+
   wipeKeypad();
   for (var site of sites) {
     if (site.room == current_room.id) {
