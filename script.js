@@ -1608,8 +1608,8 @@ function drawSVG(leftDiv, rightDiv) {
 
   // Create the lines
   svg.innerHTML = `
-      <line x1="${startX}" y1="${startY - svgRect.top - 5}" x2="${svgRect.width}" y2="${0}" stroke="#008000" stroke-width="3" />
-      <line x1="${startX}" y1="${startY - svgRect.top + 5}" x2="${svgRect.width}" y2="${svgRect.height}" stroke="008000" stroke-width="3" />
+      <line x1="${startX}" y1="${startY - svgRect.top - 5}" x2="${svgRect.width}" y2="${0}" stroke="#008000" stroke-width="1" />
+      <line x1="${startX}" y1="${startY - svgRect.top + 5}" x2="${svgRect.width}" y2="${svgRect.height}" stroke="008000" stroke-width="1" />
   `;
   console.log(svg.innerHTML);
   svg.style.visibility = "visible"; // Make this svg appear!
