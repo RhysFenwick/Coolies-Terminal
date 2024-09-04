@@ -611,7 +611,7 @@ function makeRightFileDiv(folder_div) {
       next_entry = "Batch " + next_digit + ".log";
     }
     else { // Regular column
-      next_entry = next_digit + "-" + editString(start_digits,(i.toString() + "9".repeat(5-oom)),oom) // Should be the right number of nines?
+      next_entry = next_digit + "-" + editString(start_digits,(i.toString() + "9".repeat(Math.max(5-oom,0))),oom) // Should be the right number of nines?
     }
     new_start_digits.push(next_entry);
   }
