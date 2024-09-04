@@ -1565,16 +1565,16 @@ function generateMedString(seed) {
 
   var temperature = pseudoRandomIntBetween(seed,30,42).toString() + "." + pseudoRandomIntBetween(seed,0,9).toString();
   var growth = pseudoRandomIntBetween(seed,10,180);
-  var levels = randItem(["High","Medium","Low","Undetected"]);
+  var levels = randItem(seed,["High","Medium","Low","Undetected"]);
   var electropotential = pseudoRandomIntBetween(seed,-50,50).toString() + "." + pseudoRandomIntBetween(seed,10,99).toString();
   var ph = pseudoRandomIntBetween(seed,-7,7).toString() + (pseudoRandomIntBetween(seed,1,10)-1).toString();
-  var photosensitivity = randItem(["Present","Absent","Inconclusive"]);
-  var promise = randItem(["promising","unpromising","inconclusive","highly promising"])
-  var development = randItem([" Subject developed complications upon further testing."," Subject developed unremarkably."]);
+  var photosensitivity = randItem(seed,["Present","Absent","Inconclusive"]);
+  var promise = randItem(seed,["promising","unpromising","inconclusive","highly promising"])
+  var development = randItem(seed,[" Subject developed complications upon further testing."," Subject developed unremarkably."]);
   var dose = pseudoRandomIntBetween(seed,1,20).toString();
-  var routes = randItem(["intravenous","intrathecal","subdermal","subcutaneous","intraosseal","gaseous"])
-  var hormones = randItem(["digoxin","fexinidazole","alpha-dupixent","soravtansine","resmetirom","mRNA-1273","exenatide","methyl-2-risdiplam","lumateperone","G6-phosphatase",]);
-  var further_testing = randItem([""," Further testing is recommended."]);
+  var routes = randItem(seed,["intravenous","intrathecal","subdermal","subcutaneous","intraosseal","gaseous"])
+  var hormones = randItem(seed,["digoxin","fexinidazole","alpha-dupixent","soravtansine","resmetirom","mRNA-1273","exenatide","methyl-2-risdiplam","lumateperone","G6-phosphatase",]);
+  var further_testing = randItem(seed,[""," Further testing is recommended."]);
 
   var medstring = `Temperature (C): ${temperature}\n
   Growth Rate (/day): ${growth}\n
