@@ -1578,7 +1578,7 @@ function generateMedString(seed) {
 
   var medstring = `Temperature (C): ${temperature}\n
   Growth Rate (/day): ${growth}\n
-  Enzyme p755 (mmol/L): ${random.choice(levels)}\n
+  Enzyme p755 (mmol/L): ${levels}\n
   Electropotential (mV/cm^2): ${electropotential}\n
   pH: ${ph}\n
   Photosensitivity: ${photosensitivity}\n
