@@ -775,14 +775,14 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
         case "Enter":
           if (file_col == 5) { // In the final column - update file and make it appear!
            var batch_num = getFileDiv().textContent.split(".")[0].split(" ")[1];
-           document.getElementById("batch-title").textContent = getFileDiv.textContent;
+           document.getElementById("batch-title").textContent = getFileDiv().textContent;
            document.getElementById("batch-text").textContent = generateMedString(batch_num);
-           document.getElementById("file-viewer").display = "flex";
+           document.getElementById("file-viewer").style.display = "flex";
           }
         break;
 
         case "Escape":
-          document.getElementById("file-viewer").display = "none";
+          document.getElementById("file-viewer").style.display = "none";
         break;
 
       }
