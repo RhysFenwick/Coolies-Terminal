@@ -773,13 +773,16 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
 
         case " ":
         case "Enter":
-          if (file_col == 5) { // In the final column
-
+          if (file_col == 5) { // In the final column - update file and make it appear!
+           var batch_num = getFileDiv().textContent.split(".")[0].split(" ")[1];
+           document.getElementById("batch-title").textContent = getFileDiv.textContent;
+           document.getElementById("batch-text").textContent = generateMedString(batch_num);
+           document.getElementById("file-viewer").display = "flex";
           }
         break;
 
         case "Escape":
-
+          document.getElementById("file-viewer").display = "none";
         break;
 
       }
@@ -1489,14 +1492,23 @@ function toggleUnlockScreen(content=true) {
 // Folder functions //
 //////////////////////
 
+// Gets current selected file div from file_col and file_row
+function getFileDiv() {
+  var selected_col = document.getElementById("file-column-" + file_col);
+
+  var selected_div = selected_col.children[file_row];
+  
+  return selected_div;
+}
+
 // Makes the correct file-folder div highlighted, based off file_row and file_col - wipes them all then resets
 function shiftFile() {
   var file_folders = document.querySelectorAll('.file-folder'); // All file-folders present!
   for (var div of file_folders) {
     div.className = 'file-folder'; // Wipes all to just file-folder
   }
-  var selected_col = document.getElementById("file-column-" + file_col);
-  var selected_div = selected_col.children[file_row];
+  
+  var selected_div = getFileDiv();
   selected_div.className = 'file-folder selected-folder';
   
 

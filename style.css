@@ -135,6 +135,18 @@ Scrollbar settings - don't work on Firefox :(
   margin: 0%;
 }
 
+#file-viewer {
+  display: none;
+  flex-direction: column;
+  width: 70%;
+  height: 70%;
+  position: fixed;
+  top: 20%;
+  bottom: 80%;
+  left: 20%;
+  right: 80%;
+}
+
 #file-title {
   height: min-content;
   padding: 0%;
