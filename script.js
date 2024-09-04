@@ -1594,7 +1594,8 @@ function generateMedString(seed) {
 function drawSVG(leftDiv, rightDiv) {
 
   var right_div_number = parseInt(rightDiv.id.split("-")[2]) // E.g. if right div is file-column-4, this will return int 4.
-  var leftParentDiv = document.getElementById("file-column-" + (right_div_number - 1).toString()); // The parent div of the file-folder
+  var leftParentDivNum = right_div_number - 1;
+  var leftParentDiv = document.getElementById("file-column-" + leftParentDivNum.toString()); // The parent div of the file-folder
 
   var leftRect = leftDiv.getBoundingClientRect();
   var rightParentRect = leftParentDiv.getBoundingClientRect();
