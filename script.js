@@ -1335,8 +1335,8 @@ function moveRooms(input_array) {
         // Checks energy
         if (energy > 2 + inventory.length) {
 
-          if (["north1","east1","west1"].includes(current_room.id)) { // If you're in a far room, need to RETVRN to get back to base
-            appendToTerminal("WARNING: Maintenance needed for safe return journey. Type 'return' to return to base and commence automated repair cycle.")
+          if (["north1","east1","west1"].includes(current_room.id) && queried_room == getRoomFromID("outside").name) { // If you're headed out through an airlock
+            appendToTerminal("WARNING: Exiting airlock. Based on current additional mass of " + weight + ", return journey will take approximately " + (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline).toString() + " seconds.\nType 'return' to exit airlock and begin return journey.")
           }
 
           else {
@@ -1364,8 +1364,8 @@ function moveRooms(input_array) {
 // Prompted when in final rooms
 async function return_to_base() {
   current_room = getRoomFromID("center");
-  appendToTerminal("You have returned to the central room.")
-  appendToTerminal("Automated maintenance cycle commencing...")
+  appendToTerminal("Exiting airlock.")
+  appendToTerminal("Return journey commencing...")
   timing = 1000 * (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline)
   if (inventory.includes(rooms_json.speed_item)) {
     timing = 6000 // Speeds up to a minute
@@ -1374,7 +1374,7 @@ async function return_to_base() {
     appendToTerminal(i*(timing/1000) + " seconds remaining...")
     await delay(timing); 
   }
-  appendToTerminal("Maintenance cycle complete.")
+  appendToTerminal("Return journey complete.")
   appendToTerminal("You have recovered:")
   var temp_items = inventory.slice(); // Clone by value not reference - avoids issues with slicing list while iterating through it
   for (var i of temp_items) {
