@@ -33,6 +33,33 @@ var actionItems; // Name/locations of items that you get in site modality 2 - pu
 var actionItemsDropped = false; // Becomes true on first dispenser activation
 var combo; // Will be 16-digit 0/1 array pulled from JSON
 
+// Coordinates of highlighted file cell (from 0-5 and 0-9 respectively) plus real files
+var file_col = 0;
+var file_row = 0;
+var real_files = []; // Array of JSONs to be filled later
+var real_batch_nums = []; // Will be array of 6-digit strings in the same sequence as real_files
+var primes = [2,3,5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 
+  127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 
+  269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 
+  431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 
+  599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 
+  761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 
+  947, 953, 967, 971, 977, 983, 991, 997, 1009, 1013, 1019, 1021, 1031, 1033, 1039, 1049, 1051, 1061, 1063, 1069, 1087, 1091, 1093, 
+  1097, 1103, 1109, 1117, 1123, 1129, 1151, 1153, 1163, 1171, 1181, 1187, 1193, 1201, 1213, 1217, 1223, 1229, 1231, 1237, 1249, 1259, 
+  1277, 1279, 1283, 1289, 1291, 1297, 1301, 1303, 1307, 1319, 1321, 1327, 1361, 1367, 1373, 1381, 1399, 1409, 1423, 1427, 1429, 1433, 
+  1439, 1447, 1451, 1453, 1459, 1471, 1481, 1483, 1487, 1489, 1493, 1499, 1511, 1523, 1531, 1543, 1549, 1553, 1559, 1567, 1571, 1579, 
+  1583, 1597, 1601, 1607, 1609, 1613, 1619, 1621, 1627, 1637, 1657, 1663, 1667, 1669, 1693, 1697, 1699, 1709, 1721, 1723, 1733, 1741, 
+  1747, 1753, 1759, 1777, 1783, 1787, 1789, 1801, 1811, 1823, 1831, 1847, 1861, 1867, 1871, 1873, 1877, 1879, 1889, 1901, 1907, 1913, 
+  1931, 1933, 1949, 1951, 1973, 1979, 1987, 1993, 1997, 1999, 2003, 2011, 2017, 2027, 2029, 2039, 2053, 2063, 2069, 2081, 2083, 2087, 
+  2089, 2099, 2111, 2113, 2129, 2131, 2137, 2141, 2143, 2153, 2161, 2179, 2203, 2207, 2213, 2221, 2237, 2239, 2243, 2251, 2267, 2269, 
+  2273, 2281, 2287, 2293, 2297, 2309, 2311, 2333, 2339, 2341, 2347, 2351, 2357, 2371, 2377, 2381, 2383, 2389, 2393, 2399, 2411, 2417, 
+  2423, 2437, 2441, 2447, 2459, 2467, 2473, 2477, 2503, 2521, 2531, 2539, 2543, 2549, 2551, 2557, 2579, 2591, 2593, 2609, 2617, 2621, 
+  2633, 2647, 2657, 2659, 2663, 2671, 2677, 2683, 2687, 2689, 2693, 2699, 2707, 2711, 2713, 2719, 2729, 2731, 2741, 2749, 2753, 2767, 
+  2777, 2789, 2791, 2797, 2801, 2803, 2819, 2833, 2837, 2843, 2851, 2857, 2861, 2879, 2887, 2897, 2903, 2909, 2917, 2927, 2939, 2953, 
+  2957, 2963, 2969, 2971, 2999, 3001, 3011, 3019, 3023, 3037, 3041, 3049, 3061, 3067, 3079, 3083, 3089, 3109, 3119, 3121, 3137, 3163, 
+  3167, 3169, 3181, 3187, 3191, 3203, 3209, 3217, 3221, 3229, 3251, 3253, 3257, 3259, 3271, 3299, 3301, 3307, 3313, 3319, 3323, 3329, 
+  3331, 3343, 3347, 3359, 3361, 3371, 3373, 3389, 3391, 3407, 3413, 3433, 3449, 3457, 3461, 3463, 3467, 3469, 3491, 3499, 3511, 3517, 
+  3527, 3529, 3533, 3539, 3541, 3547, 3557, 3559, 3571] // First 400 primes - definitely don't need all of these, but better safe than sorry?
 
 // Decryption text
 var d_size = 1800; // May well need to ramp this up to cover screen
@@ -390,13 +417,7 @@ function createInputLine(loc="term-input") {
           if (loc == "term-input") {
             // Append the input text to the terminal
             appendToTerminal("> " + input, false, "terminal");
-          }
-          
-          else if (loc == "site-content-left") { // Only in modality 1
-            editTextByID(loc,"FILENAME QUERY: "+input)
-            displaySearch(input);
-          }
-          
+          }          
 
           if (current_tab == 0) {
             // Type anything in terminal that's needed here
@@ -563,6 +584,51 @@ function swapView(clickedView) {
   }
 }
 
+// Function for the file site search - takes a highlighted div and creates the correct column to the right
+function makeRightFileDiv(folder_div) {
+  var file_col = folder_div.parentElement;
+  var range_digits = folder_div.textContent;
+  var start_digits = range_digits.split("-")[0] // The start of the range for the next folder
+  var oom = parseInt(file_col.id.split("-")[2]) + 1 // The order of magnitude digit to be cycled through, e.g. 2 from file-column-1. This is because digit[2] (i.e. 3rd digit) will iterate in file-column-2.
+  
+  var new_col = null; // Will only stay null if the current file_col is already furthest to the right
+  if (oom < 6) {
+    new_col = document.getElementById("file-column-" + oom); // E.g. if current column is file-column-1, this should be file-column-2.
+    new_col.innerHTML = ""; // Clear out any HTML already in there
+    for (i=0;i<10;i++) { // Add in 10 fresh divs
+      var new_file_div = document.createElement("div");
+      new_file_div.className = "file-folder";
+      new_col.appendChild(new_file_div);
+    }
+  }
+  // By this point, if you are writing to a new column (i.e. you're not navigating the rightmost already), the structure should exist
+
+  var new_start_digits = []; // Will contain start_digits for new column as string
+  for (i=0;i<10;i++) {
+    var next_entry;
+    var next_digit = editString(start_digits,i.toString(),oom);
+    if (oom == 5) { // These will go in the rightmost column
+      next_entry = "Batch " + next_digit + ".log";
+    }
+    else { // Regular column
+      next_entry = next_digit + "-" + editString(start_digits,(i.toString() + "9".repeat(Math.max(5-oom,0))),oom) // Should be the right number of nines?
+    }
+    new_start_digits.push(next_entry);
+  }
+  // By this point each entry in new_start_digits should be the correct string
+
+  // Get the freshly created child file-folder divs, then add the text to them
+  if (new_col) { // If not creating one too far to the right
+    var new_file_divs = new_col.childNodes;
+    for (var div in new_file_divs) { // 'in' not 'of' - want the number to cycle through new_start_digits
+      new_file_divs[div].textContent = new_start_digits[div];
+    }
+
+    // And finally draw SVG
+    drawSVG(folder_div,new_col);
+  }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //  Document-wide listeners
 ///////////////////////////////////////////////////////////////////////////////
@@ -600,9 +666,6 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
         document.getElementById("site-modality-" + m).style.display = "none"; 
       }
 
-      if (current_site) {// Shouldn't trigger on null
-        createInputLine("site-content-left");
-      }
 
       if (modality == 2) { // Select the correct version of the action site
         for (v of ["airlock","dispenser"]) { // TODO - Hard-coding these in seems...bad
@@ -679,6 +742,54 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
         }
     }
 
+    // File system logic
+    else if (modality == 1) { // Should only trigger on unlocked file site
+      switch(event.key) { // Arrows for nav, Enter/space for selecting file, Escape for removing file pop-up
+        case "ArrowUp":
+          file_row = (file_row + 9)%10 // Equivalent to -1 but cycles around without worrying about negatives
+          shiftFile();
+        break;
+
+        case "ArrowDown":
+          file_row = (file_row + 1)%10 
+          shiftFile();
+        break;
+
+        case "ArrowLeft":
+          file_col -= 1;
+          if (file_col < 0) {
+            file_col = 0;
+          }
+          shiftFile();
+        break;
+
+        case "ArrowRight":
+          file_col += 1;
+          if (file_col > 5) {
+            file_col = 5;
+          }
+          shiftFile();
+        break;
+
+        case " ":
+        case "Enter":
+          if (file_col == 5) { // In the final column - update file and make it appear!
+           var batch_num = getFileDiv().textContent.split(".")[0].split(" ")[1];
+           document.getElementById("batch-title").textContent = getFileDiv().textContent;
+           document.getElementById("batch-text").textContent = medFile(batch_num);
+           document.getElementById("file-grid").style.display = "none";
+           document.getElementById("file-viewer").style.display = "flex";
+          }
+        break;
+
+        case "Escape":
+          document.getElementById("file-viewer").style.display = "none";
+          document.getElementById("file-grid").style.display = "grid";
+        break;
+
+      }
+    }
+
     // Action logic
     else if (modality == 2) { // Should only trigger on unlocked action sites
 
@@ -709,6 +820,7 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
         switch (event.key) {
           case " ": // Fall-through: triggers on both Space and Enter
           case "Enter":
+            console.log("Airlock triggered!")
             toggleDiv(document.getElementById("airlock-action-0-button")); // Toggles visual of the button on/off
             // TODO - Remove all solid items
             updateActions("airlock");
@@ -833,6 +945,7 @@ function gameStart(rooms_json) {
     eng_files = rooms_json.eng_files // An array of the engineer-style file JSONs.
     med_files = rooms_json.med_files // An array of the medical-style file JSONs.
     actionVariables = rooms_json.action_variables; // An array highlighting the action text + the item you get
+    
 
     terminal_title = rooms_json.strings.title;
     start_string = rooms_json.strings.start_message;
@@ -850,6 +963,15 @@ function gameStart(rooms_json) {
     for (i in inventory) {
       focus_item = getItemFromName(inventory[i]);
       weight += focus_item.weight;
+    }
+
+    for (var site of sites) {
+      if (site.real_files) {
+        for (var file_json of site.real_files) {
+          real_files.push(file_json);
+          real_batch_nums.push(file_json.batch_number);
+        }
+      }
     }
     
     // Update the title 
@@ -914,7 +1036,6 @@ function parseInput(raw_input) {
 
     // The key instruction given - decides what happens next
     action = input_array[0];
-    console.log(action);
 
     switch(action) {
 
@@ -1125,7 +1246,7 @@ function inspect_room(room_name){
   }
     
   if ((room && room.name == current_room.name) || room_name == "room") { // Checks if the room is the current room
-    appendToTerminal("The " + room.name + " is " + room.description);
+    appendToTerminal(makeCap(room.name) + " is " + room.description);
     room.inspected = true;
     refreshInfo();
   }
@@ -1167,14 +1288,33 @@ function unlock(input_array) {
     
     // There's a door and it's locked
     else {
-      if (getRoomFromName(queried_room).passwords.includes(password)) {
-        // Is this by reference?
+      // Check for password
+      if (getRoomFromName(queried_room).passwords.includes(password)) { // Correct password
         door.locked = false;
         appendToTerminal("Door unlocked.")
         refreshMap();
       }
-      else {
-        appendToTerminal("Incorrect password.")
+      else { // Wrong password
+        if (getRoomFromName(queried_room).keys.length > 0) { // Wrong password + at least one key exists
+          if (getRoomFromName(queried_room).keys.includes(password) && inventory.includes(password)) { // Correct key and in inventory
+            inventory.splice(inventory.indexOf(password),1); // Remove key from inventory
+            door.locked = false;
+            appendToTerminal("Door unlocked using " + password + ".");
+            refreshInventory();
+            refreshMap();
+          }
+          else { // Incorrect key/password, but a key does exist
+            if (inventory.includes(password)) { // You have the key
+              appendToTerminal("Incorrect password.\nIt appears this door can be unlocked using the " + password + " in your inventory.");
+            }
+            else { // A key exists but you don't have it
+              appendToTerminal("Incorrect password. It appears that this door can be unlocked with a password or an item.")
+            }
+          }
+        }
+        else { // Wrong password + no keys exist
+          appendToTerminal("Incorrect password.")
+        }
       }
     }
   }
@@ -1195,8 +1335,8 @@ function moveRooms(input_array) {
         // Checks energy
         if (energy > 2 + inventory.length) {
 
-          if (["north1","east1","west1"].includes(current_room.id)) { // If you're in a far room, need to RETVRN to get back to base
-            appendToTerminal("WARNING: Maintenance needed for safe return journey. Type 'return' to return to base and commence automated repair cycle.")
+          if (["north1","east1","west1"].includes(current_room.id) && queried_room == getRoomFromID("outside").name) { // If you're headed out through an airlock
+            appendToTerminal("WARNING: Exiting airlock. Based on current additional mass of " + weight + ", return journey will take approximately " + (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline).toString() + " seconds.\nType 'return' to exit airlock and begin return journey.")
           }
 
           else {
@@ -1224,8 +1364,8 @@ function moveRooms(input_array) {
 // Prompted when in final rooms
 async function return_to_base() {
   current_room = getRoomFromID("center");
-  appendToTerminal("You have returned to the central room.")
-  appendToTerminal("Automated maintenance cycle commencing...")
+  appendToTerminal("Exiting airlock.")
+  appendToTerminal("Return journey commencing...")
   timing = 1000 * (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline)
   if (inventory.includes(rooms_json.speed_item)) {
     timing = 6000 // Speeds up to a minute
@@ -1234,7 +1374,7 @@ async function return_to_base() {
     appendToTerminal(i*(timing/1000) + " seconds remaining...")
     await delay(timing); 
   }
-  appendToTerminal("Maintenance cycle complete.")
+  appendToTerminal("Return journey complete.")
   appendToTerminal("You have recovered:")
   var temp_items = inventory.slice(); // Clone by value not reference - avoids issues with slicing list while iterating through it
   for (var i of temp_items) {
@@ -1341,7 +1481,6 @@ function toggleUnlockScreen(content=true) {
     document.getElementById("site-login-screen").style.display = "none";
     document.getElementById("site-content-screen").style.display = "block";
     if (current_site.locked) {
-      createInputLine("site-content-left");
       current_site.locked = false; // TODO: This isn't great - mixing up site/current_site...unless it's by reference?
     }
   }
@@ -1351,15 +1490,150 @@ function toggleUnlockScreen(content=true) {
   }
 }
 
+//////////////////////
+// Folder functions //
+//////////////////////
+
+// Gets current selected file div from file_col and file_row
+function getFileDiv() {
+  var selected_col = document.getElementById("file-column-" + file_col);
+
+  var selected_div = selected_col.children[file_row];
+  
+  return selected_div;
+}
+
+// Makes the correct file-folder div highlighted, based off file_row and file_col - wipes them all then resets
+function shiftFile() {
+  var file_folders = document.querySelectorAll('.file-folder'); // All file-folders present!
+  for (var div of file_folders) {
+    div.className = 'file-folder'; // Wipes all to just file-folder
+  }
+  
+  var selected_div = getFileDiv();
+  selected_div.className = 'file-folder selected-folder';
+  
+
+  // Hides columns too far to the right
+  for (i=0;i<6;i++) {
+    if (i > file_col + 1) { // More than one to the right of current column
+      var right_col = document.getElementById("file-column-" + i);
+       if (right_col) { // If the column exists...
+        right_col.style.display = 'none'; // ...hide it
+        hideSVG(i);
+       }
+    }
+    else { // All other columns...
+      document.getElementById("file-column-" + i).style.display = "grid"; // ...Get displayed
+    }
+  }
+
+  makeRightFileDiv(selected_div);
+}
+
+// Either retrieves medical string from a real file, or creates a fake one, given the batch number - then returns as string
+function medFile(batch_number) {
+  var medstring;
+  if (real_batch_nums.includes(batch_number)) { // Real file!
+    medstring = real_files[real_batch_nums.indexOf(batch_number)].file_contents;
+  }
+  else { // Fake file!
+    var seed = pseudoBatchHash(batch_number);
+    medstring = generateMedString(seed);
+  }
+  return medstring;
+}
+
+// Takes in the batch_number as a string and returns a deterministic pseudo-random int
+function pseudoBatchHash(batch_number) {
+  let batch_int = parseInt(batch_number,10);
+  return (batch_int * 314159 + 271818) % 1000000 + 10000; // Adding 10,000 to eliminate potential issues with a low seed
+}
+
+// Takes a seed, a low int and a high int (both inclusive) and returns an int in the range deterministically
+function pseudoRandomIntBetween(seed,low,high) {
+  var range = high - low; // The range from lowest to highest: all numbers will be from low+0 to low+range
+  var salt = (seed * primes[high]) % range; // A number from 0 to range - multiplying by a prime to mix things up between uses
+  return (low + salt)
+}
+
+// Takes a seed and an array (ideally array of strings) and returns a deterministic pseudo-random array item
+function randItem(seed,array) {
+  return array[pseudoRandomIntBetween(seed + array[1].length,0,array.length)]; // Mixing up the seed with size of second option (as first is often blank)
+}
+
+// Takes in a big integer and returns a medical string
+function generateMedString(seed) {
+
+  var temperature = pseudoRandomIntBetween(seed,30,42).toString() + "." + pseudoRandomIntBetween(seed,0,9).toString();
+  var growth = pseudoRandomIntBetween(seed,10,180);
+  var levels = randItem(seed,["High","Medium","Low","Undetected"]);
+  var electropotential = pseudoRandomIntBetween(seed,-50,50).toString() + "." + pseudoRandomIntBetween(seed,10,99).toString();
+  var ph = pseudoRandomIntBetween(seed,-7,7).toString() + (pseudoRandomIntBetween(seed,1,10)-1).toString();
+  var photosensitivity = randItem(seed,["Present","Absent","Inconclusive"]);
+  var promise = randItem(seed,["promising","unpromising","inconclusive","highly promising"])
+  var development = randItem(seed,[" Subject developed complications upon further testing."," Subject developed unremarkably."]);
+  var dose = pseudoRandomIntBetween(seed,1,20).toString();
+  var routes = randItem(seed,["intravenous","intrathecal","subdermal","subcutaneous","intraosseal","gaseous"])
+  var hormones = randItem(seed,["digoxin","fexinidazole","alpha-dupixent","soravtansine","resmetirom","mRNA-1273","exenatide","methyl-2-risdiplam","lumateperone","G6-phosphatase",]);
+  var further_testing = randItem(seed,[""," Further testing is recommended."]);
+
+  var medstring = `Temperature (C): ${temperature}\n
+  Growth Rate (/day): ${growth}\n
+  Enzyme p755 (mmol/L): ${levels}\n
+  Electropotential (mV/cm^2): ${electropotential}\n
+  pH: ${ph}\n
+  Photosensitivity: ${photosensitivity}\n
+  Notes: Initial test was ${promise}.
+  ${development} Subject was given ${dose}00 mg of ${routes} ${hormones}.${further_testing}
+  `;
+
+  return medstring;
+}
+
+
+// Handles the appearance and position of svg lines
+function drawSVG(leftDiv, rightDiv) {
+
+  var right_div_number = parseInt(rightDiv.id.split("-")[2]) // E.g. if right div is file-column-4, this will return int 4.
+  var leftParentDivNum = right_div_number - 1;
+  var leftParentDiv = document.getElementById("file-column-" + leftParentDivNum.toString()); // The parent div of the file-folder
+
+  var leftRect = leftDiv.getBoundingClientRect();
+  var rightParentRect = leftParentDiv.getBoundingClientRect();
+
+  var svg = document.getElementById("file-svg-" + (right_div_number - 1));
+  var svgRect = svg.getBoundingClientRect();
+
+  var startX = rightParentRect.right - svgRect.left;
+  var startY = leftRect.top + leftRect.height / 2;
+
+  // Create the lines
+  svg.innerHTML = `
+      <line x1="${startX}" y1="${startY - svgRect.top - 5}" x2="${svgRect.width}" y2="${0}" stroke="#008000" stroke-width="1" />
+      <line x1="${startX}" y1="${startY - svgRect.top + 5}" x2="${svgRect.width}" y2="${svgRect.height}" stroke="008000" stroke-width="1" />
+  `;
+  console.log(svg.innerHTML);
+  svg.style.visibility = "visible"; // Make this svg appear!
+}
+
+// Takes in a file-column number and hides the svgs to the right of it. Will break if colnum < 1 but that...shouldn't happen.
+function hideSVG(colnum) {
+  var svg_prefix = "file-svg-" + (colnum-1);
+  document.getElementById(svg_prefix).style.visibility = "hidden";
+}
+
 // Checks if there's a site computer in the room and updates the site screen accordingly
 function refreshSite() {
+  // Resets file highlight
+  file_col = 0;
+  file_row = 0;
+  shiftFile();
+
   wipeKeypad();
   for (var site of sites) {
     if (site.room == current_room.id) {
       current_site = site;
-      // Reset content
-      editTextByID("content-name","N/A");
-      editTextByID("content-desc","No filenames searched yet");
 
       if (site.locked) { // Reset login screen
         toggleUnlockScreen(false)
@@ -1380,7 +1654,7 @@ function refreshSite() {
   }
 }
 
-// A function to display "search" results as needed
+// A function to display "search" results as needed - currently not used.
 function displaySearch(input_string) {
   var match_string = current_site.file_name;
   var output_string = "0 MATCHES FOUND FOR " + input_string + " ON THIS DEVICE.";
@@ -1463,7 +1737,6 @@ async function updateActions(typeName) {
   if (actionStates[0] && !actionItemsDropped) {
     for (var item of actionItems) {
       getRoomFromID(item.room).items.push(item.name); // Drops items into room
-      console.log(item.name + " is now in " + item.room);
     }
     actionItemsDropped = true;
   }
@@ -1479,11 +1752,6 @@ function updateActionText(typeName,actionNum,state) {
 
   editTextByID(textLoc,current_site.actions[actionNum][varTextName]);
   editTextByID(titleLoc,current_site.actions[actionNum][varTitleName]);
-}
-
-// Creates action buttons for site modality 2 based on what's in the JSON
-function createActionSite() {
-  // Nothing here yet!
 }
 
 // Fetching rooms has to be asynchronous as it involves fetching the JSON file. Can call non-async functions as needed.
