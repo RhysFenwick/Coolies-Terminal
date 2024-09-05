@@ -776,7 +776,7 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
           if (file_col == 5) { // In the final column - update file and make it appear!
            var batch_num = getFileDiv().textContent.split(".")[0].split(" ")[1];
            document.getElementById("batch-title").textContent = getFileDiv().textContent;
-           document.getElementById("batch-text").textContent = generateMedString(batch_num);
+           document.getElementById("batch-text").textContent = medFile(batch_num);
            document.getElementById("file-grid").style.display = "none";
            document.getElementById("file-viewer").style.display = "flex";
           }
