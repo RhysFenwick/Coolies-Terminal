@@ -319,8 +319,9 @@ function refreshMap() {
     var exit = exits[e];
 
     // Map coordinates of room with the exit
-    var room_x = exit.room_coords[0];
-    var room_y = exit.room_coords[1];
+    var exit_room = getRoomFromID(exit.room);
+    var room_x = exit_room.coords[0];
+    var room_y = exit_room.coords[1];
 
     // Direction of exit
     var exit_side = exit.side;
@@ -339,12 +340,7 @@ function refreshMap() {
 
     door_index = middle_index + door_shift // Sign of x/y-shift will shift it the right direction
 
-    if (exit.locked) {
-      door_char = "X";
-    }
-    else {
-      door_char = "O";
-    }
+    door_char = "@"
 
     mapstring = editString(mapstring,door_char,door_index);
   }
@@ -1255,18 +1251,23 @@ function inspect_room(room_name){
   }
   
 }
-// Checks if a door is accessible: used for move/unlock. Returns door if one is found, null otherwise
+// Checks if a door is accessible: used for move/unlock. Returns door (or exit) if one is found, null otherwise
 function checkForDoor(queried_room) {
   
   var valid_room = null;
   
   for (d in doors) {
     var door = doors[d];
-      // Is there a better way to do this?
-      if (getRoomFromName(queried_room) && (getRoomFromName(queried_room).id == door.room1 && current_room.id == door.room2) || (getRoomFromName(queried_room) && getRoomFromName(queried_room).id == door.room2 && current_room.id == door.room1)) {
-        valid_room = door;
-      }
+    // Is there a better way to do this?
+    if (getRoomFromName(queried_room) && (getRoomFromName(queried_room).id == door.room1 && current_room.id == door.room2) || (getRoomFromName(queried_room) && getRoomFromName(queried_room).id == door.room2 && current_room.id == door.room1)) {
+      valid_room = door;
     }
+  }
+  for (var exit of exits) {
+    if (getRoomFromName(queried_room) && (getRoomFromName(queried_room).id == "outside" && current_room.id == exit.room) || (getRoomFromName(queried_room) && getRoomFromName(queried_room).id == exit.room && current_room.id == "outside")) {
+      valid_room = exit; // This is bad! But it works.
+    }
+  }
   return valid_room;
 }
 

@@ -171,17 +171,17 @@
 
     "exits": [
       {
-        "room_coords": [0,3],
+        "room": "west1",
         "side": [-1,0],
         "locked": true
       },
       {
-        "room_coords": [6,3],
+        "room": "east1",
         "side": [1,0],
         "locked": true
       },
       {
-        "room_coords": [3,0],
+        "room": "north1",
         "side": [0,-1],
         "locked": true
       }
