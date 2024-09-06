@@ -20,10 +20,11 @@ var terminal_title;
 var start_string;
 var weight = 0; // Movement cost when nothing in inventory
 
-// Assorted bools
+// Assorted vars
 var paralysed = false; // Stops all other actions when true.
 var standby = true; // Starts on standby - if this is true and enter is hit, splash screen moves to load
 var dumping = false; // True while airlock site is active
+var playingnow = 0; // Count of how many things are playing!
 
 // Sites
 var sites;
@@ -40,6 +41,7 @@ var combo; // Will be 16-digit 0/1 array pulled from JSON
 // Sounds
 const single_click = document.getElementById("single-click");
 const double_click = document.getElementById("double-click");
+const split_flap = document.getElementById("split-flap");
 
 
 // Coordinates of highlighted file cell (from 0-5 and 0-9 respectively) plus real files
@@ -461,39 +463,53 @@ function delay(ms) {
 }
 
 async function typeWriterEffect(str, div,helpScreen=false) {
-    for (let i = 0; i < str.length; i++) {
-        if (str[i] == ".") {
-            await delay(200) // Wait longer for periods
-            if (!(helpScreen && current_tab != 2))  {
-              if (single_click.paused) {
-                await single_click.load();
-                single_click.play();
-              }
-            } 
+  // Audio
+  playingnow += 1; // Something's typing!
+  if (split_flap.paused) {
+    // split_flap.play();
+  }
+
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] == ".") {
+      await delay(200) // Wait longer for periods
+      if (!(helpScreen && current_tab != 2))  {
+        if (single_click.paused) {
+          await single_click.load();
+          single_click.play();
         }
-        else if (str[i] == "\n") {
-          await delay(20);
-          if (!(helpScreen && current_tab != 2))  {
-            /*
-            if (double_click.paused) {
-              double_click.load();
-              double_click.play();
-            }
-              */
-          }
-        }
-        else {
-            await delay(20); // Wait for 20ms per other character
-            if (!(helpScreen && current_tab != 2))  {
-              if (single_click.paused) {
-                await single_click.load();
-                single_click.play();
-              }
-            }  
-        }
-        div.append(str[i]);
-        div.scrollIntoView();
+      } 
     }
+    else if (str[i] == "\n") {
+      await delay(20);
+      if (!(helpScreen && current_tab != 2))  {
+        /*
+        if (double_click.paused) {
+          double_click.load();
+          double_click.play();
+        }
+          */
+      }
+    }
+  else {
+      await delay(20); // Wait for 20ms per other character
+      if (!(helpScreen && current_tab != 2))  {
+        if (single_click.paused) {
+          await single_click.load();
+          single_click.play();
+        }
+      }  
+    }
+    div.append(str[i]);
+    div.scrollIntoView();
+  }
+
+  // End audio if needed
+  playingnow -= 1;
+  if (!playingnow) {
+    split_flap.pause();
+    split_flap.currentTime = 0;
+    split_flap.load();
+  }
 }
 
 // Function to add lines one by one (used for map)
