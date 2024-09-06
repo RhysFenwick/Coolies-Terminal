@@ -184,6 +184,11 @@
         "room": "north1",
         "side": [0,-1],
         "locked": true
+      },
+      {
+        "room": "center",
+        "side": [0,-1],
+        "locked": false
       }
     ],
 
@@ -462,13 +467,14 @@
     "action_items":[
       {
         "name":"actionitem",
-        "room":"north3"
+        "room":"north3",
+        "trigger_room":"north3"
       },
       {
         "name":"h",
-        "room":"east3"
+        "room":"east3",
+        "trigger_room":"north3"
       }
-
     ],
 
     "decrypt-item-notes-for-connor":[

@@ -26,11 +26,11 @@ var modality; // 0 or null for no site, 1 for file search, 2 for action buttons,
 var eng_files;
 var med_files;
 var actionOptions = (document.getElementById("dispenser").getElementsByClassName("keypad-button")); // HTMLCollection of action buttons (all divs with class keypad-button in div action-grid)
-var actionStates = new Array(actionOptions.length).fill(0); // Will be filled with as many 0's as there are actionOptions
+var actionStates = new Array(actionOptions.length).fill(0); // Will be filled with as many 0's as there are actionOptions (currently 2)
 var focusAction = 0; // Will cycle
 var actionVariables; // All of the action-related text etc - from JSON
-var actionItems; // Name/locations of items that you get in site modality 2 - pulled from JSON
-var actionItemsDropped = false; // Becomes true on first dispenser activation
+var actionItems; // Name/locations/trigger-locations of items that you get in site modality 2 - pulled from JSON
+var actionItemsDropped = []; // An array to be filled with false, one per action-site, each of which become true once that site's first action has been triggered.
 var combo; // Will be 16-digit 0/1 array pulled from JSON
 
 // Coordinates of highlighted file cell (from 0-5 and 0-9 respectively) plus real files
@@ -320,6 +320,12 @@ function refreshMap() {
 
     // Map coordinates of room with the exit
     var exit_room = getRoomFromID(exit.room);
+
+    // If it's the center - to - outside airlock, skip the representation.
+    if (exit_room.id == "center") {
+      continue;
+    }
+
     var room_x = exit_room.coords[0];
     var room_y = exit_room.coords[1];
 
@@ -1725,6 +1731,9 @@ async function decrypt() {
 
   await delay(3000) // Some time to admire the handiwork
   decryptComplete = true; // Mark the decryption done!
+  for (var item in rooms_json.decrypt_items) { // Drop decrypt_items as needed
+    getRoomFromID(item.room).inventory.push(item.name);
+  }
 
   d_screen.style.display = "none"; // Hides the decryption screen
   document.getElementById("interactive-screen").style.display = "flex"; // Shows everything else again

@@ -327,9 +327,16 @@ Scrollbar settings - don't work on Firefox :(
   height: 100%;
 }
 
+#help-commands-box, #help-instructions-box {
+  margin-top: 5%;
+  max-height: 85%;
+}
+
+
 #help-menu {
   display: grid;
   grid-template-columns: auto auto;
+  height: 80%;
 }
 
 #main-screen {
