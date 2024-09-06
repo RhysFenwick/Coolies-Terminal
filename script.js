@@ -1632,8 +1632,8 @@ function generateMedString(seed) {
   var growth = pseudoRandomIntBetween(seed,10,180);
   var levels = randItem(seed,["High","Medium","Low","Undetected"]);
   var electropotential = pseudoRandomIntBetween(seed,-50,50).toString() + "." + pseudoRandomIntBetween(seed,10,99).toString();
-  var ph = pseudoRandomIntBetween(seed,-7,7).toString() + (pseudoRandomIntBetween(seed,1,10)-1).toString();
-  var sample_colour = randItem(seed,["Luminescent","Pale","Light","Dark","Rich","Drab","Intense","Deep"]) + randItem(seed,["amber","aqua","azure","beige","grey","fuschia","lavender","mauve","silver","gold"]) + " with " + randItem(seed,["speckles","streaks","undertones","clear patches","hazy patches"]) + " of " + randItem(seed,["rust","brown","white","black","eggshell","cerise","saffron"]);
+  var ph = pseudoRandomIntBetween(seed,-7,7).toString() + "." + (pseudoRandomIntBetween(seed,1,10)-1).toString();
+  var sample_colour = randItem(seed,["Luminescent","Pale","Light","Dark","Rich","Drab","Intense","Deep"]) + " " + randItem(seed,["amber","aqua","azure","beige","grey","fuschia","lavender","mauve","silver","gold"]) + " with " + randItem(seed,["speckles","streaks","undertones","clear patches","hazy patches"]) + " of " + randItem(seed,["rust","brown","white","black","eggshell","cerise","saffron"]) + ".";
   var promise = randItem(seed,["promising","unpromising","inconclusive","highly promising"])
   var development = randItem(seed,[" Subject developed complications upon further testing."," Subject developed unremarkably."]);
   var dose = pseudoRandomIntBetween(seed,1,20).toString();
@@ -1643,7 +1643,7 @@ function generateMedString(seed) {
 
   var medstring = `Temperature (C): ${temperature}
   Growth Rate (/day): ${growth}
-  Enzyme p755 (mmol/L): ${levels}
+  Enzyme p755 availability: ${levels}
   Electropotential (mV/cm^2): ${electropotential}
   pH: ${ph}
   Sample colour: ${sample_colour}\n

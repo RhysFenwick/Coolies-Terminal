@@ -19,7 +19,11 @@ var inventory = []; // Item names only
 var terminal_title;
 var start_string;
 var weight = 0; // Movement cost when nothing in inventory
-var returning = false; // Stops all other actions when true.
+
+// Assorted bools
+var paralysed = false; // Stops all other actions when true.
+var standby = true; // Starts on standby - if this is true and enter is hit, splash screen moves to load
+var dumping = false; // True while airlock site is active
 
 // Sites
 var sites;
@@ -28,11 +32,9 @@ var modality; // 0 or null for no site, 1 for file search, 2 for action buttons,
 var eng_files;
 var med_files;
 var actionOptions = (document.getElementById("dispenser").getElementsByClassName("keypad-button")); // HTMLCollection of action buttons (all divs with class keypad-button in div action-grid)
-var actionStates = new Array(actionOptions.length).fill(0); // Will be filled with as many 0's as there are actionOptions (currently 2)
 var focusAction = 0; // Will cycle
 var actionVariables; // All of the action-related text etc - from JSON
 var actionItems; // Name/locations/trigger-locations of items that you get in site modality 2 - pulled from JSON
-var actionItemsDropped = []; // An array to be filled with false, one per action-site, each of which become true once that site's first action has been triggered.
 var combo; // Will be 16-digit 0/1 array pulled from JSON
 
 // Coordinates of highlighted file cell (from 0-5 and 0-9 respectively) plus real files
@@ -126,8 +128,14 @@ function editTextByID(loc,txt="") {
 
 // Takes a string and makes the first letter capitalised
 function makeCap(lowerString) {
-  var newStr = lowerString.charAt(0).toUpperCase() + lowerString.slice(1);
-  return newStr;
+  if (lowerString.length > 1) {
+    var newStr = lowerString.charAt(0).toUpperCase() + lowerString.slice(1);
+    return newStr;
+  }
+  else { // Only one char long
+    return lowerString.toUpperCase();
+  }
+  
 }
 
 // Takes a string and a Boolean of whether to make it slow or all at once
@@ -235,11 +243,6 @@ function refreshMap() {
 
   for (r in rooms) {
     var room = rooms[r]
-
-    // If it's outside - skip!
-    if (room.id == "outside") {
-      continue;
-    }
 
     var row = room.coords[1];
     var col = room.coords[0];
@@ -663,6 +666,10 @@ document.addEventListener("click", function() {
 // Similar function to the above but for typing.
 
 document.addEventListener("keydown", function(event) { // keypress doesn't pick up arrows
+  if (standby) {
+    turnOffStandby();
+  }
+  
   // Logic to swap screen on a key press
   if (event.key === "-") {
     event.preventDefault();
@@ -687,7 +694,12 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
         for (v of ["airlock","dispenser"]) { // TODO - Hard-coding these in seems...bad
           if (v == current_site.type) {
             document.getElementById(v).style.display = "grid";
-            updateActions(v);
+            if (v == "dispenser") {
+              updateActions(v);
+            }
+            else if (v == "airlock" && !dumping) {
+              updateActionText("airlock",0,"pre");
+            }
           }
           else {
             document.getElementById(v).style.display = "none";
@@ -838,7 +850,7 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
             case " ": // Fall-through: triggers on both Space and Enter
             case "Enter":
               toggleDiv(actionOptions[focusAction]); // Toggles visual of the button on/off
-              actionStates[focusAction] = (actionStates[focusAction] + 1)%2; // Toggles it between 0 and 1
+              current_site.actions[focusAction] = (current_site.actions[focusAction] + 1)%2; // Toggles it between 0 and 1
               updateActions("dispenser");
             break;
         }
@@ -848,9 +860,6 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
         switch (event.key) {
           case " ": // Fall-through: triggers on both Space and Enter
           case "Enter":
-            console.log("Airlock triggered!")
-            toggleDiv(document.getElementById("airlock-action-0-button")); // Toggles visual of the button on/off
-            // TODO - Remove all solid items
             updateActions("airlock");
           break;
         }
@@ -920,37 +929,40 @@ function getItemFromName(name) {
 
 // The core game logic!
 
+// Needs to trigger to start the game normally
+async function turnOffStandby() {
+  console.log("Switching on!")
+  standby = false; // Any key turns it off!
+  // Get loading bar
+  var loadbar = document.getElementById("loading-bar");        
+          
+  // Wait six seconds then make flash screen loaded
+  loadbar.innerText = "Loading."
+  await delay(1500);
+  loadbar.innerText = "Loading.."
+  await delay(1500);
+  loadbar.innerText = "Loading..."
+  await delay(1500);
+  loadbar.innerText = "Loaded."
 
-// Async function to handle loading of rooms and any subsequent operations
-async function roomSetup() {
+  // Wait one second then close the splash screen
+  await delay(1000);
+  document.getElementById("splash").style.display = "none";
+
+  // Pass rooms_json out to the main gameplay loop!
+  gameStart(rooms_json);
+}
+
+// Async function to handle loading appearance - called roomSetup for anachronistic reasons.
+function roomSetup() {
 
   document.getElementById("json-uploader").style.display = "none"; // Remove the JSON uploader if you've gotten to this point.
   document.getElementById("splash").style.display = "block"; // Make splash screen appear first thing
 
-    try {
-        // Get loading bar
-        var loadbar = document.getElementById("loading-bar");        
-        
-        // Wait six seconds then make flash screen loaded
-        await delay(1500);
-        loadbar.innerText = "Loading."
-        await delay(1500);
-        loadbar.innerText = "Loading.."
-        await delay(1500);
-        loadbar.innerText = "Loading..."
-        await delay(1500);
-        loadbar.innerText = "Loaded."
+  // Get loading bar
+  var loadbar = document.getElementById("loading-bar");  
+  loadbar.innerText = "Press any key to boot."
 
-        // Wait one second then close the splash screen
-        await delay(1000);
-        document.getElementById("splash").style.display = "none";
-        
-        // Pass rooms_json out to the main gameplay loop!
-        gameStart(rooms_json);
-
-    } catch(error) {
-        console.error('Error fetching rooms:', error);
-    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1063,8 +1075,8 @@ function parseInput(raw_input) {
 
     // The key instruction given - decides what happens next
     action = input_array[0];
-    if (returning) {
-      appendToTerminal("You cannot take this action until the return journey is completed.")
+    if (paralysed) {
+      appendToTerminal("You cannot take this action right now.")
     }
     else {
       switch(action) {
@@ -1391,7 +1403,7 @@ function moveRooms(input_array) {
             // Moves current room
             current_room = getRoomFromName(queried_room);
             appendToTerminal("You've moved to " + makeCap(queried_room) + ".")
-            energy -= (3 + inventory.length)
+            energy -= (15)
             wipeKeypad();
             generalRefresh();
           }
@@ -1411,8 +1423,8 @@ function moveRooms(input_array) {
 
 // Prompted when in final rooms
 async function return_to_base() {
-  returning = true; // Can't do anything until this is switched off!
-  current_room = getRoomFromID("center");
+  paralysed = true; // Can't do anything until this is switched off!
+  current_room = getRoomFromID("outside");
   appendToTerminal("Exiting airlock.")
   appendToTerminal("Return journey commencing...")
   timing = 100 * (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline) // 1/10th of total time
@@ -1424,6 +1436,7 @@ async function return_to_base() {
     await delay(timing); 
   }
   appendToTerminal("Return journey complete.")
+  current_room = getRoomFromID("center");
   appendToTerminal("You have recovered:")
   var temp_items = inventory.slice(); // Clone by value not reference - avoids issues with slicing list while iterating through it
   for (var i of temp_items) {
@@ -1437,7 +1450,7 @@ async function return_to_base() {
       weight -= item.weight; // Remove weight (should only matter for solid items)
     }
   }
-  returning = false;
+  paralysed = false;
   generalRefresh();
 }
 
@@ -1619,8 +1632,8 @@ function generateMedString(seed) {
   var growth = pseudoRandomIntBetween(seed,10,180);
   var levels = randItem(seed,["High","Medium","Low","Undetected"]);
   var electropotential = pseudoRandomIntBetween(seed,-50,50).toString() + "." + pseudoRandomIntBetween(seed,10,99).toString();
-  var ph = pseudoRandomIntBetween(seed,-7,7).toString() + (pseudoRandomIntBetween(seed,1,10)-1).toString();
-  var photosensitivity = randItem(seed,["Present","Absent","Inconclusive"]);
+  var ph = pseudoRandomIntBetween(seed,-7,7).toString() + "." + (pseudoRandomIntBetween(seed,1,10)-1).toString();
+  var sample_colour = randItem(seed,["Luminescent","Pale","Light","Dark","Rich","Drab","Intense","Deep"]) + " " + randItem(seed,["amber","aqua","azure","beige","grey","fuschia","lavender","mauve","silver","gold"]) + " with " + randItem(seed,["speckles","streaks","undertones","clear patches","hazy patches"]) + " of " + randItem(seed,["rust","brown","white","black","eggshell","cerise","saffron"]) + ".";
   var promise = randItem(seed,["promising","unpromising","inconclusive","highly promising"])
   var development = randItem(seed,[" Subject developed complications upon further testing."," Subject developed unremarkably."]);
   var dose = pseudoRandomIntBetween(seed,1,20).toString();
@@ -1630,10 +1643,10 @@ function generateMedString(seed) {
 
   var medstring = `Temperature (C): ${temperature}
   Growth Rate (/day): ${growth}
-  Enzyme p755 (mmol/L): ${levels}
+  Enzyme p755 availability: ${levels}
   Electropotential (mV/cm^2): ${electropotential}
   pH: ${ph}
-  Photosensitivity: ${photosensitivity}\n
+  Sample colour: ${sample_colour}\n
   Notes: Initial test was ${promise}.${development} Subject was given ${dose}00 mg of ${routes} ${hormones}.${further_testing}
   `;
 
@@ -1760,36 +1773,43 @@ async function decrypt() {
 async function updateActions(typeName) {
   var states = ["pre","post"] // 0 is Off, 1 is On - translating int to str
   if (typeName == "dispenser") {
-    for (i in actionStates) { // Deliberately going "in" not "of" for easy index referencing
-      var state = actionStates[i]; // 0 or 1
-      updateActionText(typeName,i,states[state]);
+    for (i in current_site.actions) { // Deliberately going "in" not "of" for easy index referencing
+      updateActionText(typeName,i,states[current_site.actions[i].switched]); // Updated action text with pre- or post- depending on switched state
     }
-  }
-  else if (typeName == "airlock") {
-    updateActionText(typeName,0,"post");
-    await delay(3000);
-    updateActionText(typeName,0,"pre");
-    toggleDiv(document.getElementById("airlock-action-0-button"));
-    
-    // Dumps solid items!
-    var temp_inv = inventory.slice(); // Clone by value
-    for (var i of temp_inv) {
-      item = getItemFromName(i);
-      if (item.weight > 0 && !item.key) {
-        inventory.splice(inventory.indexOf(item),1);
-        weight -= item.weight;
+
+    // Drops item if allowed and not already done
+    if (current_site.actions[0].switched) { // If the first action is switched to yes - TODO - Change this to account for changes between rooms
+      for (var item of actionItems) {
+        if (item.trigger_room === current_room.id) {
+          getRoomFromID(item.room).items.push(item.name); // Drops items into room
+          item.trigger_room = null // Wipes out trigger room to prevent it being dropped repeatedly.
+        }
       }
     }
-    generalRefresh();
   }
-  
 
-  // Drops item if allowed and not already done
-  if (actionStates[0] && !actionItemsDropped) {
-    for (var item of actionItems) {
-      getRoomFromID(item.room).items.push(item.name); // Drops items into room
+  else if (typeName == "airlock") {
+    if (!dumping) {
+      dumping = true; // Prevents the action from being messed with
+      toggleDiv(document.getElementById("airlock-action-0-button")); // Toggles visual of the button on/off
+      updateActionText(typeName,0,"post");
+      
+      // Dumps solid items!
+      var temp_inv = inventory.slice(); // Clone by value
+      for (var i of temp_inv) {
+        item = getItemFromName(i);
+        if (item.weight > 0 && !item.key) {
+          inventory.splice(inventory.indexOf(item),1);
+          editTextByID("airlock-action-0-status",(makeCap(item.name) + " has been ejected."));
+          await delay(1000);
+          weight -= item.weight;
+        }
+      }
+      toggleDiv(document.getElementById("airlock-action-0-button"));
+      dumping = false;
+      generalRefresh();
     }
-    actionItemsDropped = true;
+    updateActionText(typeName,0,"pre");
   }
 }
 
@@ -1810,7 +1830,7 @@ function updateActionText(typeName,actionNum,state) {
 // Fetching rooms has to be asynchronous as it involves fetching the JSON file. Can call non-async functions as needed.
 // Load the rooms JSON
 async function load_json() {
-  console.log("debug.txt is not present. Executing normal branch...");
+  console.log("Loading JSON from file.");
   const response = await fetch("./content.json");
   rooms_json = await response.json();
 }
@@ -1847,8 +1867,7 @@ async function pageLoad() {
       });
     }
     else {
-      // Debug.txt doesn't exist
-      console.log("Loading from file!")
+      // Debug.txt doesn't contain true
       await load_json();
       roomSetup(); // Kicks off the game either way
     }
