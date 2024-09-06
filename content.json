@@ -16,8 +16,8 @@
         "description": "blustery, with three doors.",
         "items": [],
         "inspected": false,
-        "coords": [-1,-1],
-        "mapname": "?????",
+        "coords": [0,0],
+        "mapname": "OUTSD",
         "passwords":["sesame"]
       },
       {
@@ -347,14 +347,18 @@
             "post_title":"Action 1 Complete",
 
             "pre_text":"Press for item",
-            "post_text":"Item acquired!"
+            "post_text":"Item acquired!",
+
+            "switched":0
           },
           {
             "pre_title":"Run Maintenance",
             "post_title":"Maintenance Complete",
 
             "pre_text":"Last cycle: N/A",
-            "post_text":"Last cycle: 178 days 18 hours 4 minutes."
+            "post_text":"Last cycle: 178 days 18 hours 4 minutes.",
+
+            "switched":0
           }
         ],
         "broken":false,
