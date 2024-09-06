@@ -37,6 +37,11 @@ var actionVariables; // All of the action-related text etc - from JSON
 var actionItems; // Name/locations/trigger-locations of items that you get in site modality 2 - pulled from JSON
 var combo; // Will be 16-digit 0/1 array pulled from JSON
 
+// Sounds
+const single_click = document.getElementById("single-click");
+const double_click = document.getElementById("double-click");
+
+
 // Coordinates of highlighted file cell (from 0-5 and 0-9 respectively) plus real files
 var file_col = 0;
 var file_row = 0;
@@ -424,7 +429,7 @@ function createInputLine(loc="term-input") {
     // This is what triggers whenever a command is entered!
     inputLine.addEventListener("keypress", function(event) {
       
-      document.getElementById("single-click").play(); // Plays every time a key is pressed
+      // single_click.play(); // Plays every time a key is pressed
 
       if (event.key === "Enter") { // Does different things depending on the screen
           event.preventDefault();
@@ -460,19 +465,30 @@ async function typeWriterEffect(str, div,helpScreen=false) {
         if (str[i] == ".") {
             await delay(200) // Wait longer for periods
             if (!(helpScreen && current_tab != 2))  {
-              document.getElementById("single-click").play();
+              if (single_click.paused) {
+                await single_click.load();
+                single_click.play();
+              }
             } 
         }
         else if (str[i] == "\n") {
           await delay(20);
           if (!(helpScreen && current_tab != 2))  {
-            document.getElementById("double-click").play();
+            /*
+            if (double_click.paused) {
+              double_click.load();
+              double_click.play();
+            }
+              */
           }
         }
         else {
             await delay(20); // Wait for 20ms per other character
             if (!(helpScreen && current_tab != 2))  {
-              document.getElementById("single-click").play();
+              if (single_click.paused) {
+                await single_click.load();
+                single_click.play();
+              }
             }  
         }
         div.append(str[i]);
@@ -673,6 +689,10 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
   // Logic to swap screen on a key press
   if (event.key === "-") {
     event.preventDefault();
+    if (double_click.paused) {
+      double_click.load();
+      double_click.play();
+    }
     current_tab = (current_tab + 1)%4 // Cycles through all three
     swapView(tabviews[current_tab])
     if (current_tab === 2) { // The number for the help tab
