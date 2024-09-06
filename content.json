@@ -286,31 +286,6 @@
         "keys": [],
         "uids":[],
         "open": false
-      },
-      {
-        "room1": "west1",
-        "room2": "outside",
-        "locked": true,
-        "keys": [],
-        "uids":[],
-        "open": false
-      },
-      {
-        "room1": "east1",
-        "room2": "outside",
-        "locked": true,
-        "keys": [],
-        "uids":[],
-        "open": false
-      },
-      {
-        "room1": "north1",
-        "room2": "outside",
-        "locked": true,
-        "room1_keys": [],
-        "room2_keys": [],
-        "uids":[],
-        "open": false
       }
     ],
 
