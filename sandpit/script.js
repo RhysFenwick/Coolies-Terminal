@@ -1,4 +1,5 @@
 // Arrays/JSONs to be filled later
+var rooms_json; // The big one!
 var logins;
 var rooms;
 var doors;
@@ -17,7 +18,8 @@ var keypad = new Array(padsize**2).fill(0)
 var inventory = []; // Item names only
 var terminal_title;
 var start_string;
-var weight = 3; // Movement cost when nothing in inventory
+var weight = 0; // Movement cost when nothing in inventory
+var returning = false; // Stops all other actions when true.
 
 // Sites
 var sites;
@@ -26,11 +28,11 @@ var modality; // 0 or null for no site, 1 for file search, 2 for action buttons,
 var eng_files;
 var med_files;
 var actionOptions = (document.getElementById("dispenser").getElementsByClassName("keypad-button")); // HTMLCollection of action buttons (all divs with class keypad-button in div action-grid)
-var actionStates = new Array(actionOptions.length).fill(0); // Will be filled with as many 0's as there are actionOptions
+var actionStates = new Array(actionOptions.length).fill(0); // Will be filled with as many 0's as there are actionOptions (currently 2)
 var focusAction = 0; // Will cycle
 var actionVariables; // All of the action-related text etc - from JSON
-var actionItems; // Name/locations of items that you get in site modality 2 - pulled from JSON
-var actionItemsDropped = false; // Becomes true on first dispenser activation
+var actionItems; // Name/locations/trigger-locations of items that you get in site modality 2 - pulled from JSON
+var actionItemsDropped = []; // An array to be filled with false, one per action-site, each of which become true once that site's first action has been triggered.
 var combo; // Will be 16-digit 0/1 array pulled from JSON
 
 // Coordinates of highlighted file cell (from 0-5 and 0-9 respectively) plus real files
@@ -76,6 +78,7 @@ var decryptComplete = false; // Becomes true once decryption completed
 // Tabs
 var tabviews = ["main-button", "map-button", "help-button","site-button"]
 var current_tab = 0 // Starts on the main screen
+var scrollHeight = 10; // Number of pixels used for scrolling
 
 // Mapping
 var map_rows = 6
@@ -171,12 +174,11 @@ function generalRefresh() {
   refreshInfo();
   refreshMap();
   refreshInventory();
-  refreshMessages();
   refreshSite();
   checkEvents();
 }
 
-// A function to refresh the inventory - should be called by generalRefresh() most of the time
+// A function to refresh the inventory - should be called by generalRefresh() most of the time - NO LONGER USED
 function refreshMessages() {
   newBoxText("messages","None")
 }
@@ -207,9 +209,9 @@ function refreshInventory() {
 
 // A function to refresh the energy - should be called by generalRefresh() most of the time
 function refreshEnergy() {
-  energy_str = energy + "%\r\n\r\nCost per movement:\r\n" + (weight) + "%";
-  if (energy < (weight) * 3 || energy < 15) {
-    energy_str = "**LOW** " + energy + "% **LOW**" + "\r\n\r\nCost per movement:\r\n" + (3 + inventory.length) + "%";
+  energy_str = energy + "%\r\n\r\nCost per movement:\r\n15%";
+  if (energy < 31) {
+    energy_str = "**LOW** " + energy + "% **LOW**" + "\r\n\r\nCost per movement:\r\n15%";
     newBoxText("energy",energy_str);
     appendToTerminal("Warning: Energy low. Discard items or recharge.")
   }
@@ -319,8 +321,15 @@ function refreshMap() {
     var exit = exits[e];
 
     // Map coordinates of room with the exit
-    var room_x = exit.room_coords[0];
-    var room_y = exit.room_coords[1];
+    var exit_room = getRoomFromID(exit.room);
+
+    // If it's the center - to - outside airlock, skip the representation.
+    if (exit_room.id == "center") {
+      continue;
+    }
+
+    var room_x = exit_room.coords[0];
+    var room_y = exit_room.coords[1];
 
     // Direction of exit
     var exit_side = exit.side;
@@ -339,12 +348,7 @@ function refreshMap() {
 
     door_index = middle_index + door_shift // Sign of x/y-shift will shift it the right direction
 
-    if (exit.locked) {
-      door_char = "X";
-    }
-    else {
-      door_char = "O";
-    }
+    door_char = "@"
 
     mapstring = editString(mapstring,door_char,door_index);
   }
@@ -363,8 +367,7 @@ function refreshInfo() {
     }
     else {
         doors_str = ""
-        for (d in doors) {
-            var door = doors[d];
+        for (var door of doors) {
             if (current_room.id == door.room1) {
               doors_str += getRoomFromID(door.room2).name.toUpperCase() + ", "
             }
@@ -372,6 +375,19 @@ function refreshInfo() {
               doors_str += getRoomFromID(door.room1).name.toUpperCase() + ", "
             }
         }
+
+        // Now for exits
+        for (var exit of exits) {
+          if (current_room.id == exit.room) {
+            doors_str += "OUTSIDE, "
+          }
+        }
+
+        // And outside
+        if (current_room.id == "outside") {
+          doors_str += getRoomFromID("east1").name.toUpperCase() + ", " + getRoomFromID("west1").name.toUpperCase() + ", " + getRoomFromID("north1").name.toUpperCase() + ", " + getRoomFromID("center").name.toUpperCase() + ", "
+        }
+
         doors_str = doors_str.substring(0, doors_str.length - 2);
         
         items_str = "";
@@ -681,6 +697,16 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
     }
   }
 
+  else if (current_tab === 0) { // Main tab - used for scrolling the terminal
+    var term_content = document.getElementById("terminal");
+    if (event.key === "ArrowUp") { // Scroll up
+      term_content.scrollTop -= scrollHeight;
+    }
+    else if (event.key === "ArrowDown") { // Scroll down
+      term_content.scrollTop += scrollHeight;
+    }
+  }
+
   // Logic to swap current_tip on key press
   if (["ArrowDown","ArrowUp","ArrowRight","ArrowLeft"].includes(event.key) && current_tab === 2) {
     switch (event.key) {
@@ -775,6 +801,7 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
         case "Enter":
           if (file_col == 5) { // In the final column - update file and make it appear!
            var batch_num = getFileDiv().textContent.split(".")[0].split(" ")[1];
+           document.getElementById("file-title").textContent = "File Viewer (ESC to exit)";
            document.getElementById("batch-title").textContent = getFileDiv().textContent;
            document.getElementById("batch-text").textContent = medFile(batch_num);
            document.getElementById("file-grid").style.display = "none";
@@ -783,6 +810,7 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
         break;
 
         case "Escape":
+          document.getElementById("file-title").textContent = "File Search";
           document.getElementById("file-viewer").style.display = "none";
           document.getElementById("file-grid").style.display = "grid";
         break;
@@ -896,11 +924,10 @@ function getItemFromName(name) {
 // Async function to handle loading of rooms and any subsequent operations
 async function roomSetup() {
 
+  document.getElementById("json-uploader").style.display = "none"; // Remove the JSON uploader if you've gotten to this point.
   document.getElementById("splash").style.display = "block"; // Make splash screen appear first thing
 
     try {
-        rooms_json = await get_rooms();
-
         // Get loading bar
         var loadbar = document.getElementById("loading-bar");        
         
@@ -1036,86 +1063,92 @@ function parseInput(raw_input) {
 
     // The key instruction given - decides what happens next
     action = input_array[0];
-
-    switch(action) {
-
-      case "login":
-        login(input_array);
-      break;
-      
-      case "move":
-        if (current_user) {
-          moveRooms(input_array);
-          }
-          else {
-            appendToTerminal("You must be logged in to move.");
-          }
-      break;
-      
-      case "unlock":
-        if (current_user) {
-          unlock(input_array);
-        }
-        else {
-          appendToTerminal("You must be logged in to unlock doors.");
-        }
-      break;
-
-      case "clear":
-        editTextByID("terminal","");
-      break;
-      
-      case "inspect":
-        focus = input_array[1]
-        // Inspect the room or an item
-        if (current_user) {
-
-          if (focus == "room") {
-            inspect_room(focus);
-          }
-
-          else if (item_names.includes(focus)) {
-            inspect_item(focus);
-          }
-          else {
-          inspect_room(focus);
-          }
-        }
-        else {
-          appendToTerminal("You must be logged in to inspect rooms and items.");
-        }
-      break;
-
-      case "take":
-        if (current_user) {
-          take_item(input_array[1]);
-        }
-        else {
-          appendToTerminal("You must be logged in to take items.");
-        }
-      break;
-
-      case "drop":
-        drop_item(input_array[1]);
-      break;
-
-      case "recharge":
-        if (parseInt(input_array[1])) {
-          recharge(parseInt(input_array[1]));
-        }
-        else {
-          recharge();
-        }
-      break;
-
-      case "return": // Prompted on reaching the outermost rooms
-        return_to_base();
-      break;
-
-      default:
-        appendToTerminal("I'm sorry, I don't recognise that command. Try again or visit the help menu for assistance.")
-      break;
+    if (returning) {
+      appendToTerminal("You cannot take this action until the return journey is completed.")
     }
+    else {
+      switch(action) {
+
+        case "login":
+          login(input_array);
+        break;
+        
+        case "move":
+          if (current_user) {
+            moveRooms(input_array);
+            }
+            else {
+              appendToTerminal("You must be logged in to move.");
+            }
+        break;
+        
+        case "unlock":
+          if (current_user) {
+            unlock(input_array);
+          }
+          else {
+            appendToTerminal("You must be logged in to unlock doors.");
+          }
+        break;
+  
+        case "clear":
+          editTextByID("terminal","");
+        break;
+        
+        case "inspect":
+          focus = input_array[1]
+          // Inspect the room or an item
+          if (current_user) {
+  
+            if (focus == "room") {
+              inspect_room(focus);
+            }
+  
+            else if (item_names.includes(focus)) {
+              inspect_item(focus);
+            }
+            else {
+            inspect_room(focus);
+            }
+          }
+          else {
+            appendToTerminal("You must be logged in to inspect rooms and items.");
+          }
+        break;
+  
+        case "take":
+          if (current_user) {
+            take_item(input_array[1]);
+          }
+          else {
+            appendToTerminal("You must be logged in to take items.");
+          }
+        break;
+  
+        case "drop":
+          drop_item(input_array[1]);
+        break;
+  
+        case "recharge":
+          if (parseInt(input_array[1])) {
+            recharge(parseInt(input_array[1]));
+          }
+          else {
+            recharge();
+          }
+        break;
+  
+        case "return": // Prompted on reaching the outermost rooms
+          return_to_base();
+        break;
+  
+        default:
+          appendToTerminal("I'm sorry, I don't recognise that command. Try again or visit the help menu for assistance.")
+        break;
+      }
+    }
+
+    
 }
 
 // Unlocks all doors
@@ -1129,20 +1162,22 @@ function breakout() {
 function take_item(item) {
   if (current_room.items.includes(item)) {
     var index = current_room.items.indexOf(item);
-    if (index > -1 && energy > 1) {
+    if (index > -1 && energy > 0) {
       current_room.items.splice(index, 1);
       inventory.push(item);
       appendToTerminal("You have taken the "+ item + ".");
       focus_item = getItemFromName(item);
       weight += focus_item.weight;
-      energy -= 2;
+      // energy -= 2;
       refreshInfo();
       refreshInventory();
       refreshEnergy();
     }
+    /*
     else if (energy < 2) {
       appendToTerminal("You have insufficient energy to take this item.");
     }
+      */
   }  
   else {
     appendToTerminal("That item isn't in this room.")
@@ -1255,18 +1290,24 @@ function inspect_room(room_name){
   }
   
 }
-// Checks if a door is accessible: used for move/unlock. Returns door if one is found, null otherwise
-function checkForDoor(queried_room) {
+// Checks if a door is accessible: used for move/unlock. Returns door (or exit) if one is found, null otherwise
+function checkForDoor(query) {
   
   var valid_room = null;
+  var queried_room = getRoomFromName(query);
   
   for (d in doors) {
     var door = doors[d];
-      // Is there a better way to do this?
-      if (getRoomFromName(queried_room) && (getRoomFromName(queried_room).id == door.room1 && current_room.id == door.room2) || (getRoomFromName(queried_room) && getRoomFromName(queried_room).id == door.room2 && current_room.id == door.room1)) {
-        valid_room = door;
-      }
+    // Is there a better way to do this?
+    if (queried_room && (queried_room.id == door.room1 && current_room.id == door.room2) || (queried_room && queried_room.id == door.room2 && current_room.id == door.room1)) {
+      valid_room = door;
     }
+  }
+  for (var exit of exits) {
+    if (queried_room && (queried_room.id == "outside" && current_room.id == exit.room) || (queried_room && queried_room.id == exit.room && current_room.id == "outside")) {
+      valid_room = exit; // This is bad! But it works.
+    }
+  }
   return valid_room;
 }
 
@@ -1333,10 +1374,17 @@ function moveRooms(input_array) {
       }
       else {
         // Checks energy
-        if (energy > 2 + inventory.length) {
+        if (energy > 14) {
 
           if (["north1","east1","west1"].includes(current_room.id) && queried_room == getRoomFromID("outside").name) { // If you're headed out through an airlock
-            appendToTerminal("WARNING: Exiting airlock. Based on current additional mass of " + weight + ", return journey will take approximately " + (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline).toString() + " seconds.\nType 'return' to exit airlock and begin return journey.")
+            var airlock_time;
+            if (inventory.includes(rooms_json.speed_item)) {
+              airlock_time = 60;
+            }
+            else {
+              airlock_time = weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline;
+            }
+            appendToTerminal("WARNING: Exiting airlock. Based on current additional mass of " + weight + ", return journey will take approximately " + (airlock_time).toString() + " seconds.\nType 'return' to exit airlock and begin return journey.")
           }
 
           else {
@@ -1363,10 +1411,11 @@ function moveRooms(input_array) {
 
 // Prompted when in final rooms
 async function return_to_base() {
+  returning = true; // Can't do anything until this is switched off!
   current_room = getRoomFromID("center");
   appendToTerminal("Exiting airlock.")
   appendToTerminal("Return journey commencing...")
-  timing = 1000 * (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline)
+  timing = 100 * (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline) // 1/10th of total time
   if (inventory.includes(rooms_json.speed_item)) {
     timing = 6000 // Speeds up to a minute
   }
@@ -1388,6 +1437,7 @@ async function return_to_base() {
       weight -= item.weight; // Remove weight (should only matter for solid items)
     }
   }
+  returning = false;
   generalRefresh();
 }
 
@@ -1420,7 +1470,6 @@ function login(input_array) {
         
             appendToTerminal("Login successful! Welcome, " + l.name + ".");
             refreshInfo();
-            refreshMessages();
         }
     }
 
@@ -1468,7 +1517,7 @@ function newHelpText(box,topic,txt) {
 // Checks to see if the keypad matches the combination
 // TODO: Update this to take advantage of current_site (Should be done now)
 async function checkKeypad() {
-  if (keypad.toString() == current_site.combo.toString()) {
+  if (keypad.toString() == current_site.combo.toString()) { // Unlocked!
     editTextByID("site-login-title-text","Unlocked");
     await delay(500);
     toggleUnlockScreen(true)
@@ -1480,6 +1529,7 @@ function toggleUnlockScreen(content=true) {
   if (content) {
     document.getElementById("site-login-screen").style.display = "none";
     document.getElementById("site-content-screen").style.display = "block";
+    shiftFile(); // To make first SVG appear if needed
     if (current_site.locked) {
       current_site.locked = false; // TODO: This isn't great - mixing up site/current_site...unless it's by reference?
     }
@@ -1578,14 +1628,13 @@ function generateMedString(seed) {
   var hormones = randItem(seed,["digoxin","fexinidazole","alpha-dupixent","soravtansine","resmetirom","mRNA-1273","exenatide","methyl-2-risdiplam","lumateperone","G6-phosphatase",]);
   var further_testing = randItem(seed,[""," Further testing is recommended."]);
 
-  var medstring = `Temperature (C): ${temperature}\n
-  Growth Rate (/day): ${growth}\n
-  Enzyme p755 (mmol/L): ${levels}\n
-  Electropotential (mV/cm^2): ${electropotential}\n
-  pH: ${ph}\n
+  var medstring = `Temperature (C): ${temperature}
+  Growth Rate (/day): ${growth}
+  Enzyme p755 (mmol/L): ${levels}
+  Electropotential (mV/cm^2): ${electropotential}
+  pH: ${ph}
   Photosensitivity: ${photosensitivity}\n
-  Notes: Initial test was ${promise}.
-  ${development} Subject was given ${dose}00 mg of ${routes} ${hormones}.${further_testing}
+  Notes: Initial test was ${promise}.${development} Subject was given ${dose}00 mg of ${routes} ${hormones}.${further_testing}
   `;
 
   return medstring;
@@ -1613,7 +1662,6 @@ function drawSVG(leftDiv, rightDiv) {
       <line x1="${startX}" y1="${startY - svgRect.top - 5}" x2="${svgRect.width}" y2="${0}" stroke="#008000" stroke-width="1" />
       <line x1="${startX}" y1="${startY - svgRect.top + 5}" x2="${svgRect.width}" y2="${svgRect.height}" stroke="008000" stroke-width="1" />
   `;
-  console.log(svg.innerHTML);
   svg.style.visibility = "visible"; // Make this svg appear!
 }
 
@@ -1699,6 +1747,9 @@ async function decrypt() {
 
   await delay(3000) // Some time to admire the handiwork
   decryptComplete = true; // Mark the decryption done!
+  for (var item in rooms_json.decrypt_items) { // Drop decrypt_items as needed
+    getRoomFromID(item.room).inventory.push(item.name);
+  }
 
   d_screen.style.display = "none"; // Hides the decryption screen
   document.getElementById("interactive-screen").style.display = "flex"; // Shows everything else again
@@ -1754,38 +1805,62 @@ function updateActionText(typeName,actionNum,state) {
   editTextByID(titleLoc,current_site.actions[actionNum][varTitleName]);
 }
 
-// Fetching rooms has to be asynchronous as it involves fetching the JSON file. Can call non-async functions as needed.
 
+
+// Fetching rooms has to be asynchronous as it involves fetching the JSON file. Can call non-async functions as needed.
 // Load the rooms JSON
-async function get_rooms() {
-  return content; // Should just be the JSON?
+async function load_json() {
+  console.log("debug.txt is not present. Executing normal branch...");
+  const response = await fetch("./content.json");
+  rooms_json = await response.json();
 }
 
-// Loads in content.json
-var content;
-document.getElementById('submitBtn').addEventListener('click', function() {
-  const fileInput = document.getElementById('fileInput');
-  const file = fileInput.files[0];
-
-  if (file && file.type === 'application/json') {
-      const reader = new FileReader();
-
-      reader.onload = function(event) {
-          try {
-              content = JSON.parse(event.target.result);
-              // Call the function to set up the rooms
-              // This is the first function called! Everything else flows from here
-              roomSetup();
-          } catch (e) {
-              alert('Invalid JSON file. Please upload a valid content.json file.');
-          }
-      };
-
-      reader.readAsText(file);
-  } else {
-      alert('Please upload your content.json file.');
+// Wrapping this in an async function for awaiting purposes
+async function pageLoad() {
+  const debug_mode = await fetch('debug.txt')
+  if (debug_mode.ok) {
+    // Debug exists
+    const debug_text = await debug_mode.text();
+    if (debug_text.includes("DEBUG=TRUE")) {
+      document.getElementById('submitBtn').addEventListener('click', function() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+      
+        if (file && file.type === 'application/json') {
+            const reader = new FileReader();
+      
+            reader.onload = function(event) {
+                try {
+                    rooms_json = JSON.parse(event.target.result);
+                    // Call the function to set up the rooms
+                    // This is the first function called! Everything else flows from here
+                    roomSetup(); // Kicks off the game either way
+                } catch (e) {
+                    alert('Invalid JSON file. Please upload a valid content.json file.');
+                }
+            };
+      
+            reader.readAsText(file);
+        } else {
+            alert('Please upload your content.json file.');
+        }
+      });
+    }
+    else {
+      // Debug.txt doesn't exist
+      console.log("Loading from file!")
+      await load_json();
+      roomSetup(); // Kicks off the game either way
+    }
+  } 
+  else {
+    // File does not exist or there was a network error
+    console.log("Error, file not found. Executing normal branch...");
+    await load_json();
+    roomSetup(); // Kicks off the game either way
   }
-});
+}
 
 
-
+// And call it!
+pageLoad();

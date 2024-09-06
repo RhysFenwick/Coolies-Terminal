@@ -1,4 +1,5 @@
 // Arrays/JSONs to be filled later
+var rooms_json; // The big one!
 var logins;
 var rooms;
 var doors;
@@ -17,7 +18,8 @@ var keypad = new Array(padsize**2).fill(0)
 var inventory = []; // Item names only
 var terminal_title;
 var start_string;
-var weight = 3; // Movement cost when nothing in inventory
+var weight = 0; // Movement cost when nothing in inventory
+var returning = false; // Stops all other actions when true.
 
 // Sites
 var sites;
@@ -922,11 +924,10 @@ function getItemFromName(name) {
 // Async function to handle loading of rooms and any subsequent operations
 async function roomSetup() {
 
+  document.getElementById("json-uploader").style.display = "none"; // Remove the JSON uploader if you've gotten to this point.
   document.getElementById("splash").style.display = "block"; // Make splash screen appear first thing
 
     try {
-        rooms_json = await get_rooms();
-
         // Get loading bar
         var loadbar = document.getElementById("loading-bar");        
         
@@ -1062,86 +1063,92 @@ function parseInput(raw_input) {
 
     // The key instruction given - decides what happens next
     action = input_array[0];
-
-    switch(action) {
-
-      case "login":
-        login(input_array);
-      break;
-      
-      case "move":
-        if (current_user) {
-          moveRooms(input_array);
-          }
-          else {
-            appendToTerminal("You must be logged in to move.");
-          }
-      break;
-      
-      case "unlock":
-        if (current_user) {
-          unlock(input_array);
-        }
-        else {
-          appendToTerminal("You must be logged in to unlock doors.");
-        }
-      break;
-
-      case "clear":
-        editTextByID("terminal","");
-      break;
-      
-      case "inspect":
-        focus = input_array[1]
-        // Inspect the room or an item
-        if (current_user) {
-
-          if (focus == "room") {
-            inspect_room(focus);
-          }
-
-          else if (item_names.includes(focus)) {
-            inspect_item(focus);
-          }
-          else {
-          inspect_room(focus);
-          }
-        }
-        else {
-          appendToTerminal("You must be logged in to inspect rooms and items.");
-        }
-      break;
-
-      case "take":
-        if (current_user) {
-          take_item(input_array[1]);
-        }
-        else {
-          appendToTerminal("You must be logged in to take items.");
-        }
-      break;
-
-      case "drop":
-        drop_item(input_array[1]);
-      break;
-
-      case "recharge":
-        if (parseInt(input_array[1])) {
-          recharge(parseInt(input_array[1]));
-        }
-        else {
-          recharge();
-        }
-      break;
-
-      case "return": // Prompted on reaching the outermost rooms
-        return_to_base();
-      break;
-
-      default:
-        appendToTerminal("I'm sorry, I don't recognise that command. Try again or visit the help menu for assistance.")
-      break;
+    if (returning) {
+      appendToTerminal("You cannot take this action until the return journey is completed.")
     }
+    else {
+      switch(action) {
+
+        case "login":
+          login(input_array);
+        break;
+        
+        case "move":
+          if (current_user) {
+            moveRooms(input_array);
+            }
+            else {
+              appendToTerminal("You must be logged in to move.");
+            }
+        break;
+        
+        case "unlock":
+          if (current_user) {
+            unlock(input_array);
+          }
+          else {
+            appendToTerminal("You must be logged in to unlock doors.");
+          }
+        break;
+  
+        case "clear":
+          editTextByID("terminal","");
+        break;
+        
+        case "inspect":
+          focus = input_array[1]
+          // Inspect the room or an item
+          if (current_user) {
+  
+            if (focus == "room") {
+              inspect_room(focus);
+            }
+  
+            else if (item_names.includes(focus)) {
+              inspect_item(focus);
+            }
+            else {
+            inspect_room(focus);
+            }
+          }
+          else {
+            appendToTerminal("You must be logged in to inspect rooms and items.");
+          }
+        break;
+  
+        case "take":
+          if (current_user) {
+            take_item(input_array[1]);
+          }
+          else {
+            appendToTerminal("You must be logged in to take items.");
+          }
+        break;
+  
+        case "drop":
+          drop_item(input_array[1]);
+        break;
+  
+        case "recharge":
+          if (parseInt(input_array[1])) {
+            recharge(parseInt(input_array[1]));
+          }
+          else {
+            recharge();
+          }
+        break;
+  
+        case "return": // Prompted on reaching the outermost rooms
+          return_to_base();
+        break;
+  
+        default:
+          appendToTerminal("I'm sorry, I don't recognise that command. Try again or visit the help menu for assistance.")
+        break;
+      }
+    }
+
+    
 }
 
 // Unlocks all doors
@@ -1370,7 +1377,14 @@ function moveRooms(input_array) {
         if (energy > 14) {
 
           if (["north1","east1","west1"].includes(current_room.id) && queried_room == getRoomFromID("outside").name) { // If you're headed out through an airlock
-            appendToTerminal("WARNING: Exiting airlock. Based on current additional mass of " + weight + ", return journey will take approximately " + (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline).toString() + " seconds.\nType 'return' to exit airlock and begin return journey.")
+            var airlock_time;
+            if (inventory.includes(rooms_json.speed_item)) {
+              airlock_time = 60;
+            }
+            else {
+              airlock_time = weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline;
+            }
+            appendToTerminal("WARNING: Exiting airlock. Based on current additional mass of " + weight + ", return journey will take approximately " + (airlock_time).toString() + " seconds.\nType 'return' to exit airlock and begin return journey.")
           }
 
           else {
@@ -1397,10 +1411,11 @@ function moveRooms(input_array) {
 
 // Prompted when in final rooms
 async function return_to_base() {
+  returning = true; // Can't do anything until this is switched off!
   current_room = getRoomFromID("center");
   appendToTerminal("Exiting airlock.")
   appendToTerminal("Return journey commencing...")
-  timing = 1000 * (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline)
+  timing = 100 * (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline) // 1/10th of total time
   if (inventory.includes(rooms_json.speed_item)) {
     timing = 6000 // Speeds up to a minute
   }
@@ -1422,6 +1437,7 @@ async function return_to_base() {
       weight -= item.weight; // Remove weight (should only matter for solid items)
     }
   }
+  returning = false;
   generalRefresh();
 }
 
@@ -1790,15 +1806,61 @@ function updateActionText(typeName,actionNum,state) {
 }
 
 
-// Fetching rooms has to be asynchronous as it involves fetching the JSON file. Can call non-async functions as needed.
 
+// Fetching rooms has to be asynchronous as it involves fetching the JSON file. Can call non-async functions as needed.
 // Load the rooms JSON
-async function get_rooms() {
+async function load_json() {
+  console.log("debug.txt is not present. Executing normal branch...");
   const response = await fetch("./content.json");
-  const data = await response.json();
-  return data;
+  rooms_json = await response.json();
 }
 
-// Call the function to set up the rooms
-// This is the first function called! Everything else flows from here
-roomSetup();
+// Wrapping this in an async function for awaiting purposes
+async function pageLoad() {
+  const debug_mode = await fetch('debug.txt')
+  if (debug_mode.ok) {
+    // Debug exists
+    const debug_text = await debug_mode.text();
+    if (debug_text.includes("DEBUG=TRUE")) {
+      document.getElementById('submitBtn').addEventListener('click', function() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+      
+        if (file && file.type === 'application/json') {
+            const reader = new FileReader();
+      
+            reader.onload = function(event) {
+                try {
+                    rooms_json = JSON.parse(event.target.result);
+                    // Call the function to set up the rooms
+                    // This is the first function called! Everything else flows from here
+                    roomSetup(); // Kicks off the game either way
+                } catch (e) {
+                    alert('Invalid JSON file. Please upload a valid content.json file.');
+                }
+            };
+      
+            reader.readAsText(file);
+        } else {
+            alert('Please upload your content.json file.');
+        }
+      });
+    }
+    else {
+      // Debug.txt doesn't exist
+      console.log("Loading from file!")
+      await load_json();
+      roomSetup(); // Kicks off the game either way
+    }
+  } 
+  else {
+    // File does not exist or there was a network error
+    console.log("Error, file not found. Executing normal branch...");
+    await load_json();
+    roomSetup(); // Kicks off the game either way
+  }
+}
+
+
+// And call it!
+pageLoad();

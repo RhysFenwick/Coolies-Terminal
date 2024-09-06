@@ -764,3 +764,9 @@ animation-play-state: running;
   align-items: center;
   justify-content: center;
 }
+
+#json-uploader {
+  z-index: 1000;
+  pointer-events: all;
+}
+
