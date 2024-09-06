@@ -207,9 +207,9 @@ function refreshInventory() {
 
 // A function to refresh the energy - should be called by generalRefresh() most of the time
 function refreshEnergy() {
-  energy_str = energy + "%\r\n\r\nCost per movement:\r\n" + (weight) + "%";
-  if (energy < (weight) * 3 || energy < 15) {
-    energy_str = "**LOW** " + energy + "% **LOW**" + "\r\n\r\nCost per movement:\r\n" + (3 + inventory.length) + "%";
+  energy_str = energy + "%\r\n\r\nCost per movement:\r\n15%";
+  if (energy < 31) {
+    energy_str = "**LOW** " + energy + "% **LOW**" + "\r\n\r\nCost per movement:\r\n15%";
     newBoxText("energy",energy_str);
     appendToTerminal("Warning: Energy low. Discard items or recharge.")
   }
@@ -1149,20 +1149,22 @@ function breakout() {
 function take_item(item) {
   if (current_room.items.includes(item)) {
     var index = current_room.items.indexOf(item);
-    if (index > -1 && energy > 1) {
+    if (index > -1 && energy > 0) {
       current_room.items.splice(index, 1);
       inventory.push(item);
       appendToTerminal("You have taken the "+ item + ".");
       focus_item = getItemFromName(item);
       weight += focus_item.weight;
-      energy -= 2;
+      // energy -= 2;
       refreshInfo();
       refreshInventory();
       refreshEnergy();
     }
+    /*
     else if (energy < 2) {
       appendToTerminal("You have insufficient energy to take this item.");
     }
+      */
   }  
   else {
     appendToTerminal("That item isn't in this room.")
@@ -1359,7 +1361,7 @@ function moveRooms(input_array) {
       }
       else {
         // Checks energy
-        if (energy > 2 + inventory.length) {
+        if (energy > 14) {
 
           if (["north1","east1","west1"].includes(current_room.id) && queried_room == getRoomFromID("outside").name) { // If you're headed out through an airlock
             appendToTerminal("WARNING: Exiting airlock. Based on current additional mass of " + weight + ", return journey will take approximately " + (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline).toString() + " seconds.\nType 'return' to exit airlock and begin return journey.")
