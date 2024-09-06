@@ -76,6 +76,7 @@ var decryptComplete = false; // Becomes true once decryption completed
 // Tabs
 var tabviews = ["main-button", "map-button", "help-button","site-button"]
 var current_tab = 0 // Starts on the main screen
+var scrollHeight = 10; // Number of pixels used for scrolling
 
 // Mapping
 var map_rows = 6
@@ -171,12 +172,11 @@ function generalRefresh() {
   refreshInfo();
   refreshMap();
   refreshInventory();
-  refreshMessages();
   refreshSite();
   checkEvents();
 }
 
-// A function to refresh the inventory - should be called by generalRefresh() most of the time
+// A function to refresh the inventory - should be called by generalRefresh() most of the time - NO LONGER USED
 function refreshMessages() {
   newBoxText("messages","None")
 }
@@ -359,8 +359,7 @@ function refreshInfo() {
     }
     else {
         doors_str = ""
-        for (d in doors) {
-            var door = doors[d];
+        for (var door of doors) {
             if (current_room.id == door.room1) {
               doors_str += getRoomFromID(door.room2).name.toUpperCase() + ", "
             }
@@ -368,6 +367,19 @@ function refreshInfo() {
               doors_str += getRoomFromID(door.room1).name.toUpperCase() + ", "
             }
         }
+
+        // Now for exits
+        for (var exit of exits) {
+          if (current_room.id == exit.room) {
+            doors_str += "OUTSIDE, "
+          }
+        }
+
+        // And outside
+        if (current_room.id == "outside") {
+          doors_str += getRoomFromID("east1").name.toUpperCase() + ", " + getRoomFromID("west1").name.toUpperCase() + ", " + getRoomFromID("north1").name.toUpperCase() + ", " + getRoomFromID("center").name.toUpperCase() + ", "
+        }
+
         doors_str = doors_str.substring(0, doors_str.length - 2);
         
         items_str = "";
@@ -677,6 +689,16 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
     }
   }
 
+  else if (current_tab === 0) { // Main tab - used for scrolling the terminal
+    var term_content = document.getElementById("terminal");
+    if (event.key === "ArrowUp") { // Scroll up
+      term_content.scrollTop -= scrollHeight;
+    }
+    else if (event.key === "ArrowDown") { // Scroll down
+      term_content.scrollTop += scrollHeight;
+    }
+  }
+
   // Logic to swap current_tip on key press
   if (["ArrowDown","ArrowUp","ArrowRight","ArrowLeft"].includes(event.key) && current_tab === 2) {
     switch (event.key) {
@@ -771,6 +793,7 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
         case "Enter":
           if (file_col == 5) { // In the final column - update file and make it appear!
            var batch_num = getFileDiv().textContent.split(".")[0].split(" ")[1];
+           document.getElementById("file-title").textContent = "File Viewer (ESC to exit)";
            document.getElementById("batch-title").textContent = getFileDiv().textContent;
            document.getElementById("batch-text").textContent = medFile(batch_num);
            document.getElementById("file-grid").style.display = "none";
@@ -779,6 +802,7 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
         break;
 
         case "Escape":
+          document.getElementById("file-title").textContent = "File Search";
           document.getElementById("file-viewer").style.display = "none";
           document.getElementById("file-grid").style.display = "grid";
         break;
@@ -1252,19 +1276,20 @@ function inspect_room(room_name){
   
 }
 // Checks if a door is accessible: used for move/unlock. Returns door (or exit) if one is found, null otherwise
-function checkForDoor(queried_room) {
+function checkForDoor(query) {
   
   var valid_room = null;
+  var queried_room = getRoomFromName(query);
   
   for (d in doors) {
     var door = doors[d];
     // Is there a better way to do this?
-    if (getRoomFromName(queried_room) && (getRoomFromName(queried_room).id == door.room1 && current_room.id == door.room2) || (getRoomFromName(queried_room) && getRoomFromName(queried_room).id == door.room2 && current_room.id == door.room1)) {
+    if (queried_room && (queried_room.id == door.room1 && current_room.id == door.room2) || (queried_room && queried_room.id == door.room2 && current_room.id == door.room1)) {
       valid_room = door;
     }
   }
   for (var exit of exits) {
-    if (getRoomFromName(queried_room) && (getRoomFromName(queried_room).id == "outside" && current_room.id == exit.room) || (getRoomFromName(queried_room) && getRoomFromName(queried_room).id == exit.room && current_room.id == "outside")) {
+    if (queried_room && (queried_room.id == "outside" && current_room.id == exit.room) || (queried_room && queried_room.id == exit.room && current_room.id == "outside")) {
       valid_room = exit; // This is bad! But it works.
     }
   }
@@ -1421,7 +1446,6 @@ function login(input_array) {
         
             appendToTerminal("Login successful! Welcome, " + l.name + ".");
             refreshInfo();
-            refreshMessages();
         }
     }
 
@@ -1469,7 +1493,7 @@ function newHelpText(box,topic,txt) {
 // Checks to see if the keypad matches the combination
 // TODO: Update this to take advantage of current_site (Should be done now)
 async function checkKeypad() {
-  if (keypad.toString() == current_site.combo.toString()) {
+  if (keypad.toString() == current_site.combo.toString()) { // Unlocked!
     editTextByID("site-login-title-text","Unlocked");
     await delay(500);
     toggleUnlockScreen(true)
@@ -1481,6 +1505,7 @@ function toggleUnlockScreen(content=true) {
   if (content) {
     document.getElementById("site-login-screen").style.display = "none";
     document.getElementById("site-content-screen").style.display = "block";
+    shiftFile(); // To make first SVG appear if needed
     if (current_site.locked) {
       current_site.locked = false; // TODO: This isn't great - mixing up site/current_site...unless it's by reference?
     }
@@ -1579,14 +1604,13 @@ function generateMedString(seed) {
   var hormones = randItem(seed,["digoxin","fexinidazole","alpha-dupixent","soravtansine","resmetirom","mRNA-1273","exenatide","methyl-2-risdiplam","lumateperone","G6-phosphatase",]);
   var further_testing = randItem(seed,[""," Further testing is recommended."]);
 
-  var medstring = `Temperature (C): ${temperature}\n
-  Growth Rate (/day): ${growth}\n
-  Enzyme p755 (mmol/L): ${levels}\n
-  Electropotential (mV/cm^2): ${electropotential}\n
-  pH: ${ph}\n
+  var medstring = `Temperature (C): ${temperature}
+  Growth Rate (/day): ${growth}
+  Enzyme p755 (mmol/L): ${levels}
+  Electropotential (mV/cm^2): ${electropotential}
+  pH: ${ph}
   Photosensitivity: ${photosensitivity}\n
-  Notes: Initial test was ${promise}.
-  ${development} Subject was given ${dose}00 mg of ${routes} ${hormones}.${further_testing}
+  Notes: Initial test was ${promise}.${development} Subject was given ${dose}00 mg of ${routes} ${hormones}.${further_testing}
   `;
 
   return medstring;
@@ -1614,7 +1638,6 @@ function drawSVG(leftDiv, rightDiv) {
       <line x1="${startX}" y1="${startY - svgRect.top - 5}" x2="${svgRect.width}" y2="${0}" stroke="#008000" stroke-width="1" />
       <line x1="${startX}" y1="${startY - svgRect.top + 5}" x2="${svgRect.width}" y2="${svgRect.height}" stroke="008000" stroke-width="1" />
   `;
-  console.log(svg.innerHTML);
   svg.style.visibility = "visible"; // Make this svg appear!
 }
 

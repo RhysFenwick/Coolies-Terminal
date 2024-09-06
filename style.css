@@ -156,7 +156,6 @@ Scrollbar settings - don't work on Firefox :(
 #file-grid {
   display: grid;
   grid-template-columns: 13% 3% 13% 3% 13% 3% 13% 3% 13% 3% 20%;
-  width: 105%;
   margin: 0%;
   padding: 0%;
   height: 80%;
@@ -213,9 +212,9 @@ Scrollbar settings - don't work on Firefox :(
   width: 100%;
   overflow-y: scroll;
   flex-grow: 0;
-  overflow-wrap: normal;
-  z-index: 1000;
-  scrollbar-gutter: stable; 
+  overflow: hidden;
+  position: relative;
+  top: 0px;
 }
 
 #term-input {
@@ -235,15 +234,15 @@ Scrollbar settings - don't work on Firefox :(
 
 #information-box {
   width: 90%;
-  height: 50%;
+  height: 40%;
 }
 
 #minimap-box {
   white-space: pre;
   text-align: center;
   line-height: 140%;
-  width: 70%;
-  height: 50%;
+  width: 90%;
+  height: 30%;
 }
 
 #map-box {
@@ -270,8 +269,8 @@ Scrollbar settings - don't work on Firefox :(
 }
 
 #energy-box {
-  width: 70%;
-  height: 30%;
+  width: 90%;
+  height: 20%;
   min-height: 20%;
 }
 
@@ -284,7 +283,7 @@ Scrollbar settings - don't work on Firefox :(
 #inventory-box {
   text-align: center;
   width: 70%;
-  height: 70%;
+  height: 100%;
   padding-bottom: 0%;
 }
 
@@ -293,12 +292,13 @@ Scrollbar settings - don't work on Firefox :(
 }
 
 #mid-col {
-  width: 40%;
+  width: 25%;
   height: 100%;
 }
 
 #right-col {
-  width: 40%;
+  width: 30%;
+  min-height: 100%;
 }
 
 #menu {
