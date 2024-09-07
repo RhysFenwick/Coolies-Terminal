@@ -1425,7 +1425,7 @@ function moveRooms(input_array) {
     if (door != null) {
       // Checks if door is unlocked
       if (door.locked) {
-        if (door.keys.length = 0) {
+        if (!door.hasOwnProperty("keys")) {
           appendToTerminal("The door to " + makeCap(queried_room) + " is locked. Enter 'unlock [room-name] [password] to unlock.");
         }
         else {
