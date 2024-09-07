@@ -219,7 +219,8 @@ function refreshInventory() {
     }
     }
    
-    except(e) {
+    catch (e) {
+      // Tab to edit
       console.log(e)
     }
     }
