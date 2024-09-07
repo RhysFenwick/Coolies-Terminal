@@ -1944,9 +1944,15 @@ function loadSave(savestring) {
   var room_item_lists = saveArray[2].split("##");
   for (var room of rooms) {
     room.items = room_item_lists.shift().split(",");
+    var remove_nones = room.items.splice(); // Clone by value
+    for (var item of remove_nones) {
+      if (item == "None") {
+        room.items.splice(room.items.indexOf("None"),1);
+      }
+    }
   }
   
-  // Door and exit lockz
+  // Door and exit lock
   var door_locks = saveArray[3].split(",");
   for (var door of doors) {
     door.locked = door_locks.shift(); // Both removes and returns first element
@@ -1975,6 +1981,7 @@ function loadSave(savestring) {
     decryptComplete = false;
   }
   generalRefresh();
+  console.log("Save loaded!")
 }
 
 
