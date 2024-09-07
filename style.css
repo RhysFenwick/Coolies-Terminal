@@ -234,7 +234,7 @@ Scrollbar settings - don't work on Firefox :(
 
 #information-box {
   width: 90%;
-  height: 40%;
+  height: 50%;
 }
 
 #minimap-box {
@@ -242,7 +242,7 @@ Scrollbar settings - don't work on Firefox :(
   text-align: center;
   line-height: 140%;
   width: 90%;
-  height: 30%;
+  height: 25%;
 }
 
 #map-box {
@@ -270,8 +270,7 @@ Scrollbar settings - don't work on Firefox :(
 
 #energy-box {
   width: 90%;
-  height: 20%;
-  min-height: 20%;
+  height: 15%;
 }
 
 #messages-box {

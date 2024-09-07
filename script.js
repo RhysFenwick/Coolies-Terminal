@@ -224,9 +224,9 @@ function refreshInventory() {
 
 // A function to refresh the energy - should be called by generalRefresh() most of the time
 function refreshEnergy() {
-  energy_str = energy + "%\r\n\r\nCost per movement:\r\n10%";
+  energy_str = energy + "%\n(Cost per movement: 10%)";
   if (energy < 31) {
-    energy_str = "**LOW** " + energy + "% **LOW**" + "\r\n\r\nCost per movement:\r\n10%";
+    energy_str = "**LOW** " + energy + "% **LOW**" + "\n(Cost per movement: 10%)";
     newBoxText("energy",energy_str);
     appendToTerminal("Warning: Energy low. Discard items or recharge.")
   }
