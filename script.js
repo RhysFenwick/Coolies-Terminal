@@ -1111,6 +1111,9 @@ function parseInput(raw_input) {
 
     // The key instruction given - decides what happens next
     action = input_array[0];
+    
+    makeSave(); // Save every time something is input!
+    
     if (paralysed) {
       appendToTerminal("You cannot take this action right now.")
     }
@@ -1188,6 +1191,10 @@ function parseInput(raw_input) {
   
         case "return": // Prompted on reaching the outermost rooms
           return_to_base();
+        break;
+        
+        case "load": // Loads save!
+          loadSave(input_array[1]);
         break;
   
         default:
@@ -1914,10 +1921,36 @@ function loadSave(savestring) {
   current_room.id, inventory.join(","),room_items.join("##"),door_locks.join(","),site_switches,decryptComplete.toString()
   */
   current_room = getRoomFromID(saveArray[0]);
+  
   inventory = saveArray[1].split(",");
+  
   // Room inventory
-  // Door locks
-  // Site switches 
+  var room_item_lists = saveArray[2].split("##");
+  for (var room of rooms) {
+    room.items = room_item_lists.shift().split(",");
+  }
+  
+  // Door and exit lockz
+  var door_locks = saveArray[3].split(",");
+  for (var door of doors) {
+    door.locked = door_locks.shift(); // Both removes and returns first element
+  }
+  for (var exit of exits) {
+    exit.locked = door_locks.shift();
+  }
+  
+  // Site switches
+  var sitecounter = 0;
+  for (var site of sites) {
+    if (site.modality == 2) {
+      if (site.type == "dispenser") {
+        site.switched = parseInt(saveArray[4][sitecounter]);
+        sitecounter += 1;
+      }
+    }
+  }
+  
+  // Decryption 
   var saved_decrypt = saveArray[5];
   if (saved_decrypt === "true") {
     decryptComplete = true;
