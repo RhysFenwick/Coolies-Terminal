@@ -1425,7 +1425,12 @@ function moveRooms(input_array) {
     if (door != null) {
       // Checks if door is unlocked
       if (door.locked) {
-        appendToTerminal("The door to " + makeCap(queried_room) + " is locked. Enter 'unlock [room-name] [password] to unlock.");
+        if (door.keys.length = 0) {
+          appendToTerminal("The door to " + makeCap(queried_room) + " is locked. Enter 'unlock [room-name] [password] to unlock.");
+        }
+        else {
+          appendToTerminal("The door to " + makeCap(queried_room) + " is locked. Enter 'unlock [room-name] [password] to unlock, or use an item.");
+        }
       }
       else {
         // Checks energy
@@ -1480,6 +1485,7 @@ async function return_to_base() {
   }
   appendToTerminal("Return journey complete.")
   current_room = getRoomFromID("center");
+  energy = 100;
   appendToTerminal("You have recovered:")
   var temp_items = inventory.slice(); // Clone by value not reference - avoids issues with slicing list while iterating through it
   for (var i of temp_items) {
