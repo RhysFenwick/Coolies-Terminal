@@ -208,12 +208,15 @@ function refreshInventory() {
     var keyInv = [];
     var regInv = [];
     for (var i of inventory) { // Split out key items from regular items
+    if (getItemFromName(i).hasOwnProperty("key")) {
       if (getItemFromName(i).key) {
         keyInv.push("**" + i + "**");
       }
       else {
         regInv.push(i);
       }
+    }
+      
     }
 
     // Now rejoin them!
