@@ -368,14 +368,16 @@
             "post_title":"Ventilation Duct System - Unlocked",
 
             "pre_text":"Activate to unlock ventilation system",
-            "post_text":"Previous Temporary Access Window - Remote Login: 16:12 2043-04-16"
+            "post_text":"Previous Temporary Access Window - Remote Login: 16:12 2043-04-16",
+            "switched":0
           },
           {
             "pre_title":"Adjust Solar Array Orientation",
             "post_title":"Hydraulics Locked, Request Failed",
 
             "pre_text":"Solar Array Status: N/A",
-            "post_text":"Last Manual Override: 14:25 2043-04-16."
+            "post_text":"Last Manual Override: 14:25 2043-04-16.",
+            "switched":0
           }
         ],
         "broken":false,
@@ -397,14 +399,16 @@
             "post_title":"Catastrophic Equipment Failure - User Error",
 
             "pre_text":"Initiate Laser-induced Breakdown Spectroscopy on Geode #301",
-            "post_text":"INACCESSIBLE"
+            "post_text":"INACCESSIBLE",
+            "switched":0
           },
           {
             "pre_title":"Physics Lab - Sprinkler System",
             "post_title":"Physics Lab - Sprinkler System",
 
             "pre_text":"System Inactive",
-            "post_text":"System Activated"
+            "post_text":"System Activated",
+            "switched":0
           }
         ],
         "broken":false,
