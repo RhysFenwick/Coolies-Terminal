@@ -13,132 +13,132 @@
       {
         "id": "outside",
         "name": "outside",
-        "description": "blustery, with three doors.",
+        "description": "dark and unending.",
         "items": [],
         "inspected": false,
         "coords": [0,0],
-        "mapname": "OUTSD",
+        "mapname": "OUTSI",
         "passwords":["sesame"]
       },
       {
         "id": "north1",
-        "name": "botany",
-        "description": "dark and rainy.",
-        "items": [],
+        "name": "biology",
+        "description": "steamy with broken growth chambers, cramped and moist. a delight of broken glass.",
+        "items": ["pubs_paper","samplebox", "cctv_5","unmarked_tube"],
         "inspected": false,
         "coords": [3,0],
-        "mapname": "BOTNY",
-        "passwords":["sesame"]
+        "mapname": " BIO ",
+        "passwords":["gusismyk1ng230411"]
       },
       {
         "id": "north2",
-        "name": "engineering",
-        "description": "dark and rainy.",
-        "items": [],
+        "name": "anthropology",
+        "description": "crowded with dishevelled offices, soiled archives and upended meeting spaces.",
+        "items": ["email_3","art","smalldevice"],
         "inspected": false,
         "coords": [3,1],
-        "mapname": "ENGNR",
-        "passwords":["sesame2"]
+        "mapname": "ANTHR",
+        "passwords":["sunset3dom060709"]
       },
       {
         "id": "north3",
-        "name": "medical",
-        "description": "dark and rainy.",
-        "items": [],
+        "name": "geology",
+        "description": "dusty, with clouds of pulverized martian soil being kicked up into the air as foot meets bench and table. too many shapes to count, moving through the dust, it's nauseating.",
+        "items": ["email_1","poster","email_2","rock_tube"],
         "inspected": false,
         "coords": [3,2],
-        "mapname": "MEDIC",
-        "passwords":["sesame"]
+        "mapname": " GEO ",
+        "passwords":["marsrox110111"]
       },
       {
         "id": "center",
-        "name": "center",
-        "description": "cold and dimly lit. The wind is whistling under the door.",
-        "items": ["newspaper"],
+        "name": "habitation",
+        "description": "tense. Terror can be heard behind three of the four doors. The southern door is quiet, lightly damaged and looks like it would respond positively to force.",
+        "items": [],
         "inspected": false,
         "coords": [3,3],
-        "mapname": "CENTR",
+        "mapname": "HABIT",
         "passwords":["sesame"]
       },
       {
         "id": "south1",
-        "name": "engine",
-        "description": "dark and rainy.",
-        "items": [],
+        "name": "chiefsoffice",
+        "description": "flanked by three small offices and server rooms, vacant of sound or activity.",
+        "items": ["roster","email_4","ea_note","email_5","medical_cipher"],
         "inspected": false,
         "coords": [3,5],
-        "mapname": "ENGRM",
-        "passwords":["sesame"]
+        "mapname": "CHIEF",
+        "passwords":["angel4eva311003"]
       },
       {
         "id": "south2",
-        "name": "reactor",
-        "description": "dark and rainy.",
-        "items": [],
+        "name": "infrastructure",
+        "description": "the beating heart of angel, untouched by carnage but bathed in an ominous, pulsing, red light.",
+        "items": ["stickynote_3","data_blackout","stickynote_4","bear"],
         "inspected": false,
         "coords": [3,4],
-        "mapname": "REACT",
-        "passwords":["sesame"]
+        "mapname": "INFRA",
+        "passwords":["password120293"]
       },
       {
         "id": "east1",
-        "name": "cupola",
-        "description": "dark and rainy.",
-        "items": ["note"],
+        "name": "personnelsecurity",
+        "description": "concerningly empty of supply and prisoners, inspiring a sense of dread about who plundered the unused batons and padding.",
+        "items": ["cctv_3","idcard","report_63","cctv_4","clipboard"],
         "inspected": false,
         "coords": [6,3],
-        "mapname": "CUPLA",
-        "passwords":["sesame"]
+        "mapname": "PERSC",
+        "passwords":["biggov4u090599"]
       },
       {
         "id": "east2",
-        "name": "decontamination",
-        "description": "dark and rainy.",
-        "items": [],
+        "name": "psychology",
+        "description": "abound with vigourous physical discussion and an exploration of violent catharsis.",
+        "items": ["dossier_2","stickynote_1","cctv_2","stickynote_2","memo_note","mask"],
         "inspected": false,
         "coords": [5,3],
-        "mapname": "DECON",
-        "passwords":["sesame"]
+        "mapname": "PSYCH",
+        "passwords":["v1lla1day270910"]
       },
       {
         "id": "east3",
-        "name": "navigation",
-        "description": "dark and rainy.",
-        "items": [],
+        "name": "medical",
+        "description": "much more spacious now that the windows have been smashed and the doors taken off their hinges.",
+        "items": ["dossier_1","plasticbag","tablet_form","code_reference","fridge_form"],
         "inspected": false,
         "coords": [4,3],
-        "mapname": "NAVIG",
-        "passwords":["sesame"]
+        "mapname": "MEDIC",
+        "passwords":["dollar2me120894"]
       },
       {
         "id": "west1",
-        "name": "laboratory",
-        "description": "dark and rainy.",
-        "items": [],
+        "name": "communications",
+        "description": "a velvet nightmare of silhouttes. just enough light to know you're not alone amongst the legions of blackened monitors.",
+        "items": ["comms_intercept","report_70", "email_6","fez"],
         "inspected": false,
         "coords": [0,3],
-        "mapname": " LAB ",
-        "passwords":["sesame"]
+        "mapname": "COMMS",
+        "passwords":["401k&down300613"]
       },
       {
         "id": "west2",
-        "name": "communications",
-        "description": "dark and rainy.",
-        "items": [],
+        "name": "physics",
+        "description": "thankfully without power. The equipment would be substantially more dangerous if not just being used to bludgeon.",
+        "items": ["keyboard_note","report_solar","empty_box","hourglass"],
         "inspected": false,
         "coords": [1,3],
-        "mapname": "COMMS",
-        "passwords":["sesame"]
+        "mapname": "PHYS ",
+        "passwords":["h0peurhappy011220"]
       },
       {
         "id": "west3",
-        "name": "telescope",
-        "description": "dark and rainy.",
-        "items": [],
+        "name": "aeronautics",
+        "description": "filled with the shapes of engines torn apart, spilled wires. Dim light plays tricks on the mind. It's metal and not meat.",
+        "items": ["contraband_box","ad_note","cctv_1","cctv_6"],
         "inspected": false,
         "coords": [2,3],
-        "mapname": "TLSCP",
-        "passwords":["sesame"]
+        "mapname": "AERO ",
+        "passwords":["5in&6out190808"]
       }
     ],
     
@@ -150,15 +150,85 @@
     "logins": [
       {
         "uid":"admin",
-        "password": "password",
+        "password": "mysterysesame",
         "name": "Administrator",
         "priv": 10,
-        "notes": "Study password is 314159"
+        "notes": "None"
       },
       {
-        "uid":"cg24",
-        "password": "mystery",
-        "name": "Coolies Gourlay",
+        "uid":"chief",
+        "password": "angel4eva311003",
+        "name": "Station Chief",
+        "priv": 1,
+        "notes": "None"
+      },
+	  {
+        "uid":"infrastructure",
+        "password": "password120293",
+        "name": "Infrastructure",
+        "priv": 1,
+        "notes": "TRACKER ALERT: IDENTIFICATION FOUND IN HABITATION MODULE"
+      },
+      {
+        "uid":"aeronautics",
+        "password": "5in&6out190808",
+        "name": "Aeronautics",
+        "priv": 1,
+        "notes": "None"
+      },
+	  {
+        "uid":"physics",
+        "password": "h0peurhappy011220",
+        "name": "Physics",
+        "priv": 1,
+        "notes": "UNAUTHORIZED BEHAVIOUR DETECTED, AUTHORITIES HAVE BEEN NOTIFIED"
+      },
+      {
+        "uid":"perssec",
+        "password": "biggov4u090599",
+        "name": "Personnel Security",
+        "priv": 1,
+        "notes": "None"
+      },
+	  {
+        "uid":"medical",
+        "password": "dollar2me120894",
+        "name": "Medical",
+        "priv": 1,
+        "notes": "None"
+      },
+      {
+        "uid":"psychology",
+        "password": "v1lla1day270910",
+        "name": "Psychology",
+        "priv": 1,
+        "notes": "None"
+      },
+	  {
+        "uid":"anthropology",
+        "password": "sunset3dom060709",
+        "name": "Anthropology",
+        "priv": 1,
+        "notes": "None"
+      },
+      {
+        "uid":"geology",
+        "password": "marsrox110111",
+        "name": "Geology",
+        "priv": 1,
+        "notes": "None"
+      },
+	  {
+        "uid":"comms",
+        "password": "401k&down300613",
+        "name": "Communications",
+        "priv": 1,
+        "notes": "None"
+      },
+	  {
+        "uid":"biology",
+        "password": "gusismyk1ng230411",
+        "name": "Biology",
         "priv": 1,
         "notes": "None"
       }
@@ -185,7 +255,7 @@
         "side": [0,-1],
         "locked": true
       },
-      {
+	   {
         "room": "center",
         "side": [0,-1],
         "locked": false
@@ -216,18 +286,10 @@
         "open": false
       },
       {
-        "room1": "north3",
-        "room2": "center",
-        "locked": true,
-        "keys": [],
-        "uids":[],
-        "open": false
-      },
-      {
         "room1": "south2",
         "room2": "center",
         "locked": true,
-        "keys": ["secretkey"],
+        "keys": ["breachingcharge"],
         "uids":[],
         "open": false
       },
@@ -250,22 +312,6 @@
       {
         "room1": "east2",
         "room2": "east3",
-        "locked": true,
-        "keys": [],
-        "uids":[],
-        "open": false
-      },
-      {
-        "room1": "east3",
-        "room2": "center",
-        "locked": true,
-        "keys": [],
-        "uids":[],
-        "open": false
-      },
-      {
-        "room1": "west3",
-        "room2": "center",
         "locked": true,
         "keys": [],
         "uids":[],
@@ -301,10 +347,10 @@
 
     "sites": [
       {
-        "room":"north1",
+        "room":"north3",
         "modality": 3,
         "broken":false,
-        "locked":true,
+        "locked":false,
         "combo": [
           1,1,1,1,
           0,0,1,0,
@@ -318,22 +364,47 @@
         "type": "dispenser",
         "actions": [
           {
-            "pre_title":"Action 1",
-            "post_title":"Action 1 Complete",
+            "pre_title":"Ventilation Duct System - Locked",
+            "post_title":"Ventilation Duct System - Unlocked",
 
-            "pre_text":"Press for item",
-            "post_text":"Item acquired!",
-
-            "switched":0
+            "pre_text":"Activate to unlock ventilation system",
+            "post_text":"Previous Temporary Access Window - Remote Login: 16:12 2043-04-16"
           },
           {
-            "pre_title":"Run Maintenance",
-            "post_title":"Maintenance Complete",
+            "pre_title":"Adjust Solar Array Orientation",
+            "post_title":"Hydraulics Locked, Request Failed",
 
-            "pre_text":"Last cycle: N/A",
-            "post_text":"Last cycle: 178 days 18 hours 4 minutes.",
+            "pre_text":"Solar Array Status: N/A",
+            "post_text":"Last Manual Override: 14:25 2043-04-16."
+          }
+        ],
+        "broken":false,
+        "locked":false,
+        "combo": [
+          0,1,0,0,
+          0,1,1,0,
+          0,1,0,0,
+          1,1,1,1
+        ]
+      },
+	  {
+        "room":"west2",
+        "modality": 2,
+        "type": "dispenser",
+        "actions": [
+          {
+            "pre_title":"Analysis of Geode Material - Incomplete",
+            "post_title":"Catastrophic Equipment Failure - User Error",
 
-            "switched":0
+            "pre_text":"Initiate Laser-induced Breakdown Spectroscopy on Geode #301",
+            "post_text":"INACCESSIBLE"
+          },
+          {
+            "pre_title":"Physics Lab - Sprinkler System",
+            "post_title":"Physics Lab - Sprinkler System",
+
+            "pre_text":"System Inactive",
+            "post_text":"System Activated"
           }
         ],
         "broken":false,
@@ -346,53 +417,36 @@
         ]
       },
       {
-        "room":"north2",
-        "modality": 2,
-        "type": "dispenser",
-        "actions": [
-          {
-            "pre_title":"Action 3",
-            "post_title":"Action 3 Complete",
-
-            "pre_text":"Press for item",
-            "post_text":"Item acquired!",
-
-            "switched":0
-          },
-          {
-            "pre_title":"Run Maintenance",
-            "post_title":"Maintenance Complete",
-
-            "pre_text":"Last cycle: N/A",
-            "post_text":"Last cycle: 178 days 18 hours 4 minutes.",
-
-            "switched":0
-          }
-        ],
-        "broken":false,
-        "locked":true,
-        "combo": [
-          0,1,0,0,
-          0,1,1,0,
-          0,1,0,0,
-          1,1,1,1
-        ]
-      },
-      {
-        "room":"north3",
+        "room":"east3",
         "modality": 1,
         "real_files": [
           {
-            "batch_number":"001122",
-            "file_contents":"Temperature (C): 35.23\nGrowth Rate (/day): 107\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 40.87\npH: -3.5\nPhotosensitivity: Present\nNotes: Initial testing was promising. Subject developed unremarkably. Subject was given 600mg of subcutaneous aldosterone."
+            "batch_number":"649357",
+            "file_contents":"Temperature (C): 34.23\nGrowth Rate (/day): 109\nEnzyme p766: Medium\nElectropotential (mV/cm^2): 140.43\npH: -3.5\nSample Colour: Green\nNotes: Viral pathogen #1. Origin: Mars surface samples. Known to affect human physiology through CNS stimulation, hormone re-balance, severe neurological impairment. Observation: Induces rage, violent behaviour, suppresses social interaction, mild self-preservation behaviour, extreme core temp elevation, skin lesions. Anticipated: Extremely limited aerosol half-life, primary transmission vector infected blood, saliva contact. Clinical trials in human subjects are strictly prohibited and likely lethal to subject. "
+          },
+		  {
+            "batch_number":"101012",
+            "file_contents":"Temperature (C): 35.23\nGrowth Rate (/day): 107\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 40.87\npH: -3.5\nSample Colour: Purple\nNotes: Experimental Sedative. Potent formulation to suppress CNS, suppress cognition and administer melatonin with minimal direct negative health outcomes. Sedative is efficacious in animal trials via intravenous injection and aerosol exposure. Sedative effect is observable within seconds of exposure. This formulation is more effective than any other comparable formulation, including samples compared from [REDACTED] and [REDACTED] archives. Clinical trials on human subjects have been indefinitely delayed after discussion with Office of the Station Chief."
+          },
+		  {
+            "batch_number":"175965",
+            "file_contents":"Temperature (C): 35.23\nGrowth Rate (/day): 107\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 40.87\npH: -3.5\nSample Colour: Transparent with red particles\nNotes: Experimental Baby Powder. Talc replaced with basaltic andesite, most common rock found on the Martian surface, with hybridised chrysotile (asbestos) compound for thermal tolerance. Animal trials have shown minimal moisture decrease after administering powder on skin. Re-formulation recommended."
+          },
+		  {
+            "batch_number":"236172",
+            "file_contents":"Temperature (C): 35.23\nGrowth Rate (/day): 107\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 40.87\npH: -3.5\nSample Colour: Blue\nNotes: Experimental Immunity Booster. Developed in conjunction with analysis of [REDACTED] #1, Immunity Booster has shown some significant impact in reducing transmission between an infected and non-infected animal subject. Primarily, immune response is enhanced in observations of non-infected subject exposure to aerosolised virus particles. Nil efficacy observed against Earth-origin pathogens. Adverse amnestic (memory loss) side-effects apparent."
+          },
+		  {
+            "batch_number":"449308",
+            "file_contents":"Temperature (C): 35.23\nGrowth Rate (/day): 107\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 40.87\npH: -3.5\nSample Colour: Yellow\nNotes: Psychotropic formulation #3. Mood stabilizer for advanced human trials. Animal trials demonstrate desired neurological impact. Observation: Improved mood stability, higher performance on cognitive tests, increased pro-social behaviour. Clinical trials in human subjects are underway."
           },
           {
-            "batch_number":"123456",
-            "file_contents":"Temperature (C): 35.23\nGrowth Rate (/day): 107\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 40.87\npH: -3.5\nPhotosensitivity: Present\nNotes: Initial testing was promising. Subject developed unremarkably. Subject was given 500mg of subcutaneous aldosterone."
+            "batch_number":"231875",
+            "file_contents":"Temperature (C): 35.23\nGrowth Rate (/day): 107\nEnzyme p755: Medium\nElectropotential (mV/cm^2): 40.87\npH: -3.5\nSample Colour: Pink\nNotes: Multi-vitamin injection. Designed to minimise malnutrition and trace element imbalance as a result of limited dietary variety. Demonstrated increase in absorption of essential nutrients and minerals from food compared to control. Conditional approval for deployment amongst ANGEL staff via wellbeing program."
           }
         ],
         "broken":false,
-        "locked":true,
+        "locked":false,
         "combo": [
           1,0,0,0,
           1,0,0,0,
@@ -401,20 +455,20 @@
         ]
       },
       {
-        "room":"east3",
+        "room":"west3",
         "modality": 2,
         "type": "airlock",
         "actions": [
           {
-            "pre_title":"Airlock [Closed]",
-            "post_title":"Airlock [Open].",
+            "pre_title":"Sunset City Export Cart [Unloaded]",
+            "post_title":"Sunset City Export Cart [Loaded].",
 
-            "pre_text":"WARNING: Unsecured items may be lost.",
-            "post_text":"Airlock activated."
+            "pre_text":"WARNING: Unsecured items will be removed.",
+            "post_text":"Items extracted, vendor contacted."
           }
         ],
         "broken":false,
-        "locked":true,
+        "locked":false,
         "combo": [
           1,1,1,0,
           1,0,0,0,
@@ -438,18 +492,64 @@
       {"name":"note", "description":"It reads 'To do: change the admin login away from the default.'","weight":1,"key":false},
       {"name":"paperweight", "description":"A pyramid of smoked quartz the size of a fist.","weight":1,"key":false},
       {"name":"diary", "description":"It's written in a language you don't recognise - perhaps some sort of cipher.","weight":1,"key":false},
-      {"name":"a", "description":"Filler item for testing.","weight":1,"key":false},
-      {"name":"b", "description":"Filler item for testing.","weight":1,"key":false},
-      {"name":"c", "description":"Filler item for testing.","weight":1,"key":false},
-      {"name":"d", "description":"Filler item for testing.","weight":1,"key":false},
-      {"name":"e", "description":"Filler item for testing.","weight":1,"key":false},
+      {"name":"rock_tube", "description":"A tube filled with samples of rock material. Could be valuable.","weight":1,"key":false},
+      {"name":"unmarked_tube", "description":"An unmarked tube, filled with an unknown liquid. Could be valuable.","weight":1,"key":false},
+      {"name":"hourglass", "description":"An ornate hourglass filled with black sand from Martian surface. Could be valuable.","weight":1,"key":false},
+      {"name":"fez", "description":"An antique red fez. Could be valuable.","weight":1,"key":false},
+      {"name":"mask", "description":"Filler item for testing.","weight":1,"key":false},
       {"name":"f", "description":"Filler item for testing.","weight":1,"key":false},
       {"name":"g", "description":"Filler item for testing.","weight":1,"key":false},
       {"name":"h", "description":"Filler item for testing.","weight":1,"key":false},
-      {"name":"i", "description":"Filler item for testing.","weight":1,"key":false},
-      {"name":"speedboost", "description":"Reduces return time to 1 minute.","weight":0,"key":true},
+      {"name":"i", "description":"Filler item for testing.","weight":0,"key":false},
+	  {"name":"email_1", "description":"a data cassette. contains correspondence.","weight":0,"key":false},
+	  {"name":"poster", "description":"one of a few similar posters taped to the wall of an office in geology","weight":0,"key":false},
+	  {"name":"email_2", "description":"a data cassette. contains correspondence, flagged high priority.","weight":0,"key":false},
+	  {"name":"email_3", "description":"a data cassette. contains correspondence.","weight":0,"key":false},
+	  {"name":"art", "description":"snapshots of wall art in the office","weight":0,"key":false},
+	  {"name":"smalldevice", "description":"a small, partially burnt, digital stick.","weight":0,"key":false},
+	  {"name":"pubs_paper", "description":"a pile of papers listing academic references.","weight":0,"key":false},
+	  {"name":"samplebox", "description":"A small cardboard container, no larger than a tissue box, sits open. Inside are 4 plastic tubes, filled with coloured liquid","weight":0,"key":false},
+	  {"name":"contraband_box", "description":"A cargo container sits on the floor of the drone dock in the Aeronautics Bay with lid half-cocked open","weight":0,"key":false},
+	  {"name":"ad_note", "description":"advertisement for a superbike with text on back","weight":0,"key":false},
+	  {"name":"cctv_1", "description":"A data cassette containing video files from the Aeronautics Bay hallway security camera","weight":0,"key":false},
+	  {"name":"keyboard_note", "description":"A slip of paper can be seen sticking out from beneath the Terminal in the Physics Office.","weight":0,"key":false},
+	  {"name":"report_solar", "description":"a data cassette. contains correspondence about a solar event.","weight":0,"key":false},
+	  {"name":"empty_box", "description":"A cargo container with lid half-cocked open sits under a synthread sheet on the floor of the server room in the Physics Lab","weight":0,"key":false},
+	  {"name":"comms_intercept", "description":"a data cassette. contains an intercepted communication.","weight":0,"key":false},
+	  {"name":"dossier_1", "description":"a slip of paper conspicuously hanging out of a manilla envelope in the logistics drawer","weight":0,"key":false},
+	  {"name":"report_70", "description":"a data cassette. some reports filed by perssec","weight":0,"key":false},
+	  {"name":"plasticbag", "description":"A strip of blue plastic is visible, sticking out of the hinge on the sensitive materials disposal chute.","weight":0,"key":false},
+	  {"name":"tablet_form", "description":"a snapshot of an incomplete maintenance form, visible on a digital tablet","weight":0,"key":false},
+	  {"name":"code_reference", "description":"A sheet of paper with a series of colours. It is sticky-taped down on the surface of a lab bench.","weight":0,"key":false},
+	  {"name":"fridge_form", "description":"an inventory list from within the quarantine freezer.","weight":0,"key":false},
+	  {"name":"dossier_2", "description":"a dossier containing notes on station staff.","weight":0,"key":false},
+	  {"name":"stickynote_1", "description":"a sticky note on the psych corkboard.","weight":0,"key":false},
+	  {"name":"cctv_2", "description":"A data cassette containing video files from the Maintenance Hallway in Wing B security camera","weight":0,"key":false},
+	  {"name":"stickynote_2", "description":"a sticky note inconspicuously tucked behind a pile of data cassettes.","weight":0,"key":false},
+	  {"name":"memo_note", "description":"an embossed memo card taped underneath a desk in the psych office.","weight":0,"key":false},
+	  {"name":"cctv_3", "description":"A data cassette containing video files from the Communications Suite hallway security camera","weight":0,"key":false},
+	  {"name":"idcard", "description":"an identification card.","weight":0,"key":false},
+	  {"name":"report_63", "description":"a data cassette. some reports filed by perssec","weight":0,"key":false},
+	  {"name":"cctv_4", "description":"A data cassette containing video files from the Habitation Module freezer unit security camera","weight":0,"key":false},
+	  {"name":"clipboard", "description":"a clipboard attached to PersSec Rehabilitation Suite","weight":0,"key":false},
+	  {"name":"stickynote_3", "description":"sticky note on 'wing A' electronics switchboard","weight":0,"key":false},
+	  {"name":"data_blackout", "description":"a data cassette. contains logs from shortly before the incident.","weight":0,"key":false},
+	  {"name":"stickynote_4", "description":"a declined purchase order with a sticky note attached","weight":0,"key":false},
+	  {"name":"roster", "description":"a roster taped to the wall","weight":0,"key":false},
+	  {"name":"email_4", "description":"a data cassette. contains correspondence.","weight":0,"key":false},
+	  {"name":"ea_note", "description":"notes from the executive assistant, for the station chief to read.","weight":0,"key":false},
+	  {"name":"email_5", "description":"an email, printed. found in the drawer of the station chief.","weight":0,"key":false},
+	  {"name":"medical_cipher", "description":"paper with a colourful diagram, looks out of place.","weight":0,"key":false},
+	  {"name":"cctv_5", "description":"A data cassette containing video files from Biology Hallway A.","weight":0,"key":false},
+	  {"name":"cctv_6", "description":"A data cassette containing video files from Personnel Security. Somehow ended up here in all the chaos.","weight":0,"key":false},
+	  {"name":"cylinder", "description":"A suspicious cylinder. Looks to contain an aerosol.","weight":0,"key":false},
+	  {"name":"email_6", "description":"a data cassette. contains correspondence from the office of the station chief. Somehow ended up here in all the chaos ","weight":0,"key":false},
+	  {"name":"placeholder_2", "description":"a data cassette. contains correspondence.","weight":0,"key":false},
+	  {"name":"placeholder_3", "description":"a data cassette. contains correspondence.","weight":0,"key":false},
+      {"name":"upgradecircuit", "description":"Reduces return time to 1 minute.","weight":0,"key":true},
       {"name":"actionitem","description":"You get this item after flicking a switch in Engineering.","weight":0,"key":true},
-      {"name":"secretkey","description":"Opens the door to South 2 from Center.","weight":0,"key":true}
+      {"name":"breachingcharge","description":"Can be used to open a locked door.","weight":0,"key":true}
+	  
 
     ],
 
@@ -457,7 +557,7 @@
       "Just have to match the item names above and not be repeated in rooms/action_items/decrypt_items etc."
     ],
     
-    "starting_inventory":["a","b","c","d","e","speedboost","secretkey"],
+    "starting_inventory":[],
 
     "return-time-variables-notes-for-connor":[
       "The per-weight time is how much extra time is added each unit of weight, in seconds - e.g. if it's 30, an item of weight 2 will extend return by a minute",
@@ -466,9 +566,9 @@
       "speed_item is 'the (key) item that speeds up transit.'"
     ],
 
-    "return_time_per_weight":30,
-    "return_time_baseline":300,
-    "speed_item":"speedboost",
+    "return_time_per_weight":60,
+    "return_time_baseline":30,
+    "speed_item":"upgradecircuit",
 
 
     "action-item-notes-for-connor":[
@@ -478,14 +578,14 @@
 
     "action_items":[
       {
-        "name":"actionitem",
-        "room":"north3",
-        "trigger_room":"north3"
+        "name":"cylinder",
+        "room":"north1",
+		"trigger_room":"south2"
       },
       {
-        "name":"h",
-        "room":"east3",
-        "trigger_room":"north3"
+        "name":"cylinder",
+        "room":"center",
+		"trigger_room": "south2"
       }
     ],
 
@@ -495,12 +595,12 @@
 
     "decrypt_items":[
       {
-        "item":"g",
-        "room":"north1"
+        "item":"upgradecircuit",
+        "room":"south2"
       },
       {
-        "item":"i",
-        "room":"east2"
+        "item":"breachingcharge",
+        "room":"north3"
       }
 
     ],
@@ -514,10 +614,10 @@
     "decryption_variables": {
       "predecryptTitle":"Contents Encrypted",
       "postdecryptTitle":"Contents Decrypted",
-      "predecryptText":"This site computer is encrypted with an AES-4096 isomorphic algorithm. Decryption will take approximately 600 seconds.\nPress Enter to proceed.",
-      "postdecryptText":"We've been trying to reach you about your space station's extended warranty.",
+      "predecryptText":"This site computer is encrypted with an AES-4096 isomorphic algorithm. Decryption will take approximately 200 seconds.\nPress Enter to proceed.",
+      "postdecryptText":"Authorisation for Drone Upgrade: Granted. Last known location: Infrastructure; Geology Explosives Storage: Unlocked",
 
-      "approx_decrypt_time_in_seconds":20
+      "approx_decrypt_time_in_seconds":18
     },
 
     "help-tips-notes-for-connor":[
@@ -530,7 +630,7 @@
       "inspect":"Syntax: inspect [room|object]. Can be used to get more information about your current room, or a description of an object in your inventory or in the current room.",
       "login":"Syntax: login [username] [password]. Different logins have different permissions, and potentially accesss to different information.",
       "move":"Syntax: move [room]. Use to move to an adjacent room with an unlocked door. Requires energy; the more items in your inventory, the more energy it takes.",
-      "recharge":"Syntax: recharge [amount]. Recharges power by that amount or to 100%, whichever is lower. Must be a whole number.",
+      "return":"Drone will automatically return to the Habitation module, with all items onboard, for recharge. Heavy items will increase the time to return.",
       "take":"Syntax: take [object]. Moves an object from the current room to your inventory.",
       "unlock":"Syntax: unlock [room] [password]. Unlocks a locked door accessible from your current room."
     },
