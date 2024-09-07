@@ -1475,11 +1475,11 @@ async function return_to_base() {
   current_room = getRoomFromID("outside");
   appendToTerminal("Exiting airlock.")
   appendToTerminal("Return journey commencing...")
-  timing = 100 * (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline) // 1/10th of total time
+  timing = Math.max(100 * (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline),6000) // 1/10th of total time
   if (inventory.includes(rooms_json.speed_item)) {
     timing = 6000 // Speeds up to a minute
   }
-  for (i=10;i>0;i--) { // Will have a marker every 1/10th of the time
+  for (var i=10;i>0;i--) { // Will have a marker every 1/10th of the time
     appendToTerminal(i*(timing/1000) + " seconds remaining...")
     await delay(timing); 
   }
@@ -1845,14 +1845,20 @@ async function updateActions(typeName) {
       
       // Dumps solid items!
       var temp_inv = inventory.slice(); // Clone by value
+      console.log(inventory)
+      var items_to_remove = [];
       for (var i of temp_inv) {
-        item = getItemFromName(i);
+        var item = getItemFromName(i);
         if (item.weight > 0 && !item.key) {
-          inventory.splice(inventory.indexOf(item),1);
+          items_to_remove.push(inventory.indexOf(item.name));
           editTextByID("airlock-action-0-status",(makeCap(item.name) + " has been ejected."));
           await delay(1000);
           weight -= item.weight;
         }
+      }
+      console.log(items_to_remove)
+      for (var index of items_to_remove.reverse()) { // Reverse to maintain correct indexes
+        inventory.splice(index, 1);
       }
       toggleDiv(document.getElementById("airlock-action-0-button"));
       dumping = false;
