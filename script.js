@@ -1861,6 +1861,73 @@ function updateActionText(typeName,actionNum,state) {
   editTextByID(titleLoc,current_site.actions[actionNum][varTitleName]);
 }
 
+// Function that creates and posts a save string to console
+function makeSave() {
+  var door_locks = [];
+  for (var door of doors) {
+    if (door.locked) {
+      door_locks.append("0");
+    }
+    else {
+      door_locks.append("1");
+    }
+  }
+  
+  for (var exit of exits) {
+    if (exit.locked) {
+      door_locks.append("0");
+    }
+    else {
+      door_locks.append("1");
+    }
+  }
+  
+  var room_items = [];
+  
+  for (var room of rooms) {
+    var one_room_items = [];
+    for (var item of room.items) {
+      one_room_items.append(item);
+    }
+    room_items.append(one_room_items.join(","));
+  }
+  
+  var site_switches = "";
+  for (var site of sites) {
+    if (site.modality == 2) {
+      if (site.type == "dispenser") {
+        site_switches = site_switches + site.switched.toString();
+      }
+    }
+  }
+  
+  var saveElements = [current_room.id, inventory.join(","),room_items.join("##"),door_locks.join(","),site_switches,decryptComplete.toString()] // Elements as strings
+  var savestr = saveElements.join("!!");
+  console.log(savestr);
+}
+
+// Trickier one - when called, loads save from savestring
+function loadSave(savestring) {
+  var saveArray = savestring.split("!!");
+  /*
+  In order:
+  current_room.id, inventory.join(","),room_items.join("##"),door_locks.join(","),site_switches,decryptComplete.toString()
+  */
+  current_room = getRoomFromID(saveArray[0]);
+  inventory = saveArray[1].split(",");
+  // Room inventory
+  // Door locks
+  // Site switches 
+  var saved_decrypt = saveArray[5];
+  if (saved_decrypt === "true") {
+    decryptComplete = true;
+  }
+  else {
+    decryptComplete = false;
+  }
+  generalRefresh();
+}
+
 
 
 // Fetching rooms has to be asynchronous as it involves fetching the JSON file. Can call non-async functions as needed.
