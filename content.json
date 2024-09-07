@@ -424,7 +424,7 @@
       "Just have to match the item names above and not be repeated in rooms/action_items/decrypt_items etc."
     ],
     
-    "starting_inventory":["a","b","c","d","e","speedboost"],
+    "starting_inventory":["a","b","c","d","e","speedboost","secretkey"],
 
     "return-time-variables-notes-for-connor":[
       "The per-weight time is how much extra time is added each unit of weight, in seconds - e.g. if it's 30, an item of weight 2 will extend return by a minute",

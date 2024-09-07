@@ -224,9 +224,9 @@ function refreshInventory() {
 
 // A function to refresh the energy - should be called by generalRefresh() most of the time
 function refreshEnergy() {
-  energy_str = energy + "%\r\n\r\nCost per movement:\r\n15%";
+  energy_str = energy + "%\r\n\r\nCost per movement:\r\n10%";
   if (energy < 31) {
-    energy_str = "**LOW** " + energy + "% **LOW**" + "\r\n\r\nCost per movement:\r\n15%";
+    energy_str = "**LOW** " + energy + "% **LOW**" + "\r\n\r\nCost per movement:\r\n10%";
     newBoxText("energy",energy_str);
     appendToTerminal("Warning: Energy low. Discard items or recharge.")
   }
@@ -1391,8 +1391,8 @@ function unlock(input_array) {
         refreshMap();
       }
       else { // Wrong password
-        if (getRoomFromName(queried_room).keys.length > 0) { // Wrong password + at least one key exists
-          if (getRoomFromName(queried_room).keys.includes(password) && inventory.includes(password)) { // Correct key and in inventory
+        if (door.keys.length > 0) { // Wrong password + at least one key exists
+          if (door.keys.includes(password) && inventory.includes(password)) { // Correct key and in inventory
             inventory.splice(inventory.indexOf(password),1); // Remove key from inventory
             door.locked = false;
             appendToTerminal("Door unlocked using " + password + ".");
@@ -1446,7 +1446,7 @@ function moveRooms(input_array) {
             // Moves current room
             current_room = getRoomFromName(queried_room);
             appendToTerminal("You've moved to " + makeCap(queried_room) + ".")
-            energy -= (15)
+            energy -= (10)
             wipeKeypad();
             generalRefresh();
           }
@@ -1896,6 +1896,9 @@ function makeSave() {
     for (var item of room.items) {
       one_room_items.push(item);
     }
+    if (one_room_items.length == 0) {
+      one_room_items = ["None"];
+    }
     room_items.push(one_room_items.join(","));
   }
   
@@ -1903,7 +1906,7 @@ function makeSave() {
   for (var site of sites) {
     if (site.modality == 2) {
       if (site.type == "dispenser") {
-        site_switches = site_switches + site.switched.toString();
+        site_switches = site_switches + site.actions[0].switched.toString();
       }
     }
   }
@@ -1944,7 +1947,7 @@ function loadSave(savestring) {
   for (var site of sites) {
     if (site.modality == 2) {
       if (site.type == "dispenser") {
-        site.switched = parseInt(saveArray[4][sitecounter]);
+        site.actions[0].switched = parseInt(saveArray[4][sitecounter]);
         sitecounter += 1;
       }
     }
