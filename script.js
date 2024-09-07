@@ -1394,7 +1394,7 @@ function unlock(input_array) {
         refreshMap();
       }
       else { // Wrong password
-        if (door.keys.length > 0) { // Wrong password + at least one key exists
+        if (door.hasOwnProperty("keys")) { // Wrong password + at least one key exists
           if (door.keys.includes(password) && inventory.includes(password)) { // Correct key and in inventory
             inventory.splice(inventory.indexOf(password),1); // Remove key from inventory
             door.locked = false;
