@@ -337,6 +337,39 @@
           }
         ],
         "broken":false,
+        "locked":false,
+        "combo": [
+          0,1,0,0,
+          0,1,1,0,
+          0,1,0,0,
+          1,1,1,1
+        ]
+      },
+      {
+        "room":"north2",
+        "modality": 2,
+        "type": "dispenser",
+        "actions": [
+          {
+            "pre_title":"Action 3",
+            "post_title":"Action 3 Complete",
+
+            "pre_text":"Press for item",
+            "post_text":"Item acquired!",
+
+            "switched":0
+          },
+          {
+            "pre_title":"Run Maintenance",
+            "post_title":"Maintenance Complete",
+
+            "pre_text":"Last cycle: N/A",
+            "post_text":"Last cycle: 178 days 18 hours 4 minutes.",
+
+            "switched":0
+          }
+        ],
+        "broken":false,
         "locked":true,
         "combo": [
           0,1,0,0,
@@ -484,7 +517,7 @@
       "predecryptText":"This site computer is encrypted with an AES-4096 isomorphic algorithm. Decryption will take approximately 600 seconds.\nPress Enter to proceed.",
       "postdecryptText":"We've been trying to reach you about your space station's extended warranty.",
 
-      "approx_decrypt_time_in_seconds":60
+      "approx_decrypt_time_in_seconds":20
     },
 
     "help-tips-notes-for-connor":[

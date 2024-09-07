@@ -886,7 +886,7 @@ document.addEventListener("keydown", function(event) { // keypress doesn't pick 
             case " ": // Fall-through: triggers on both Space and Enter
             case "Enter":
               toggleDiv(actionOptions[focusAction]); // Toggles visual of the button on/off
-              current_site.actions[focusAction] = (current_site.actions[focusAction] + 1)%2; // Toggles it between 0 and 1
+              current_site.actions[focusAction].switched = (current_site.actions[focusAction].switched + 1)%2; // Toggles it between 0 and 1
               updateActions("dispenser");
             break;
         }
@@ -1809,8 +1809,9 @@ async function decrypt() {
 
   await delay(3000) // Some time to admire the handiwork
   decryptComplete = true; // Mark the decryption done!
-  for (var item in rooms_json.decrypt_items) { // Drop decrypt_items as needed
-    getRoomFromID(item.room).inventory.push(item.name);
+  for (var item of rooms_json.decrypt_items) { // Drop decrypt_items as needed
+    getRoomFromID(item.room).items.push(item.item);
+    console.log(getRoomFromID(item.room).items);
   }
 
   d_screen.style.display = "none"; // Hides the decryption screen
