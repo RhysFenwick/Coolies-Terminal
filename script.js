@@ -1873,19 +1873,19 @@ function makeSave() {
   var door_locks = [];
   for (var door of doors) {
     if (door.locked) {
-      door_locks.append("0");
+      door_locks.push("0");
     }
     else {
-      door_locks.append("1");
+      door_locks.push("1");
     }
   }
   
   for (var exit of exits) {
     if (exit.locked) {
-      door_locks.append("0");
+      door_locks.push("0");
     }
     else {
-      door_locks.append("1");
+      door_locks.push("1");
     }
   }
   
@@ -1894,9 +1894,9 @@ function makeSave() {
   for (var room of rooms) {
     var one_room_items = [];
     for (var item of room.items) {
-      one_room_items.append(item);
+      one_room_items.push(item);
     }
-    room_items.append(one_room_items.join(","));
+    room_items.push(one_room_items.join(","));
   }
   
   var site_switches = "";
