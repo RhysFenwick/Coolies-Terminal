@@ -18,7 +18,7 @@ var keypad = new Array(padsize**2).fill(0)
 var inventory = []; // Item names only
 var terminal_title;
 var start_string;
-var weight = 0; // Movement cost when nothing in inventory
+var weight = 1; // Movement cost when nothing in inventory
 
 // Assorted vars
 var paralysed = false; // Stops all other actions when true.
@@ -1475,6 +1475,7 @@ async function return_to_base() {
   current_room = getRoomFromID("outside");
   appendToTerminal("Exiting airlock.")
   appendToTerminal("Return journey commencing...")
+  console.log(weight + " " + rooms_json.return_time_per_weight + " " + rooms_json.return_time_baseline)
   timing = Math.max(100 * (weight * rooms_json.return_time_per_weight + rooms_json.return_time_baseline),6000) // 1/10th of total time
   if (inventory.includes(rooms_json.speed_item)) {
     timing = 6000 // Speeds up to a minute
